@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Teleprompter">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Teleprompter Yahir</title>
+<style>
+:root{
+  --bg:#0a0a0a; --fg:#f5f5f0; --accent:#ffcc33; --dim:rgba(245,245,240,.28);
+  --size:48px; --width:92%;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+button{font-family:inherit}
+.screen{position:fixed;inset:0;display:none;flex-direction:column}
+.screen.active{display:flex}
+
+/* HOME */
+#home{padding:calc(22px + env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom));overflow-y:auto;gap:10px}
+#home h1{margin:0;font-size:22px;color:var(--accent);letter-spacing:.4px}
+#status{font-size:12.5px;color:#888;margin:2px 0 8px}
+#status.ok{color:#6c6} #status.warn{color:#e9a23b}
+.group{font-size:12px;color:#777;text-transform:uppercase;letter-spacing:1px;margin:16px 0 4px}
+.card{width:100%;padding:16px;border-radius:14px;border:1px solid #2a2a2a;background:#181818;color:var(--fg);
+  text-align:left;font-size:17px;cursor:pointer;margin-bottom:8px}
+.card b{display:block;font-size:17px}
+.card span{display:block;font-size:13px;color:#999;margin-top:3px}
+.card.hl{background:var(--accent);border:none;color:#111}
+.card.hl span{color:#443}
+#install{display:none;margin-top:14px;font-size:13px;color:#999;line-height:1.5}
+#installBtn{display:none;margin-top:10px}
+#empty{color:#999;font-size:15px;line-height:1.5;padding:18px 4px}
+
+/* READER */
+#bar{display:flex;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;flex:0 0 auto;
+  border-bottom:1px solid rgba(128,128,128,.2);font-size:13px}
+#bar .b{color:var(--accent);font-size:16px;padding:6px 10px;cursor:pointer;background:none;border:none}
+#bar #title{color:#999;text-align:center;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+#viewport{flex:1;position:relative;overflow:hidden}
+#mirrorBox{position:absolute;inset:0}
+#mirrorBox.mirror{transform:scaleX(-1)}
+#scroller{position:absolute;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#scroller::-webkit-scrollbar{display:none}
+#content{width:var(--width);margin:0 auto;text-align:center;font-weight:700;font-size:var(--size);line-height:1.3}
+.ln{margin:0 0 .9em;opacity:1;transition:opacity .15s}
+.dim .ln{opacity:.3}
+.dim .ln.cur{opacity:1}
+.vd{color:var(--accent);font-size:.42em;letter-spacing:2px;margin:1.6em 0 1.2em;font-weight:700;text-transform:uppercase}
+#guide{position:absolute;left:0;right:0;pointer-events:none;border-left:5px solid var(--accent)}
+#guide::after{content:"";position:absolute;inset:0;background:var(--accent);opacity:.1}
+#guide.off{display:none}
+#guide::before{content:"▶";position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:14px;z-index:1}
+
+#lineView{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:6vw;text-align:center}
+#lineView.active{display:flex}
+#lineText{font-weight:700;font-size:var(--size);line-height:1.28;width:var(--width);word-break:break-word}
+#lineNext{position:absolute;bottom:3vh;left:0;right:0;padding:0 8vw;font-size:15px;color:#777}
+#lineDivider{color:var(--accent);font-size:26px;font-weight:700}
+#lineTap{font-size:14px;color:#888;margin-top:14px}
+
+#count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);
+  font-size:30vw;font-weight:800;color:var(--accent);z-index:5}
+#count.active{display:flex}
+
+#ctrl{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+  border-top:1px solid rgba(128,128,128,.2)}
+#ctrl button{border:none;border-radius:14px;font-weight:800;cursor:pointer}
+.round{width:64px;height:56px;font-size:26px;background:#222;color:var(--fg)}
+.play{flex:0 0 96px;height:56px;font-size:24px;background:var(--accent);color:#111}
+#spd{min-width:62px;text-align:center;font-size:13px;color:#999}
+#spd b{display:block;font-size:20px;color:var(--fg)}
+#ctrlLine{display:none;gap:12px;width:100%}
+#ctrlLine button{flex:1;height:56px;font-size:18px;background:#222;color:var(--fg)}
+#ctrlLine button.primary{background:var(--accent);color:#111}
+
+/* SETTINGS */
+#sheet{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-end;z-index:20}
+#sheet.active{display:flex}
+#panel{background:#161616;color:#f5f5f0;width:100%;max-height:88%;overflow-y:auto;padding:20px;border-radius:18px 18px 0 0;display:flex;flex-direction:column;gap:14px}
+#panel label{font-size:13px;color:#aaa;display:flex;justify-content:space-between}
+#panel input[type=range]{width:100%}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;padding:10px 4px;border-radius:10px;border:1px solid #333;background:#101010;color:#aaa;font-size:14px}
+.seg button.sel{background:var(--accent);border-color:var(--accent);color:#111;font-weight:700}
+#panel .done{background:var(--accent);color:#111;border:none;border-radius:12px;padding:13px;font-weight:800;font-size:16px}
+#panel .note{font-size:12px;color:#777}
+</style>
+</head>
+<body>
+
+<div id="home" class="screen active">
+  <h1>Teleprompter</h1>
+  <div id="status">Cargando guiones…</div>
+  <div id="list"></div>
+  <button class="card" id="installBtn"><b>Instalar como app</b><span>Se abre sola, a pantalla completa y sin internet</span></button>
+  <div id="install"></div>
+</div>
+
+<div id="reader" class="screen">
+  <div id="bar">
+    <button class="b" id="back">‹ Atrás</button>
+    <div id="title">—</div>
+    <button class="b" id="gear">⚙</button>
+  </div>
+  <div id="viewport">
+    <div id="mirrorBox">
+      <div id="scroller"><div id="content"></div></div>
+      <div id="guide"></div>
+      <div id="lineView">
+        <div id="lineDivider"></div>
+        <div id="lineText"></div>
+        <div id="lineTap"></div>
+        <div id="lineNext"></div>
+      </div>
+    </div>
+    <div id="count"></div>
+  </div>
+  <div id="ctrl">
+    <div id="ctrlScroll" style="display:flex;align-items:center;gap:12px">
+      <button class="round" id="slower" aria-label="Más lento">−</button>
+      <div id="spd"><b id="spdVal">8</b>velocidad</div>
+      <button class="round" id="faster" aria-label="Más rápido">+</button>
+      <button class="play" id="play" aria-label="Reproducir o pausar">▶</button>
+    </div>
+    <div id="ctrlLine">
+      <button id="prev">‹ Atrás</button>
+      <button id="next" class="primary">Siguiente ›</button>
+    </div>
+  </div>
+</div>
+
+<div id="sheet">
+  <div id="panel">
+    <label>Tamaño de letra <span id="vSize"></span></label>
+    <input type="range" id="size" min="24" max="96" step="1">
+    <label>Velocidad de desplazamiento <span id="vSpeed"></span></label>
+    <input type="range" id="speed" min="1" max="20" step="1">
+    <label>Ancho del texto <span id="vWidth"></span></label>
+    <input type="range" id="width" min="60" max="100" step="2">
+    <label>Modo</label>
+    <div class="seg" id="segMode">
+      <button data-v="scroll">Scroll continuo</button>
+      <button data-v="line">Línea por línea</button>
+    </div>
+    <label>Colores</label>
+    <div class="seg" id="segTheme">
+      <button data-v="dark">Oscuro</button>
+      <button data-v="light">Claro</button>
+      <button data-v="yellow">Amarillo</button>
+    </div>
+    <label>Cuenta regresiva al iniciar</label>
+    <div class="seg" id="segCount">
+      <button data-v="0">Sin</button>
+      <button data-v="3">3 s</button>
+      <button data-v="5">5 s</button>
+    </div>
+    <label>Línea guía y atenuar lo demás</label>
+    <div class="seg" id="segGuide">
+      <button data-v="1">Sí</button>
+      <button data-v="0">No</button>
+    </div>
+    <label>Espejo (para cristal de teleprompter)</label>
+    <div class="seg" id="segMirror">
+      <button data-v="0">No</button>
+      <button data-v="1">Sí</button>
+    </div>
+    <button id="fs" style="padding:11px;border-radius:10px;border:1px solid #333;background:#101010;color:#ddd;font-size:14px">Pantalla completa</button>
+    <div class="note" id="wlNote"></div>
+    <button class="done" id="closeSheet">Listo</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---------- settings ---------- */
+const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0};
+let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
+function saveS(){ LS.set('tp3_settings', S); }
+const THEMES = {
+  dark:{bg:'#0a0a0a', fg:'#f5f5f0', accent:'#ffcc33'},
+  light:{bg:'#f6f4ec', fg:'#0a0a0a', accent:'#b36b00'},
+  yellow:{bg:'#000000', fg:'#ffe34d', accent:'#ffffff'}
+};
+function applySettings(){
+  const r = document.documentElement.style, t = THEMES[S.theme] || THEMES.dark;
+  r.setProperty('--bg', t.bg); r.setProperty('--fg', t.fg); r.setProperty('--accent', t.accent);
+  r.setProperty('--size', S.size + 'px'); r.setProperty('--width', S.width + '%');
+  $('mirrorBox').classList.toggle('mirror', !!S.mirror);
+  $('guide').classList.toggle('off', !S.guide || S.mode !== 'scroll');
+  $('scroller').classList.toggle('dim', !!S.guide);
+  $('spdVal').textContent = S.speed;
+  $('vSize').textContent = S.size + ' px'; $('vSpeed').textContent = S.speed; $('vWidth').textContent = S.width + '%';
+  $('size').value = S.size; $('speed').value = S.speed; $('width').value = S.width;
+  for (const [seg, key] of [['segMode','mode'],['segTheme','theme'],['segCount','count'],['segGuide','guide'],['segMirror','mirror']]){
+    $(seg).querySelectorAll('button').forEach(b => b.classList.toggle('sel', String(S[key]) === b.dataset.v));
+  }
+  $('ctrlScroll').style.display = S.mode === 'scroll' ? 'flex' : 'none';
+  $('ctrlLine').style.display = S.mode === 'line' ? 'flex' : 'none';
+  layoutGuide();
+}
+function bindSeg(seg, key, num){
+  $(seg).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    S[key] = num ? Number(b.dataset.v) : b.dataset.v; saveS();
+    if (key === 'mode'){ setRun(false); applySettings(); if (current) renderReader(true); }
+    else applySettings();
+  });
+}
+bindSeg('segMode','mode'); bindSeg('segTheme','theme'); bindSeg('segCount','count',true);
+bindSeg('segGuide','guide',true); bindSeg('segMirror','mirror',true);
+$('size').addEventListener('input', e => { S.size = +e.target.value; saveS(); applySettings(); });
+$('speed').addEventListener('input', e => { S.speed = +e.target.value; saveS(); applySettings(); });
+$('width').addEventListener('input', e => { S.width = +e.target.value; saveS(); applySettings(); });
+$('gear').onclick = () => $('sheet').classList.add('active');
+$('closeSheet').onclick = () => $('sheet').classList.remove('active');
+$('sheet').addEventListener('click', e => { if (e.target === $('sheet')) $('sheet').classList.remove('active'); });
+$('fs').onclick = () => { try{ const el = document.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen).call(el).catch(()=>{}); }catch(e){} };
+
+/* ---------- data (Claude escribe los guiones; la app solo los lee) ---------- */
+let scripts = LS.get('tp3_cache', []);   // copia guardada por si no hay conexión
+const EMBEDDED = null;   // en la versión de un solo archivo aquí van los guiones
+const statusEl = $('status');
+function setStatus(t, cls){ statusEl.textContent = t; statusEl.className = cls || ''; }
+
+function normalize(id, d){
+  if (!d || !Array.isArray(d.videos)) return null;
+  const videos = d.videos.map(v => ({
+    title: String((v && v.title) || ''),
+    lines: Array.isArray(v && v.lines) ? v.lines.map(String).filter(x => x.trim()) : []
+  })).filter(v => v.lines.length);
+  if (!videos.length || d.hidden) return null;
+  return { id, title: String(d.title || id), group: String(d.group || 'Guiones'), order: Number(d.order) || 0, videos };
+}
+function renderHome(){
+  const wrap = $('list'); wrap.innerHTML = '';
+  if (!scripts.length){
+    const e = document.createElement('div'); e.id = 'empty';
+    e.textContent = 'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.';
+    wrap.appendChild(e); return;
+  }
+  const groups = {};
+  scripts.forEach(s => (groups[s.group] = groups[s.group] || []).push(s));
+  Object.keys(groups).forEach(g => {
+    const h = document.createElement('div'); h.className = 'group'; h.textContent = g; wrap.appendChild(h);
+    groups[g].sort((a,b) => a.order - b.order).forEach(s => {
+      const n = s.videos.reduce((a,v) => a + v.lines.length, 0);
+      const b = document.createElement('button'); b.className = 'card hl';
+      const t = document.createElement('b'); t.textContent = s.title;
+      const m = document.createElement('span'); m.textContent = n + ' líneas · ' + s.videos.length + (s.videos.length === 1 ? ' video' : ' videos');
+      b.append(t, m); b.onclick = () => openScript(s); wrap.appendChild(b);
+    });
+  });
+}
+function applySnapshot(snap){
+  const out = [];
+  snap.docs.forEach(d => { const s = normalize(d.id, d.data()); if (s) out.push(s); });
+  scripts = out; LS.set('tp3_cache', out); renderHome();
+}
+function fromJson(data){
+  const out = [];
+  (data && data.scripts || []).forEach(d => { const s = normalize(d.id || d.title, d); if (s) out.push(s); });
+  scripts = out; LS.set('tp3_cache', out); renderHome();
+}
+let jsonBusy = false;
+async function loadJson(){
+  if (jsonBusy) return; jsonBusy = true;
+  try{
+    const r = await fetch('scripts.json?t=' + Date.now(), {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    const data = await r.json();
+    fromJson(data);
+    if (r.headers.get('x-tp-cache')) setStatus('Sin conexión: copia guardada' + (data.updated ? ' del ' + data.updated : ''), 'warn');
+    else setStatus('Guiones al día ✓' + (data.updated ? ' · ' + data.updated : ''), 'ok');
+  }catch(e){
+    if (EMBEDDED){ fromJson(EMBEDDED); setStatus('Guiones incluidos en este archivo · ' + (EMBEDDED.updated || ''), 'ok'); }
+    else setStatus(scripts.length ? 'Sin conexión: mostrando la última copia guardada' : 'No se pudo cargar. Revisa tu internet.', 'warn');
+  }
+  jsonBusy = false;
+}
+(async function initData(){
+  renderHome();
+  setStatus(scripts.length ? 'Actualizando… (mostrando copia guardada)' : 'Cargando guiones…', 'warn');
+  // Versión dentro de Claude: base de datos. Versión instalada: scripts.json.
+  let db = null;
+  try{ db = window.claude && await window.claude.use('db'); }catch(e){ db = null; }
+  if (db){
+    let timer = setTimeout(() => setStatus(scripts.length ? 'Sin conexión: mostrando la última copia guardada' : 'No se pudo conectar. Revisa tu internet.', 'warn'), 10000);
+    try{
+      db.collection('scripts').onSnapshot(snap => {
+        if (!snap.metadata.fromCache){ clearTimeout(timer); setStatus('Guiones al día ✓', 'ok'); }
+        applySnapshot(snap);
+      }, err => { clearTimeout(timer); setStatus('Sin conexión: mostrando la última copia guardada', 'warn'); });
+    }catch(e){ clearTimeout(timer); setStatus('Sin conexión: mostrando la última copia guardada', 'warn'); }
+  } else {
+    if (EMBEDDED && location.protocol === 'file:'){ fromJson(EMBEDDED); setStatus('Guiones incluidos en este archivo · ' + (EMBEDDED.updated || ''), 'ok'); }
+    else loadJson();
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && $('home').classList.contains('active')) loadJson(); });
+    window.addEventListener('online', loadJson);
+  }
+})();
+
+/* instalación como app */
+let deferredPrompt = null;
+const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('installBtn').style.display = 'block'; });
+$('installBtn').onclick = async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }catch(e){} deferredPrompt = null; $('installBtn').style.display = 'none'; };
+window.addEventListener('appinstalled', () => { $('installBtn').style.display = 'none'; $('install').style.display = 'none'; });
+if (!standalone && !window.claude){
+  $('install').style.display = 'block';
+  $('install').textContent = 'Para instalarla: en Chrome, menú ⋮ → "Instalar app"; en iPhone (Safari), compartir → "Agregar a inicio".';
+}
+if ('serviceWorker' in navigator && window.isSecureContext){
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+/* ---------- reader ---------- */
+let current = null, flat = [], pos = 0, running = false, raf = 0, last = 0, cdTimer = 0, lineIdx = 0;
+const scroller = $('scroller'), content = $('content');
+
+function show(id){ ['home','reader'].forEach(s => $(s).classList.toggle('active', s === id)); }
+function openScript(s){
+  current = s; lineIdx = 0; pos = 0;
+  show('reader'); $('title').textContent = s.title; renderReader(true); requestWake();
+}
+function renderReader(reset){
+  flat = [];
+  current.videos.forEach((v, vi) => {
+    flat.push({t:'d', text: v.title || ('Video ' + (vi + 1)), vi});
+    v.lines.forEach((l, li) => flat.push({t:'l', text:l, vi, li, n:v.lines.length}));
+  });
+  if (S.mode === 'scroll'){
+    $('lineView').classList.remove('active'); scroller.style.display = 'block';
+    content.innerHTML = '';
+    flat.forEach(e => {
+      const d = document.createElement('div');
+      if (e.t === 'd'){ d.className = 'vd'; d.textContent = '— ' + e.text + ' —'; }
+      else { d.className = 'ln'; d.textContent = e.text; }
+      content.appendChild(d);
+    });
+    layoutGuide();
+    if (reset){ pos = 0; scroller.scrollTop = 0; }
+    updateCur();
+  } else {
+    scroller.style.display = 'none';
+    if (reset) lineIdx = 0;
+    renderLine();
+  }
+}
+function layoutGuide(){
+  const h = $('viewport').clientHeight || 600, top = Math.round(h * 0.34);
+  const gh = Math.round(S.size * 1.5);
+  const g = $('guide'); g.style.top = top + 'px'; g.style.height = gh + 'px';
+  content.style.paddingTop = (top + 4) + 'px';
+  content.style.paddingBottom = Math.round(h * 0.7) + 'px';
+}
+window.addEventListener('resize', () => { layoutGuide(); });
+
+/* velocidad: líneas aproximadas por segundo, independiente del tamaño de letra */
+function pxPerSec(){ return S.speed * S.size * 0.23; }
+function tick(ts){
+  if (!running) return;
+  const dt = Math.min(64, ts - last) / 1000; last = ts;
+  pos += pxPerSec() * dt;
+  const max = scroller.scrollHeight - scroller.clientHeight;
+  if (pos >= max){ pos = max; scroller.scrollTop = pos; setRun(false); return; }
+  scroller.scrollTop = pos;
+  raf = requestAnimationFrame(tick);
+}
+function setRun(on){
+  if (on === running) return;
+  running = on; $('play').textContent = on ? '❚❚' : '▶';
+  if (on){ last = performance.now(); raf = requestAnimationFrame(tick); }
+  else cancelAnimationFrame(raf);
+}
+function startWithCountdown(){
+  if (running || cdTimer) return;
+  let n = S.count;
+  if (!n){ setRun(true); return; }
+  const c = $('count'); c.classList.add('active'); c.textContent = n;
+  cdTimer = setInterval(() => {
+    n--;
+    if (n <= 0){ clearInterval(cdTimer); cdTimer = 0; c.classList.remove('active'); setRun(true); }
+    else c.textContent = n;
+  }, 1000);
+}
+function cancelCountdown(){ if (cdTimer){ clearInterval(cdTimer); cdTimer = 0; $('count').classList.remove('active'); } }
+function toggle(){ if (cdTimer){ cancelCountdown(); return; } running ? setRun(false) : startWithCountdown(); }
+$('play').onclick = toggle;
+$('slower').onclick = () => { S.speed = Math.max(1, S.speed - 1); saveS(); applySettings(); };
+$('faster').onclick = () => { S.speed = Math.min(20, S.speed + 1); saveS(); applySettings(); };
+
+/* tocar el texto = pausa / reanudar; arrastrar = moverse a mano (pausa) */
+scroller.addEventListener('click', toggle);
+scroller.addEventListener('touchstart', () => { cancelCountdown(); if (running) setRun(false); }, {passive:true});
+scroller.addEventListener('scroll', () => { if (!running) pos = scroller.scrollTop; });
+$('lineView').addEventListener('click', () => { lineAdvance(); });
+
+/* línea guía: atenúa todo menos la línea que está en la guía */
+let curEl = null;
+function updateCur(){
+  if (S.mode !== 'scroll' || !$('reader').classList.contains('active')) return;
+  const vp = $('viewport').getBoundingClientRect();
+  const y = vp.top + vp.height * 0.34 + (S.size * 1.5) / 2;
+  let found = null;
+  const items = content.children;
+  for (let i = 0; i < items.length; i++){
+    const r = items[i].getBoundingClientRect();
+    if (r.top <= y && r.bottom >= y){ found = items[i]; break; }
+    if (r.top > y){ found = found || items[i]; break; }
+  }
+  if (found !== curEl){ if (curEl) curEl.classList.remove('cur'); curEl = found; if (curEl) curEl.classList.add('cur'); }
+}
+setInterval(updateCur, 120);
+
+/* modo línea por línea */
+function renderLine(){
+  const e = flat[lineIdx]; if (!e) return;
+  $('lineView').classList.add('active');
+  const isD = e.t === 'd';
+  $('lineDivider').textContent = isD ? e.text : '';
+  $('lineText').style.display = isD ? 'none' : 'block';
+  $('lineText').textContent = isD ? '' : e.text;
+  $('lineTap').textContent = isD ? 'Toca para empezar' : '';
+  const nx = flat[lineIdx + 1];
+  $('lineNext').textContent = (!isD && nx && nx.t === 'l') ? 'Sigue: ' + nx.text : '';
+  $('title').textContent = isD ? current.title : (current.title + ' · ' + (e.vi + 1) + ' · ' + (e.li + 1) + '/' + e.n);
+}
+function lineAdvance(){ if (S.mode !== 'line') return; if (lineIdx < flat.length - 1){ lineIdx++; renderLine(); } }
+function lineBack(){ if (S.mode !== 'line') return; if (lineIdx > 0){ lineIdx--; renderLine(); } }
+$('next').onclick = lineAdvance; $('prev').onclick = lineBack;
+let ty = null;
+$('lineView').addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, {passive:true});
+$('lineView').addEventListener('touchend', e => {
+  if (ty === null) return; const dy = e.changedTouches[0].clientY - ty; ty = null;
+  if (Math.abs(dy) > 60){ dy < 0 ? lineAdvance() : lineBack(); e.preventDefault(); }
+});
+
+$('back').onclick = () => { setRun(false); cancelCountdown(); releaseWake(); $('title').textContent = '—'; show('home'); };
+document.addEventListener('keydown', e => {
+  if (!$('reader').classList.contains('active')) return;
+  if (S.mode === 'scroll'){
+    if (e.key === ' ' ){ e.preventDefault(); toggle(); }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowRight'){ e.preventDefault(); $('faster').click(); }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowLeft'){ e.preventDefault(); $('slower').click(); }
+  } else {
+    if ([' ','ArrowRight','ArrowDown','PageDown'].includes(e.key)){ e.preventDefault(); lineAdvance(); }
+    if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); lineBack(); }
+  }
+});
+
+/* mantener la pantalla encendida (si el navegador lo permite) */
+let wl = null;
+async function requestWake(){
+  try{
+    if (!navigator.wakeLock) throw new Error('n/a');
+    wl = await navigator.wakeLock.request('screen');
+    $('wlNote').textContent = 'La pantalla se mantiene encendida mientras lees.';
+  }catch(e){
+    wl = null;
+    $('wlNote').textContent = 'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.';
+  }
+}
+function releaseWake(){ try{ if (wl) wl.release(); }catch(e){} wl = null; }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && $('reader').classList.contains('active')) requestWake(); });
+
+applySettings();
+</script>
+</body>
+</html>
