@@ -52,7 +52,8 @@ button{font-family:inherit}
 #mirrorBox.mirror{transform:scaleX(-1)}
 #scroller{position:absolute;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 #scroller::-webkit-scrollbar{display:none}
-#content{width:var(--width);margin:0 auto;text-align:center;font-weight:700;font-size:var(--size);line-height:1.3}
+#content{width:var(--width);margin:0 auto;text-align:center;font-weight:700;font-size:var(--size);line-height:1.3;
+  -webkit-user-select:text;user-select:text}
 .ln{margin:0 0 .9em;opacity:1;transition:opacity .15s}
 .dim .ln{opacity:.3}
 .dim .ln.cur{opacity:1}
@@ -64,7 +65,8 @@ button{font-family:inherit}
 
 #lineView{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:6vw;text-align:center}
 #lineView.active{display:flex}
-#lineText{font-weight:700;font-size:var(--size);line-height:1.28;width:var(--width);word-break:break-word}
+#lineText{font-weight:700;font-size:var(--size);line-height:1.28;width:var(--width);word-break:break-word;
+  -webkit-user-select:text;user-select:text}
 #lineNext{position:absolute;bottom:3vh;left:0;right:0;padding:0 8vw;font-size:15px;color:#777}
 #lineDivider{color:var(--accent);font-size:26px;font-weight:700}
 #lineTap{font-size:14px;color:#888;margin-top:14px}
@@ -72,6 +74,17 @@ button{font-family:inherit}
 #count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);
   font-size:30vw;font-weight:800;color:var(--accent);z-index:5}
 #count.active{display:flex}
+
+#pronBar{position:absolute;left:12px;right:12px;bottom:14px;z-index:6;display:none;align-items:center;gap:8px;
+  padding:10px 12px;border-radius:14px;background:rgba(18,18,18,.96);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 6px 20px rgba(0,0,0,.4)}
+#pronBar.show{display:flex}
+#pronWord{flex:1;font-size:14px;color:#ccc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  -webkit-user-select:none;user-select:none}
+#pronBar button{border:none;border-radius:10px;padding:9px 12px;font-weight:700;font-size:13px;cursor:pointer;
+  background:var(--accent);color:#111;white-space:nowrap}
+#pronBar button.alt{background:#2a2a2a;color:var(--fg)}
+#pronBar button.x{background:none;color:#888;padding:9px 8px;font-size:16px;font-weight:400}
 
 #ctrl{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));
   border-top:1px solid rgba(128,128,128,.2)}
@@ -125,6 +138,12 @@ button{font-family:inherit}
       </div>
     </div>
     <div id="count"></div>
+    <div id="pronBar">
+      <span id="pronWord"></span>
+      <button class="alt" id="pronEs">🔊 ES</button>
+      <button id="pronEn">🔊 EN</button>
+      <button class="x" id="pronClose">✕</button>
+    </div>
   </div>
   <div id="ctrl">
     <div id="ctrlScroll" style="display:flex;align-items:center;gap:12px">
@@ -401,7 +420,8 @@ function startWithCountdown(){
   }, 1000);
 }
 function cancelCountdown(){ if (cdTimer){ clearInterval(cdTimer); cdTimer = 0; $('count').classList.remove('active'); } }
-function toggle(){ if (cdTimer){ cancelCountdown(); return; } running ? setRun(false) : startWithCountdown(); }
+function hasSelection(){ const s = window.getSelection && window.getSelection(); return !!(s && !s.isCollapsed && String(s).trim()); }
+function toggle(){ if (cdTimer){ cancelCountdown(); return; } if (hasSelection()) return; running ? setRun(false) : startWithCountdown(); }
 $('play').onclick = toggle;
 $('slower').onclick = () => { S.speed = Math.max(1, S.speed - 1); saveS(); applySettings(); };
 $('faster').onclick = () => { S.speed = Math.min(20, S.speed + 1); saveS(); applySettings(); };
@@ -410,7 +430,7 @@ $('faster').onclick = () => { S.speed = Math.min(20, S.speed + 1); saveS(); appl
 scroller.addEventListener('click', toggle);
 scroller.addEventListener('touchstart', () => { cancelCountdown(); if (running) setRun(false); }, {passive:true});
 scroller.addEventListener('scroll', () => { if (!running) pos = scroller.scrollTop; });
-$('lineView').addEventListener('click', () => { lineAdvance(); });
+$('lineView').addEventListener('click', () => { if (hasSelection()) return; lineAdvance(); });
 
 /* línea guía: atenúa todo menos la línea que está en la guía */
 let curEl = null;
@@ -481,6 +501,57 @@ function releaseWake(){ try{ if (wl) wl.release(); }catch(e){} wl = null; }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && $('reader').classList.contains('active')) requestWake(); });
 
 applySettings();
+
+/* ---------- pronunciador (seleccionar palabra -> escuchar) ---------- */
+(function(){
+  const bar = $('pronBar'), wordEl = $('pronWord');
+  const TTS = ('speechSynthesis' in window);
+  if (!TTS){ return; } // sin soporte: la selección de texto sigue funcionando (copiar), solo no hay botones de voz
+  let lastText = '';
+  let voices = [];
+  function loadVoices(){ voices = speechSynthesis.getVoices() || []; }
+  loadVoices();
+  if ('onvoiceschanged' in speechSynthesis){ speechSynthesis.onvoiceschanged = loadVoices; }
+  function pickVoice(lang){
+    const pref = voices.find(v => v.lang && v.lang.toLowerCase() === lang.toLowerCase());
+    if (pref) return pref;
+    const base = lang.split('-')[0];
+    return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(base)) || null;
+  }
+  function speak(text, lang){
+    if (!text) return;
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang; u.rate = 0.82; u.pitch = 1;
+    const v = pickVoice(lang); if (v) u.voice = v;
+    try{ speechSynthesis.speak(u); }catch(e){}
+  }
+  function showBar(text){
+    lastText = text;
+    wordEl.textContent = text.length > 40 ? text.slice(0, 40) + '…' : text;
+    bar.classList.add('show');
+  }
+  function hideBar(){ bar.classList.remove('show'); }
+  function onSelChange(){
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed){ hideBar(); return; }
+    const text = String(sel).trim();
+    if (!text){ hideBar(); return; }
+    const node = sel.anchorNode;
+    const vp = $('viewport');
+    if (!node || !vp.contains(node instanceof Element ? node : node.parentNode)){ hideBar(); return; }
+    showBar(text);
+  }
+  document.addEventListener('selectionchange', () => { clearTimeout(onSelChange._t); onSelChange._t = setTimeout(onSelChange, 120); });
+  $('pronEn').onclick = () => speak(lastText, 'en-US');
+  $('pronEs').onclick = () => speak(lastText, 'es-MX');
+  $('pronClose').onclick = () => {
+    try{ window.getSelection().removeAllRanges(); }catch(e){}
+    try{ speechSynthesis.cancel(); }catch(e){}
+    hideBar();
+  };
+  $('back').addEventListener('click', () => { try{ speechSynthesis.cancel(); }catch(e){} hideBar(); });
+})();
 </script>
 </body>
 </html>
