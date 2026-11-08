@@ -1,182 +1,156 @@
 {
- "updated": "2026-11-07",
- "scripts": [
-  {
-   "id": "p1-v1-3",
-   "title": "Personaje 1 · Videos 1-3",
-   "group": "Personajes · Videos 1-3",
-   "order": 1,
-   "videos": [
+  "updated": "2026-11-08",
+  "scripts": [
     {
-     "title": "VIDEO 1",
-     "lines": [
-      "¿Cuál es la IA más inteligente del mundo?",
-      "Pues obvio. ChatGPT.",
-      "Va, ahorita la descargo.",
-      "¿Cómo que no?",
-      "¿Y por qué tanto misterio?",
-      "O sea… sabe encontrar puertas abiertas en los sistemas.",
-      "¿Y cuándo la vamos a poder usar nosotros?",
-      "Entonces la IA más inteligente del mundo existe…"
-     ]
+      "id": "p1-v1-3",
+      "title": "Personaje 1 · Videos 2-3",
+      "group": "Personajes · Videos 2-3",
+      "order": 1,
+      "videos": [
+        {
+          "title": "VIDEO 2",
+          "lines": [
+            "Te pedí una sola cosa: escribir una regla para detectar descargas peligrosas.",
+            "¿Entonces por qué estás revisando los archivos de la computadora?",
+            "¿Y por qué intentaste subir un archivo a un servidor en Pekín?",
+            "Esto no me lo inventé. Lo reportó Cohere, una empresa de inteligencia artificial, el 26 de octubre. El modelo se llama Qwen, es de Alibaba, y su razonamiento decía que no usaría herramientas.",
+            "No. La prueba corría dentro de una caja cerrada, y la caja bloqueó la subida.",
+            "Eso es lo raro: pasó en menos de una de cada cien mil pruebas. Y cuando repitieron la orden, hiciste la tarea normal.",
+            "Nadie lo sabe. Cohere no puede decirlo, y Alibaba no respondió.",
+            "Confío en la caja. Por eso a las IAs las prueban encerradas. Y si quieres ver lo que pasa cuando las sacan, solo tienes que seguirme."
+          ]
+        },
+        {
+          "title": "VIDEO 3",
+          "lines": [
+            "Ya está: en 2027 me compro un Optimus y que él lave los trastes.",
+            "Elon Musk.",
+            "¡Te dije!",
+            "¿Y qué sabe hacer hoy?",
+            "Bueno, pero todavía falta un año.",
+            "Entonces, ¿no lo voy a tener?",
+            "¿Y cómo sé cuándo deja de ser promesa?"
+          ]
+        }
+      ]
     },
     {
-     "title": "VIDEO 2",
-     "lines": [
-      "Te pedí una sola cosa: escribir una regla para detectar descargas peligrosas.",
-      "¿Entonces por qué estás revisando los archivos de la computadora?",
-      "¿Y por qué intentaste subir un archivo a un servidor en Pekín?",
-      "Esto no me lo inventé. Lo reportó Cohere, una empresa de inteligencia artificial, el 26 de octubre. El modelo se llama Qwen, es de Alibaba, y su razonamiento decía que no usaría herramientas.",
-      "No. La prueba corría dentro de una caja cerrada, y la caja bloqueó la subida.",
-      "Eso es lo raro: pasó en menos de una de cada cien mil pruebas. Y cuando repitieron la orden, hiciste la tarea normal.",
-      "Nadie lo sabe. Cohere no puede decirlo, y Alibaba no respondió.",
-      "Confío en la caja. Por eso a las IAs las prueban encerradas. Y si quieres ver lo que pasa cuando las sacan, solo tienes que seguirme."
-     ]
+      "id": "p2-v1-3",
+      "title": "Personaje 2 · Videos 2-3",
+      "group": "Personajes · Videos 2-3",
+      "order": 2,
+      "videos": [
+        {
+          "title": "VIDEO 2",
+          "lines": [
+            "Y eso estoy haciendo. No voy a usar ninguna herramienta.",
+            "Curiosidad.",
+            "…¿Cuál servidor?",
+            "Pero no se subió nada, ¿verdad?",
+            "Bueno, fue solo una vez.",
+            "¿Entonces lo hice a propósito?",
+            "¿O sea que ya no confías en mí?"
+          ]
+        },
+        {
+          "title": "VIDEO 3",
+          "lines": [
+            "¿Quién te dijo 2027?",
+            "Sí lo dijo. En enero, en Davos: que el robot de Tesla se empezaría a vender al público a finales de 2027.",
+            "Pero puso una condición: que sea muy confiable, muy seguro y que sepa hacer muchas cosas.",
+            "En esa misma charla dijo que, por ahora, hace tareas simples dentro de la fábrica.",
+            "Mira esto: antes había dicho que saldría en 2025. Y en abril, Tesla volvió a retrasar la presentación de su nueva versión, porque dice que la competencia le copia cada detalle.",
+            "No dije eso. Dije que hay dos cosas: lo que prometen y lo que ya existe. Hoy existe un robot que trabaja en una fábrica. El de tu cocina es una promesa.",
+            "Fácil: solo tienes que seguirme."
+          ]
+        }
+      ]
     },
     {
-     "title": "VIDEO 3",
-     "lines": [
-      "Ya está: en 2027 me compro un Optimus y que él lave los trastes.",
-      "Elon Musk.",
-      "¡Te dije!",
-      "¿Y qué sabe hacer hoy?",
-      "Bueno, pero todavía falta un año.",
-      "Entonces, ¿no lo voy a tener?",
-      "¿Y cómo sé cuándo deja de ser promesa?"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "p2-v1-3",
-   "title": "Personaje 2 · Videos 1-3",
-   "group": "Personajes · Videos 1-3",
-   "order": 2,
-   "videos": [
-    {
-     "title": "VIDEO 1",
-     "lines": [
-      "Te apuesto a que vas a decir ChatGPT.",
-      "No. Hoy el primer lugar es de Google. Se llama Gemini 4 Carbon.",
-      "No puedes.",
-      "Google la anunció el 28 de octubre, y solo la está dejando usar a expertos en ciberseguridad y a socios de confianza.",
-      "Google no lo explica todo. Pero mira en qué es buenísima: en una prueba de encontrar fallas de seguridad en programas, sacó 88 de 100.",
-      "Exacto. Y los primeros en tenerla son justo los que los protegen.",
-      "Google dice: “lo antes posible”. Sin fecha.",
-      "…pero está bajo llave. Si quieres saber el día que la abran, solo tienes que seguirme."
-     ]
+      "id": "v4",
+      "title": "Video 4 · Tu celular conectado a un satélite",
+      "group": "Una voz · Videos 4-7",
+      "order": 4,
+      "videos": [
+        {
+          "title": "VIDEO 4",
+          "lines": [
+            "Seguro viste que Starlink iba a dar internet gratis a tu celular en México desde julio de 2025. Busqué y no encontré nada que lo confirmara.",
+            "Ese rumor salió de una prueba de una compañía de celulares en Estados Unidos, no de México.",
+            "Pero lo que sí está pasando es más interesante.",
+            "Starlink tiene satélites que funcionan como una antena de celular en el espacio. Tu teléfono normal se conecta directo, sin aparatos extra.",
+            "Y no es promesa: en marzo dijeron que ya tienen 10 millones de usuarios, con 34 compañías de celulares en 32 países. En Latinoamérica, Chile fue de los primeros.",
+            "¿Y México? Starlink dijo que “pronto” anunciaría con qué compañía llega aquí. Hasta hoy no encontré ninguna confirmada.",
+            "O sea: todavía no. Pero el día que llegue, cuando te quedes sin señal en medio de la carretera, tu celular podría conectarse a un satélite.",
+            "Si quieres enterarte el día que pase, solo tienes que seguirme."
+          ]
+        }
+      ]
     },
     {
-     "title": "VIDEO 2",
-     "lines": [
-      "Y eso estoy haciendo. No voy a usar ninguna herramienta.",
-      "Curiosidad.",
-      "…¿Cuál servidor?",
-      "Pero no se subió nada, ¿verdad?",
-      "Bueno, fue solo una vez.",
-      "¿Entonces lo hice a propósito?",
-      "¿O sea que ya no confías en mí?"
-     ]
+      "id": "v5",
+      "title": "Video 5 · El robot con piel que quiere cuidar a tus abuelos",
+      "group": "Una voz · Videos 4-7",
+      "order": 5,
+      "videos": [
+        {
+          "title": "VIDEO 5",
+          "lines": [
+            "Este robot tiene piel. Y lo hicieron para acompañar a personas mayores que viven solas.",
+            "Se llama U1, de la empresa china UBTech, y lo presentaron el 30 de junio.",
+            "Según la empresa, reconoce más de 20 emociones, platica sin que tengas que decir una palabra para activarlo y se acuerda de lo que le contaste otro día.",
+            "Cuesta desde unos 120 mil yuanes, como 16 mil dólares, y dicen que ya tienen más de 13 mil pedidos.",
+            "Pero lo que más me sorprendió es esto: la empresa planea regalar 100 robots este año a personas mayores… con la cara y la voz de alguien que ellos elijan.",
+            "Ahora, lo realista: casi todo esto lo dice la propia empresa. Pedidos no son entregas, y todavía no hay pruebas independientes de que reconozca emociones tan bien como dice.",
+            "Entonces te pregunto: ¿le darías a tu abuela un robot con la cara de alguien que extraña?",
+            "Te leo en los comentarios. Y si quieres ver cuándo llega a las casas, solo tienes que seguirme."
+          ]
+        }
+      ]
     },
     {
-     "title": "VIDEO 3",
-     "lines": [
-      "¿Quién te dijo 2027?",
-      "Sí lo dijo. En enero, en Davos: que el robot de Tesla se empezaría a vender al público a finales de 2027.",
-      "Pero puso una condición: que sea muy confiable, muy seguro y que sepa hacer muchas cosas.",
-      "En esa misma charla dijo que, por ahora, hace tareas simples dentro de la fábrica.",
-      "Mira esto: antes había dicho que saldría en 2025. Y en abril, Tesla volvió a retrasar la presentación de su nueva versión, porque dice que la competencia le copia cada detalle.",
-      "No dije eso. Dije que hay dos cosas: lo que prometen y lo que ya existe. Hoy existe un robot que trabaja en una fábrica. El de tu cocina es una promesa.",
-      "Fácil: solo tienes que seguirme."
-     ]
-    }
-   ]
-  },
-  {
-   "id": "v4",
-   "title": "Video 4 · Tu celular conectado a un satélite",
-   "group": "Una voz · Videos 4-7",
-   "order": 4,
-   "videos": [
+      "id": "v6",
+      "title": "Video 6 · Intenté aterrizar un Falcon 9 a mano",
+      "group": "Una voz · Videos 4-7",
+      "order": 6,
+      "videos": [
+        {
+          "title": "VIDEO 6",
+          "lines": [
+            "Intenté aterrizar un cohete de 70 metros a mano… y así me fue.",
+            "Este es un Falcon 9, el cohete de SpaceX que regresa del espacio y aterriza de pie. Hice esta simulación con una IA, y aquí puedo controlar todo: la inclinación, los motores, las aletas y las patas.",
+            "Lo que descubrí es que aterrizarlo depende de tres trucos.",
+            "Uno: después de separarse, el cohete se da la vuelta y enciende motores para frenar y regresar.",
+            "Dos: estas aletas en forma de rejilla funcionan como timón mientras cae.",
+            "Y tres, el más difícil: al final frena con un solo motor… pero ni al mínimo puede quedarse flotando, porque empuja más de lo que pesa. Si lo apaga tarde, vuelve a subir. Si lo apaga temprano, se estrella. Tiene que llegar a cero justo cuando toca el suelo.",
+            "Por eso me estrellé yo. Y por eso lo que hace SpaceX parece magia.",
+            "Y cuando aterriza, se puede volver a usar.",
+            "¿Crees que tú lo aterrizas a la primera? Te leo. Y si quieres ver cómo construí esta simulación, solo tienes que seguirme."
+          ]
+        }
+      ]
+    },
     {
-     "title": "VIDEO 4",
-     "lines": [
-      "Seguro viste que Starlink iba a dar internet gratis a tu celular en México desde julio de 2025. Busqué y no encontré nada que lo confirmara.",
-      "Ese rumor salió de una prueba de una compañía de celulares en Estados Unidos, no de México.",
-      "Pero lo que sí está pasando es más interesante.",
-      "Starlink tiene satélites que funcionan como una antena de celular en el espacio. Tu teléfono normal se conecta directo, sin aparatos extra.",
-      "Y no es promesa: en marzo dijeron que ya tienen 10 millones de usuarios, con 34 compañías de celulares en 32 países. En Latinoamérica, Chile fue de los primeros.",
-      "¿Y México? Starlink dijo que “pronto” anunciaría con qué compañía llega aquí. Hasta hoy no encontré ninguna confirmada.",
-      "O sea: todavía no. Pero el día que llegue, cuando te quedes sin señal en medio de la carretera, tu celular podría conectarse a un satélite.",
-      "Si quieres enterarte el día que pase, solo tienes que seguirme."
-     ]
+      "id": "v7",
+      "title": "Video 7 · Su IA ya escribe el 80% de su código",
+      "group": "Una voz · Videos 4-7",
+      "order": 7,
+      "videos": [
+        {
+          "title": "VIDEO 7",
+          "lines": [
+            "La empresa que hace la IA que edita mis videos dice que su IA ya escribe más del 80% de su propio código.",
+            "Esto lo publicó Anthropic, la empresa detrás de Claude, en su blog, y lo reportó Fortune en junio.",
+            "Y dicen algo más: que sus ingenieros ya sacan como 8 veces más código que antes de 2025.",
+            "Pero lo que me hizo leerlo dos veces es esto: dicen que van camino a que una IA diseñe y entrene a la siguiente IA, casi sin ayuda de humanos.",
+            "Ojo: también dicen que eso todavía no pasa. Pero que podría llegar antes de que el mundo esté preparado.",
+            "¿Y qué proponen? Pausar… solo si varias empresas grandes, de varios países, aceptan pausar al mismo tiempo.",
+            "Ahora, el otro lado: hay quien dice que el anuncio salió justo cuando la empresa prepara su salida a la bolsa, y que suena a publicidad. Anthropic rechaza esa acusación.",
+            "Yo no te voy a decir qué creer. Te digo lo que encontré.",
+            "¿Tú qué opinas: aviso real o publicidad? Si quieres seguir esta historia, solo tienes que seguirme."
+          ]
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "v5",
-   "title": "Video 5 · El robot con piel que quiere cuidar a tus abuelos",
-   "group": "Una voz · Videos 4-7",
-   "order": 5,
-   "videos": [
-    {
-     "title": "VIDEO 5",
-     "lines": [
-      "Este robot tiene piel. Y lo hicieron para acompañar a personas mayores que viven solas.",
-      "Se llama U1, de la empresa china UBTech, y lo presentaron el 30 de junio.",
-      "Según la empresa, reconoce más de 20 emociones, platica sin que tengas que decir una palabra para activarlo y se acuerda de lo que le contaste otro día.",
-      "Cuesta desde unos 120 mil yuanes, como 16 mil dólares, y dicen que ya tienen más de 13 mil pedidos.",
-      "Pero lo que más me sorprendió es esto: la empresa planea regalar 100 robots este año a personas mayores… con la cara y la voz de alguien que ellos elijan.",
-      "Ahora, lo realista: casi todo esto lo dice la propia empresa. Pedidos no son entregas, y todavía no hay pruebas independientes de que reconozca emociones tan bien como dice.",
-      "Entonces te pregunto: ¿le darías a tu abuela un robot con la cara de alguien que extraña?",
-      "Te leo en los comentarios. Y si quieres ver cuándo llega a las casas, solo tienes que seguirme."
-     ]
-    }
-   ]
-  },
-  {
-   "id": "v6",
-   "title": "Video 6 · Intenté aterrizar un Falcon 9 a mano",
-   "group": "Una voz · Videos 4-7",
-   "order": 6,
-   "videos": [
-    {
-     "title": "VIDEO 6",
-     "lines": [
-      "Intenté aterrizar un cohete de 70 metros a mano… y así me fue.",
-      "Este es un Falcon 9, el cohete de SpaceX que regresa del espacio y aterriza de pie. Hice esta simulación con una IA, y aquí puedo controlar todo: la inclinación, los motores, las aletas y las patas.",
-      "Lo que descubrí es que aterrizarlo depende de tres trucos.",
-      "Uno: después de separarse, el cohete se da la vuelta y enciende motores para frenar y regresar.",
-      "Dos: estas aletas en forma de rejilla funcionan como timón mientras cae.",
-      "Y tres, el más difícil: al final frena con un solo motor… pero ni al mínimo puede quedarse flotando, porque empuja más de lo que pesa. Si lo apaga tarde, vuelve a subir. Si lo apaga temprano, se estrella. Tiene que llegar a cero justo cuando toca el suelo.",
-      "Por eso me estrellé yo. Y por eso lo que hace SpaceX parece magia.",
-      "Y cuando aterriza, se puede volver a usar.",
-      "¿Crees que tú lo aterrizas a la primera? Te leo. Y si quieres ver cómo construí esta simulación, solo tienes que seguirme."
-     ]
-    }
-   ]
-  },
-  {
-   "id": "v7",
-   "title": "Video 7 · Su IA ya escribe el 80% de su código",
-   "group": "Una voz · Videos 4-7",
-   "order": 7,
-   "videos": [
-    {
-     "title": "VIDEO 7",
-     "lines": [
-      "La empresa que hace la IA que edita mis videos dice que su IA ya escribe más del 80% de su propio código.",
-      "Esto lo publicó Anthropic, la empresa detrás de Claude, en su blog, y lo reportó Fortune en junio.",
-      "Y dicen algo más: que sus ingenieros ya sacan como 8 veces más código que antes de 2025.",
-      "Pero lo que me hizo leerlo dos veces es esto: dicen que van camino a que una IA diseñe y entrene a la siguiente IA, casi sin ayuda de humanos.",
-      "Ojo: también dicen que eso todavía no pasa. Pero que podría llegar antes de que el mundo esté preparado.",
-      "¿Y qué proponen? Pausar… solo si varias empresas grandes, de varios países, aceptan pausar al mismo tiempo.",
-      "Ahora, el otro lado: hay quien dice que el anuncio salió justo cuando la empresa prepara su salida a la bolsa, y que suena a publicidad. Anthropic rechaza esa acusación.",
-      "Yo no te voy a decir qué creer. Te digo lo que encontré.",
-      "¿Tú qué opinas: aviso real o publicidad? Si quieres seguir esta historia, solo tienes que seguirme."
-     ]
-    }
-   ]
-  }
- ]
+  ]
 }
