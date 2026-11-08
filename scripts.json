@@ -3,7 +3,7 @@
   "scripts": [
     {
       "id": "p1-v1-3",
-      "title": "Personaje 1 · Videos 2-3",
+      "title": "Personaje A · Videos 2-3",
       "group": "Personajes · Videos 2-3",
       "order": 1,
       "videos": [
@@ -36,7 +36,7 @@
     },
     {
       "id": "p2-v1-3",
-      "title": "Personaje 2 · Videos 2-3",
+      "title": "Personaje B · Videos 2-3",
       "group": "Personajes · Videos 2-3",
       "order": 2,
       "videos": [
