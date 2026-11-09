@@ -34,7 +34,7 @@
   --edge:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 4px rgba(0,0,0,.28);
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",sans-serif; --wght:700; --lh:1.28; --ls:-.02em;
   --size:48px; --width:92%;
-  --ease:cubic-bezier(.32,.72,0,1);
+  --panel:#12141c; --ease:cubic-bezier(.32,.72,0,1);
   --spring:cubic-bezier(.34,1.45,.64,1);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -275,6 +275,70 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
   box-shadow:var(--edge),0 14px 30px -12px var(--accent);transition:transform .3s var(--ease)}
 #panel .note{font-size:12px;color:#7d869b;line-height:1.5;text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
+
+/* tag de modo + idiomas + selector Business */
+#home h1 small{display:inline-block;vertical-align:middle;margin-left:6px;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);border:1px solid var(--line);background:var(--soft);-webkit-text-fill-color:var(--accent)}
+.langs{display:flex;flex-direction:column;gap:6px}
+.langs button{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);
+  color:#d3d9e8;font-size:15px;font-weight:500;cursor:pointer;text-align:left;transition:transform .3s var(--ease),background .25s}
+.langs button:active{transform:scale(.97)}
+.langs button .fl{font-size:22px;line-height:1}
+.langs button .ck{margin-left:auto;opacity:0;font-weight:800}
+.langs button.sel{background:var(--mbg);color:var(--on);border-color:transparent;font-weight:700;box-shadow:var(--edge)}
+.langs button.sel .ck{opacity:1}
+.sws .sq{display:block;width:44px;height:44px;border-radius:10px;border:1px solid var(--line);transition:transform .3s var(--ease),outline-color .2s;outline:2px solid transparent;outline-offset:2px}
+.sws button.sel .sq{outline-color:var(--accent);transform:none}
+
+/* ===== MODO BUSINESS: sobrio, plano, profesional ===== */
+body.biz::before{display:none}
+body.biz{--mbg:var(--accent);--grad:var(--accent);--edge:none}
+body.biz #home h1{background:none;-webkit-text-fill-color:var(--fg);color:var(--fg);font-weight:650;letter-spacing:-.4px}
+body.biz .brand img{border-radius:10px;box-shadow:none}
+body.biz #status{border-radius:8px;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.biz #status.ok::before,body.biz #status.warn::before{box-shadow:none;animation:none}
+body.biz .card{border-radius:10px;background:var(--glass);box-shadow:none;animation:none}
+body.biz .card .go{border-radius:8px;box-shadow:none;background:var(--accent)}
+body.biz .group{letter-spacing:1.6px}
+body.biz #bar{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
+body.biz #bar .b{border-radius:8px;background:transparent}
+body.biz #ctrlScroll,body.biz #ctrlLine{background:var(--glass2);border-radius:14px;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.biz .round{border-radius:10px}
+body.biz .play{border-radius:14px;box-shadow:none;background:var(--accent)}
+body.biz .play.on{animation:none}
+body.biz #ctrlLine button{border-radius:10px}
+body.biz #ctrlLine button.primary{box-shadow:none;background:var(--accent)}
+body.biz #guide::before{width:3px;box-shadow:none;background:var(--accent)}
+body.biz #viewport.metal .ln,body.biz #viewport.metal #lineText{background:none;color:var(--fg)}
+body.biz #count{background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:none;-webkit-backdrop-filter:none}
+body.biz #cn{background:none;-webkit-text-fill-color:var(--accent);color:var(--accent);filter:none;font-weight:300}
+body.biz .vd{background:none}
+body.biz .vd .rule{height:2px;border-radius:0;box-shadow:none;background:var(--accent);opacity:.85}
+body.biz .vd .end,body.biz #lineEnd{border:1px solid var(--accent);border-radius:4px;box-shadow:none;letter-spacing:.16em;font-weight:700;background:transparent;font-size:13px}
+body.biz .vd .end::before{border-radius:0;box-shadow:none}
+body.biz .vd .big,body.biz #lineDivider{background:none;-webkit-text-fill-color:var(--fg);color:var(--fg);filter:none;font-weight:800;letter-spacing:.06em}
+body.biz .vd .new{color:var(--muted);letter-spacing:.2em}
+body.biz #panel{color:var(--fg);background:var(--panel);border-color:var(--line);box-shadow:0 -10px 40px -16px rgba(0,0,0,.35);
+  backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:18px 18px 0 0}
+body.biz #panel label{color:var(--muted)}
+body.biz #panel label span{color:var(--fg)}
+body.biz #grab i{background:var(--line)}
+body.biz .seg{background:var(--line);border-color:transparent;border-radius:10px}
+body.biz .seg button{color:var(--muted);border-radius:8px}
+body.biz .seg button.sel{color:var(--on)}
+body.biz .seg .thumb{border-radius:8px;box-shadow:none;background:var(--accent)}
+body.biz input[type=range]::-webkit-slider-runnable-track{background:linear-gradient(90deg,var(--accent) var(--p,50%),var(--line) var(--p,50%));height:4px}
+body.biz input[type=range]::-webkit-slider-thumb{width:22px;height:22px;margin-top:-9px;background:var(--accent);box-shadow:0 0 0 3px var(--panel)}
+body.biz .chips button{border-radius:10px;background:transparent;border-color:var(--line);color:var(--muted)}
+body.biz .chips button.sel{background:var(--accent);color:var(--on);box-shadow:none}
+body.biz .langs button{border-radius:10px;background:transparent;border-color:var(--line);color:var(--muted)}
+body.biz .langs button.sel{background:var(--accent);color:var(--on);box-shadow:none}
+body.biz #fs{border-radius:10px;border-color:var(--line);background:transparent;color:var(--fg)}
+body.biz #panel .done{border-radius:10px;box-shadow:none;background:var(--accent)}
+body.biz #pane-color label:nth-of-type(2),body.biz #segFinish{display:none}
+body.biz .sws button{color:var(--muted)}
+body.biz .sws button.sel{color:var(--fg)}
+body.biz #panel .note{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -283,7 +347,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
   <div class="brand">
     <img src="icon-192.png" alt="">
     <div>
-      <h1>Teleprompter</h1>
+      <h1>Teleprompter <small id="modeTag">Orvex</small></h1>
       <div class="sub">Tus guiones, listos para grabar</div>
     </div>
   </div>
@@ -341,6 +405,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
       <button data-v="text" class="sel">Texto</button>
       <button data-v="color">Color</button>
       <button data-v="read">Lectura</button>
+      <button data-v="gen">General</button>
     </div>
     <div class="panes">
       <div class="pane active" id="pane-text">
@@ -392,6 +457,16 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
         <div class="note" id="wlNote"></div>
         <div class="note" id="ver"></div>
       </div>
+      <div class="pane" id="pane-gen">
+        <label>Estilo de la app</label>
+        <div class="seg" id="segUi">
+          <button data-v="orvex">Orvex</button>
+          <button data-v="business">Business</button>
+        </div>
+        <div class="note" id="styleNote"></div>
+        <label>Idioma</label>
+        <div class="langs" id="segLang"></div>
+      </div>
     </div>
     <button class="done" id="closeSheet">Listo</button>
   </div>
@@ -406,10 +481,10 @@ const LS = {
 };
 
 /* ---------- settings ---------- */
-const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal'};
+const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.5';
+const APP_VERSION = '2.6';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -421,7 +496,7 @@ const THEMES = {
 /* Esmeraldas del Caos: [clave, nombre, acento, brillo, sombra, fondo, texto sobre acento] */
 [['verde','Verde','#19e06a','#c9ffd9','#067a35','#020c06','#02150a'],
  ['azul','Azul','#3a74ff','#c3d6ff','#0b2fa8','#030612','#ffffff'],
- ['purpura','Púrpura','#a855ff','#e6cdff','#50119e','#07030f','#ffffff'],
+ ['morado','Morado','#8a2be2','#dcb8ff','#38087a','#06020d','#ffffff'],
  ['rosa','Rosa','#ff4fa8','#ffc2e0','#9c1664','#0d0309','#ffffff'],
  ['rojo','Rojo','#ff2f43','#ffb8bf','#8a0716','#0d0306','#ffffff'],
  ['amarillo','Amarillo','#ffd21f','#fff5b8','#b57a00','#0a0800','#1a1200'],
@@ -432,6 +507,19 @@ const THEMES = {
   const c = ac.slice(1).match(/../g).map(h => parseInt(h,16)).join(',');
   THEMES[k] = {n, gem:1, bg, fg:'#f4f7fb', muted:'#8d96a8', hi, accent:ac, accent2:a2, metal:hi, soft:'rgba('+c+',.13)', on,
     glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba('+c+',.20)', glow1:'rgba('+c+',.22)', glow2:'rgba('+c+',.10)'};
+});
+
+/* Temas del modo Business: planos y sobrios [clave, bg, fg, muted, acento, texto sobre acento, línea, panel, vidrio, vidrio2] */
+const BTHEMES = {};
+[['grafito','#14161a','#eceef2','#8b919c','#4c7dd9','#ffffff','rgba(255,255,255,.12)','#1c1f25','rgba(255,255,255,.04)','rgba(255,255,255,.07)'],
+ ['marfil','#f5f4f0','#15181d','#6a707a','#1f3a68','#ffffff','rgba(20,24,30,.14)','#ffffff','rgba(255,255,255,.75)','#ffffff'],
+ ['marino','#0a1628','#e9eff8','#8294ad','#3d7ad6','#ffffff','rgba(160,190,230,.18)','#101f36','rgba(255,255,255,.04)','rgba(255,255,255,.07)'],
+ ['pizarra','#e7eaee','#1a1f27','#5d6673','#3d4a5c','#ffffff','rgba(26,31,39,.15)','#f3f5f7','rgba(255,255,255,.6)','#ffffff'],
+ ['bosque','#0c1712','#e8f1ec','#82968b','#2f9468','#ffffff','rgba(170,230,205,.16)','#13221b','rgba(255,255,255,.04)','rgba(255,255,255,.07)'],
+ ['burdeos','#170b0f','#f3e9ec','#9d8189','#a6354f','#ffffff','rgba(255,190,205,.16)','#20121a','rgba(255,255,255,.04)','rgba(255,255,255,.07)']
+].forEach(([k,bg,fg,muted,ac,on,line,panel,g1,g2]) => {
+  const c = ac.slice(1).match(/../g).map(h => parseInt(h,16)).join(',');
+  BTHEMES[k] = {n:k, biz:1, bg, fg, muted, hi:ac, accent:ac, accent2:ac, metal:fg, soft:'rgba('+c+',.12)', on, panel, glass:g1, glass2:g2, line, glow1:'transparent', glow2:'transparent'};
 });
 const FONTS = {
   sys:{n:'Sistema', st:'-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",sans-serif', ls:'-.02em'},
@@ -447,6 +535,91 @@ const FONTS = {
 };
 const ICON_PLAY = '<svg viewBox="0 0 24 24" width="30" height="30"><path d="M8.2 5.2v13.6a.6.6 0 0 0 .9.5l10.6-6.8a.6.6 0 0 0 0-1L9.1 4.7a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>';
 const ICON_PAUSE = '<svg viewBox="0 0 24 24" width="30" height="30"><rect x="6" y="4.5" width="4.4" height="15" rx="1.4" fill="currentColor"/><rect x="13.6" y="4.5" width="4.4" height="15" rx="1.4" fill="currentColor"/></svg>';
+
+/* ---------- idiomas ---------- */
+const LANGS = [
+  {k:'es-MX', fl:'🇲🇽', n:'Español (México)', tts:'es-MX', tag:'ES'},
+  {k:'en',    fl:'🇺🇸', n:'English',          tts:'en-US', tag:'EN'},
+  {k:'pt-PT', fl:'🇵🇹', n:'Português (Portugal)', tts:'pt-PT', tag:'PT'},
+  {k:'es-ES', fl:'🇪🇸', n:'Español (España)', tts:'es-ES', tag:'ES'},
+  {k:'fr',    fl:'🇫🇷', n:'Français',         tts:'fr-FR', tag:'FR'}
+];
+const I18N = {
+ 'es-MX':{html:'es-MX',sub:'Tus guiones, listos para grabar',installT:'Instalar como app',installS:'Se abre sola, a pantalla completa y sin internet',back:'Atrás',settings:'Ajustes',slower:'Más lento',faster:'Más rápido',playpause:'Reproducir o pausar',speed:'velocidad',next:'Siguiente',
+  tab_text:'Texto',tab_color:'Color',tab_read:'Lectura',tab_gen:'General',size:'Tamaño de letra',weight:'Grosor',lh:'Interlineado',font:'Tipografía',palette:'Paleta',finish:'Acabado del texto',metal:'Metálico',flat:'Liso',
+  scrollSpeed:'Velocidad de desplazamiento',width:'Ancho del texto',mode:'Modo',m_scroll:'Scroll continuo',m_line:'Línea por línea',countdown:'Cuenta regresiva al iniciar',none:'Sin',guide:'Línea guía y atenuar lo demás',yes:'Sí',no:'No',mirror:'Espejo (para cristal de teleprompter)',fullscreen:'Pantalla completa',done:'Listo',
+  style:'Estilo de la app',language:'Idioma',note_orvex:'Futurista, con brillos y acabado metálico.',note_business:'Sobrio, plano y profesional.',
+  wlOn:'La pantalla se mantiene encendida mientras lees.',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.',ver:'versión',
+  empty:'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.',lines:'líneas',video1:'video',videoN:'videos',offSaved:'Sin conexión: copia guardada',upToDate:'Guiones al día ✓',embedded:'Guiones incluidos en este archivo',offShowing:'Sin conexión: mostrando la última copia guardada',failLoad:'No se pudo cargar. Revisa tu internet.',updating:'Actualizando… (mostrando copia guardada)',loading:'Cargando guiones…',
+  installHow:'Para instalarla: en Chrome, menú ⋮ → "Instalar app"; en iPhone (Safari), compartir → "Agregar a inicio".',fin:'Fin',newVideo:'Nuevo video · empieza aquí',startHere:'Empieza aquí',tapStart:'Toca para empezar',follows:'Sigue',video:'Video',sys:'Sistema',
+  th_dark:'Obsidiana',th_yellow:'Oro',th_garnet:'Guinda',th_verde:'Verde',th_azul:'Azul',th_morado:'Morado',th_rosa:'Rosa',th_rojo:'Rojo',th_amarillo:'Amarillo',th_naranja:'Naranja',th_blanco:'Blanco',th_gris:'Gris',
+  th_grafito:'Grafito',th_marfil:'Marfil',th_marino:'Azul marino',th_pizarra:'Pizarra',th_bosque:'Verde bosque',th_burdeos:'Burdeos'},
+ 'en':{html:'en',sub:'Your scripts, ready to record',installT:'Install as app',installS:'Opens on its own, full screen and offline',back:'Back',settings:'Settings',slower:'Slower',faster:'Faster',playpause:'Play or pause',speed:'speed',next:'Next',
+  tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
+  scrollSpeed:'Scroll speed',width:'Text width',mode:'Mode',m_scroll:'Continuous scroll',m_line:'Line by line',countdown:'Countdown before starting',none:'None',guide:'Guide line and dim the rest',yes:'Yes',no:'No',mirror:'Mirror (for teleprompter glass)',fullscreen:'Full screen',done:'Done',
+  style:'App style',language:'Language',note_orvex:'Futuristic, with glow and a metallic finish.',note_business:'Clean, flat and professional.',
+  wlOn:'The screen stays on while you read.',wlOff:'This browser can\'t keep the screen on: in your phone settings set "Screen timeout" to the maximum before recording.',ver:'version',
+  empty:'No scripts loaded yet. Ask Claude to load the next one.',lines:'lines',video1:'video',videoN:'videos',offSaved:'Offline: saved copy',upToDate:'Scripts up to date ✓',embedded:'Scripts included in this file',offShowing:'Offline: showing the last saved copy',failLoad:'Couldn\'t load. Check your internet.',updating:'Updating… (showing saved copy)',loading:'Loading scripts…',
+  installHow:'To install: in Chrome, menu ⋮ → "Install app"; on iPhone (Safari), Share → "Add to Home Screen".',fin:'End',newVideo:'New video · starts here',startHere:'Starts here',tapStart:'Tap to start',follows:'Next',video:'Video',sys:'System',
+  th_dark:'Obsidian',th_yellow:'Gold',th_garnet:'Garnet',th_verde:'Green',th_azul:'Blue',th_morado:'Purple',th_rosa:'Pink',th_rojo:'Red',th_amarillo:'Yellow',th_naranja:'Orange',th_blanco:'White',th_gris:'Gray',
+  th_grafito:'Graphite',th_marfil:'Ivory',th_marino:'Navy',th_pizarra:'Slate',th_bosque:'Forest',th_burdeos:'Burgundy'},
+ 'pt-PT':{html:'pt-PT',sub:'Os teus guiões, prontos para gravar',installT:'Instalar como aplicação',installS:'Abre sozinha, em ecrã inteiro e sem internet',back:'Voltar',settings:'Definições',slower:'Mais lento',faster:'Mais rápido',playpause:'Reproduzir ou pausar',speed:'velocidade',next:'Seguinte',
+  tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
+  scrollSpeed:'Velocidade de deslocamento',width:'Largura do texto',mode:'Modo',m_scroll:'Deslocamento contínuo',m_line:'Linha a linha',countdown:'Contagem decrescente ao iniciar',none:'Sem',guide:'Linha-guia e esbater o resto',yes:'Sim',no:'Não',mirror:'Espelho (para vidro de teleponto)',fullscreen:'Ecrã inteiro',done:'Concluído',
+  style:'Estilo da aplicação',language:'Idioma',note_orvex:'Futurista, com brilhos e acabamento metálico.',note_business:'Sóbrio, plano e profissional.',
+  wlOn:'O ecrã mantém-se ligado enquanto lês.',wlOff:'Este navegador não permite manter o ecrã ligado: nas definições do telemóvel, põe o "Tempo de ecrã" no máximo antes de gravar.',ver:'versão',
+  empty:'Ainda não há guiões carregados. Pede ao Claude que carregue o seguinte.',lines:'linhas',video1:'vídeo',videoN:'vídeos',offSaved:'Sem ligação: cópia guardada',upToDate:'Guiões atualizados ✓',embedded:'Guiões incluídos neste ficheiro',offShowing:'Sem ligação: a mostrar a última cópia guardada',failLoad:'Não foi possível carregar. Verifica a tua internet.',updating:'A atualizar… (a mostrar cópia guardada)',loading:'A carregar guiões…',
+  installHow:'Para instalar: no Chrome, menu ⋮ → "Instalar aplicação"; no iPhone (Safari), partilhar → "Adicionar ao ecrã principal".',fin:'Fim',newVideo:'Novo vídeo · começa aqui',startHere:'Começa aqui',tapStart:'Toca para começar',follows:'Segue',video:'Vídeo',sys:'Sistema',
+  th_dark:'Obsidiana',th_yellow:'Ouro',th_garnet:'Granada',th_verde:'Verde',th_azul:'Azul',th_morado:'Roxo',th_rosa:'Rosa',th_rojo:'Vermelho',th_amarillo:'Amarelo',th_naranja:'Laranja',th_blanco:'Branco',th_gris:'Cinzento',
+  th_grafito:'Grafite',th_marfil:'Marfim',th_marino:'Azul-marinho',th_pizarra:'Ardósia',th_bosque:'Verde-floresta',th_burdeos:'Bordéus'},
+ 'es-ES':{html:'es-ES',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del móvil pon "Tiempo de pantalla" en el máximo antes de grabar.',
+  installS:'Se abre sola, a pantalla completa y sin conexión',mirror:'Espejo (para el cristal del teleprompter)',
+  installHow:'Para instalarla: en Chrome, menú ⋮ → "Instalar aplicación"; en iPhone (Safari), compartir → "Añadir a pantalla de inicio".',
+  tapStart:'Pulsa para empezar',th_dark:'Obsidiana',th_garnet:'Granate',th_rojo:'Rojo',th_morado:'Morado',th_burdeos:'Burdeos',
+  empty:'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.',offSaved:'Sin conexión: copia guardada',failLoad:'No se ha podido cargar. Revisa tu conexión.',
+  note_orvex:'Futurista, con brillos y acabado metálico.',countdown:'Cuenta atrás al iniciar',fullscreen:'Pantalla completa',scrollSpeed:'Velocidad de desplazamiento'},
+ 'fr':{html:'fr',sub:'Vos scripts, prêts à être enregistrés',installT:'Installer comme application',installS:'S\'ouvre seule, en plein écran et hors connexion',back:'Retour',settings:'Réglages',slower:'Plus lent',faster:'Plus rapide',playpause:'Lecture ou pause',speed:'vitesse',next:'Suivant',
+  tab_text:'Texte',tab_color:'Couleur',tab_read:'Lecture',tab_gen:'Général',size:'Taille du texte',weight:'Épaisseur',lh:'Interligne',font:'Police',palette:'Palette',finish:'Finition du texte',metal:'Métallique',flat:'Uni',
+  scrollSpeed:'Vitesse de défilement',width:'Largeur du texte',mode:'Mode',m_scroll:'Défilement continu',m_line:'Ligne par ligne',countdown:'Compte à rebours au démarrage',none:'Aucun',guide:'Ligne guide et atténuer le reste',yes:'Oui',no:'Non',mirror:'Miroir (pour vitre de prompteur)',fullscreen:'Plein écran',done:'Terminé',
+  style:'Style de l\'application',language:'Langue',note_orvex:'Futuriste, avec des reflets et une finition métallique.',note_business:'Sobre, épuré et professionnel.',
+  wlOn:'L\'écran reste allumé pendant la lecture.',wlOff:'Ce navigateur ne peut pas garder l\'écran allumé : dans les réglages du téléphone, mettez « Mise en veille » au maximum avant d\'enregistrer.',ver:'version',
+  empty:'Aucun script chargé pour le moment. Demandez à Claude de charger le suivant.',lines:'lignes',video1:'vidéo',videoN:'vidéos',offSaved:'Hors connexion : copie enregistrée',upToDate:'Scripts à jour ✓',embedded:'Scripts inclus dans ce fichier',offShowing:'Hors connexion : dernière copie enregistrée affichée',failLoad:'Chargement impossible. Vérifiez votre connexion.',updating:'Mise à jour… (copie enregistrée affichée)',loading:'Chargement des scripts…',
+  installHow:'Pour l\'installer : dans Chrome, menu ⋮ → « Installer l\'application » ; sur iPhone (Safari), Partager → « Sur l\'écran d\'accueil ».',fin:'Fin',newVideo:'Nouvelle vidéo · commence ici',startHere:'Commence ici',tapStart:'Touchez pour commencer',follows:'Suite',video:'Vidéo',sys:'Système',
+  th_dark:'Obsidienne',th_yellow:'Or',th_garnet:'Grenat',th_verde:'Vert',th_azul:'Bleu',th_morado:'Violet',th_rosa:'Rose',th_rojo:'Rouge',th_amarillo:'Jaune',th_naranja:'Orange',th_blanco:'Blanc',th_gris:'Gris',
+  th_grafito:'Graphite',th_marfil:'Ivoire',th_marino:'Bleu marine',th_pizarra:'Ardoise',th_bosque:'Vert forêt',th_burdeos:'Bordeaux'}
+};
+function curLang(){ return LANGS.some(l => l.k === S.lang) ? S.lang : 'es-MX'; }
+function t(k){ const L = curLang(); return (I18N[L] && I18N[L][k] != null) ? I18N[L][k] : (I18N['es-MX'][k] != null ? I18N['es-MX'][k] : k); }
+function tn(key, fb){ const v = t('th_' + key); return v === 'th_' + key ? fb : v; }
+function setT(el, txt){
+  if (!el) return;
+  const tn_ = Array.from(el.childNodes).filter(n => n.nodeType === 3);
+  const v = txt + (el.tagName === 'LABEL' ? ' ' : '');
+  if (tn_.length) tn_[tn_.length - 1].nodeValue = v; else el.appendChild(document.createTextNode(v));
+}
+function translateStatic(){
+  const q = (sel, key, pre) => document.querySelectorAll(sel).forEach(el => setT(el, (pre || '') + t(key)));
+  document.documentElement.lang = t('html');
+  q('.brand .sub','sub'); q('#installBtn b','installT'); q('#installBtn span','installS');
+  q('#back','back'); q('#spd','speed'); q('#next','next'); q('#fs','fullscreen'); q('#closeSheet','done');
+  setT($('prev'), '‹ ' + t('back'));
+  [['#gear','settings'],['#back','back'],['#slower','slower'],['#faster','faster'],['#play','playpause']].forEach(([sel,k]) => { const el = document.querySelector(sel); if (el) el.setAttribute('aria-label', t(k)); });
+  setT($('next'), t('next') + ' ›');
+  [['text','tab_text'],['color','tab_color'],['read','tab_read'],['gen','tab_gen']].forEach(([v,k]) => q('#segTab [data-v="'+v+'"]', k));
+  ['size','weight','lh','font'].forEach((k,i) => setT(document.querySelector('#pane-text label:nth-of-type('+(i+1)+')'), t(k)));
+  ['palette','finish'].forEach((k,i) => setT(document.querySelector('#pane-color label:nth-of-type('+(i+1)+')'), t(k)));
+  ['scrollSpeed','width','mode','countdown','guide','mirror'].forEach((k,i) => setT(document.querySelector('#pane-read label:nth-of-type('+(i+1)+')'), t(k)));
+  ['style','language'].forEach((k,i) => setT(document.querySelector('#pane-gen label:nth-of-type('+(i+1)+')'), t(k)));
+  q('#segFinish [data-v="metal"]','metal'); q('#segFinish [data-v="flat"]','flat');
+  q('#segMode [data-v="scroll"]','m_scroll'); q('#segMode [data-v="line"]','m_line');
+  q('#segCount [data-v="0"]','none');
+  ['segGuide','segMirror'].forEach(id => { q('#'+id+' [data-v="1"]','yes'); q('#'+id+' [data-v="0"]','no'); });
+  const sysChip = document.querySelector('#segFont [data-v="sys"] small'); if (sysChip) sysChip.textContent = t('sys');
+  const L = LANGS.find(l => l.k === curLang());
+  $('pronEs').textContent = '🔊 ' + L.tag; $('pronEn').textContent = '🔊 ' + (L.k === 'en' ? 'UK' : 'EN');
+  if ($('install').style.display === 'block') $('install').textContent = t('installHow');
+  $('styleNote').textContent = t(S.ui === 'business' ? 'note_business' : 'note_orvex');
+}
 let AC = null;
 function gemSound(idx){
   try{
@@ -497,20 +670,28 @@ function anchorSet(a){
   const t = Math.max(0, offs[a.i][0] + a.f * offs[a.i][1] - guideY);
   $('scroller').scrollTop = t; pos = t; updateCur();
 }
+let themesFor = '';
 function applySettings(){
   const anchor = anchorGet();
   if (S.theme === 'emerald') S.theme = 'verde';
   if (S.theme === 'light') S.theme = 'rosa';
   if (S.theme === 'cian') S.theme = 'naranja';
-  const r = document.documentElement.style, t = THEMES[S.theme] || THEMES.dark, f = FONTS[S.font] || FONTS.sys;
-  r.setProperty('--bg', t.bg); r.setProperty('--fg', t.fg); r.setProperty('--muted', t.muted);
-  r.setProperty('--hi', t.hi); r.setProperty('--metal', t.metal);
-  r.setProperty('--accent', t.accent); r.setProperty('--accent2', t.accent2); r.setProperty('--soft', t.soft); r.setProperty('--on', t.on);
-  r.setProperty('--glass', t.glass); r.setProperty('--glass2', t.glass2); r.setProperty('--line', t.line);
-  r.setProperty('--glow1', t.glow1); r.setProperty('--glow2', t.glow2);
+  if (S.theme === 'purpura') S.theme = 'morado';
+  const biz = S.ui === 'business';
+  const tk = biz ? (BTHEMES[S.btheme] ? S.btheme : 'grafito') : (THEMES[S.theme] ? S.theme : 'dark');
+  const th = biz ? BTHEMES[tk] : THEMES[tk], f = FONTS[S.font] || FONTS.sys;
+  document.body.classList.toggle('biz', biz);
+  if (themesFor !== S.ui + '|' + curLang() && window.renderThemes) window.renderThemes();
+  const r = document.documentElement.style, tt = th;
+  r.setProperty('--bg', tt.bg); r.setProperty('--fg', tt.fg); r.setProperty('--muted', tt.muted);
+  r.setProperty('--hi', tt.hi); r.setProperty('--metal', tt.metal);
+  r.setProperty('--accent', tt.accent); r.setProperty('--accent2', tt.accent2); r.setProperty('--soft', tt.soft); r.setProperty('--on', tt.on);
+  r.setProperty('--glass', tt.glass); r.setProperty('--glass2', tt.glass2); r.setProperty('--line', tt.line);
+  r.setProperty('--glow1', tt.glow1); r.setProperty('--glow2', tt.glow2);
   r.setProperty('--size', S.size + 'px'); r.setProperty('--width', S.width + '%');
   r.setProperty('--font', f.st); r.setProperty('--ls', f.ls); r.setProperty('--wght', S.weight); r.setProperty('--lh', S.lh);
-  const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', t.bg);
+  const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', tt.bg);
+  $('modeTag').textContent = biz ? 'Business' : 'Orvex';
   $('mirrorBox').classList.toggle('mirror', !!S.mirror);
   $('guide').classList.toggle('off', !S.guide || S.mode !== 'scroll');
   $('scroller').classList.toggle('dim', !!S.guide);
@@ -518,29 +699,31 @@ function applySettings(){
   $('viewport').classList.toggle('metal', S.finish === 'metal');
   $('spdVal').textContent = S.speed;
   $('vSize').textContent = S.size + ' px'; $('vSpeed').textContent = S.speed; $('vWidth').textContent = S.width + '%';
-  $('vWeight').textContent = S.weight; $('vLh').textContent = Number(S.lh).toFixed(2); $('vFont').textContent = f.n; $('vTheme').textContent = t.n;
+  $('vWeight').textContent = S.weight; $('vLh').textContent = Number(S.lh).toFixed(2); $('vFont').textContent = (S.font === 'sys' ? t('sys') : f.n); $('vTheme').textContent = tn(tk, tt.n); r.setProperty('--panel', tt.panel || '#12141c');
   $('size').value = S.size; $('speed').value = S.speed; $('width').value = S.width; $('weight').value = S.weight; $('lh').value = Math.round(S.lh * 100);
   ['size','speed','width','weight','lh'].forEach(id => { const el = $(id); el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); });
-  for (const [seg, key] of [['segMode','mode'],['segTheme','theme'],['segCount','count'],['segGuide','guide'],['segMirror','mirror'],['segFont','font'],['segFinish','finish']]){
+  for (const [seg, key] of [['segMode','mode'],['segUi','ui'],['segLang','lang'],['segTheme', biz ? 'btheme' : 'theme'],['segCount','count'],['segGuide','guide'],['segMirror','mirror'],['segFont','font'],['segFinish','finish']]){
     $(seg).querySelectorAll('button').forEach(b => b.classList.toggle('sel', String(S[key]) === b.dataset.v));
   }
   $('ctrlScroll').style.display = S.mode === 'scroll' ? 'flex' : 'none';
   $('ctrlLine').style.display = S.mode === 'line' ? 'flex' : 'none';
-  $('ver').textContent = 'Teleprompter Yahir · versión ' + APP_VERSION;
+  $('ver').textContent = 'Teleprompter Yahir · ' + t('ver') + ' ' + APP_VERSION;
+  translateStatic();
   layoutGuide(); syncThumbs(); anchorSet(anchor);
 }
 function bindSeg(seg, key, num){
   $(seg).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; tap(6);
+    if (key === 'theme' && S.ui === 'business') key = 'btheme';
     S[key] = num ? Number(b.dataset.v) : b.dataset.v; saveS();
     if (key === 'theme'){ const g = b.querySelector('.gem'); if (g){ g.classList.remove('jump'); void g.offsetWidth; g.classList.add('jump'); tap([10,30,14]); gemSound(Object.keys(THEMES).indexOf(b.dataset.v)); g.onanimationend = ev => { if (ev.target.tagName.toLowerCase() === 'svg') g.classList.remove('jump'); }; } }
     if (key === 'mode'){ setRun(false); applySettings(); if (current) renderReader(true); }
-    else applySettings();
+    else { applySettings(); if (key === 'lang'){ renderHome(); refreshStatus(); try{ if (current && $('reader').classList.contains('active')){ if (S.mode === 'line') renderLine(); else renderReader(false); } }catch(err){} } }
   });
 }
 bindSeg('segMode','mode'); bindSeg('segTheme','theme'); bindSeg('segCount','count',true);
 bindSeg('segGuide','guide',true); bindSeg('segMirror','mirror',true);
-bindSeg('segFont','font'); bindSeg('segFinish','finish');
+bindSeg('segFont','font'); bindSeg('segUi','ui'); bindSeg('segLang','lang'); bindSeg('segFinish','finish');
 $('size').addEventListener('input', e => { S.size = +e.target.value; saveS(); applySettings(); });
 $('speed').addEventListener('input', e => { S.speed = +e.target.value; saveS(); applySettings(); });
 $('width').addEventListener('input', e => { S.width = +e.target.value; saveS(); applySettings(); });
@@ -567,7 +750,12 @@ $('fs').onclick = () => { try{ const el = document.documentElement; (el.requestF
 let scripts = LS.get('tp3_cache', []);   // copia guardada por si no hay conexión
 const EMBEDDED = null;   // en la versión de un solo archivo aquí van los guiones
 const statusEl = $('status');
-function setStatus(t, cls){ statusEl.textContent = t; statusEl.className = cls || ''; }
+let lastStatus = null;
+function setStatus(m, cls){ lastStatus = [m, cls]; refreshStatus(); }
+function refreshStatus(){
+  if (!lastStatus) return; const [m, cls] = lastStatus;
+  statusEl.textContent = Array.isArray(m) ? t(m[0]) + (m[1] || '') : m; statusEl.className = cls || '';
+}
 
 function normalize(id, d){
   if (!d || !Array.isArray(d.videos)) return null;
@@ -580,13 +768,13 @@ function normalize(id, d){
 }
 let homeSig = '';
 function renderHome(){
-  const sig = JSON.stringify(scripts);
+  const sig = curLang() + JSON.stringify(scripts);
   if (sig === homeSig && $('list').children.length) return;
   homeSig = sig;
   const wrap = $('list'); wrap.innerHTML = '';
   if (!scripts.length){
     const e = document.createElement('div'); e.id = 'empty';
-    e.textContent = 'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.';
+    e.textContent = t('empty');
     wrap.appendChild(e); return;
   }
   const groups = {}; let k = 0;
@@ -597,9 +785,9 @@ function renderHome(){
       const n = s.videos.reduce((a,v) => a + v.lines.length, 0);
       const b = document.createElement('button'); b.className = 'card'; b.style.setProperty('--i', k++);
       const tx = document.createElement('div'); tx.className = 'txt';
-      const t = document.createElement('b'); t.textContent = s.title;
-      const m = document.createElement('span'); m.textContent = n + ' líneas · ' + s.videos.length + (s.videos.length === 1 ? ' video' : ' videos');
-      tx.append(t, m);
+      const tl = document.createElement('b'); tl.textContent = s.title;
+      const m = document.createElement('span'); m.textContent = n + ' ' + t('lines') + ' · ' + s.videos.length + ' ' + t(s.videos.length === 1 ? 'video1' : 'videoN');
+      tx.append(tl, m);
       const go = document.createElement('div'); go.className = 'go';
       go.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24"><path d="M7.5 4.5v15a.8.8 0 0 0 1.2.7l12-7.5a.8.8 0 0 0 0-1.4l-12-7.5a.8.8 0 0 0-1.2.7z" fill="currentColor"/></svg>';
       b.append(tx, go); b.onclick = () => { tap(8); openScript(s); }; wrap.appendChild(b);
@@ -624,30 +812,30 @@ async function loadJson(){
     if (!r.ok) throw new Error(r.status);
     const data = await r.json();
     fromJson(data);
-    if (r.headers.get('x-tp-cache')) setStatus('Sin conexión: copia guardada' + (data.updated ? ' del ' + data.updated : ''), 'warn');
-    else setStatus('Guiones al día ✓' + (data.updated ? ' · ' + data.updated : ''), 'ok');
+    if (r.headers.get('x-tp-cache')) setStatus(['offSaved', data.updated ? ' · ' + data.updated : ''], 'warn');
+    else setStatus(['upToDate', data.updated ? ' · ' + data.updated : ''], 'ok');
   }catch(e){
-    if (EMBEDDED){ fromJson(EMBEDDED); setStatus('Guiones incluidos en este archivo · ' + (EMBEDDED.updated || ''), 'ok'); }
-    else setStatus(scripts.length ? 'Sin conexión: mostrando la última copia guardada' : 'No se pudo cargar. Revisa tu internet.', 'warn');
+    if (EMBEDDED){ fromJson(EMBEDDED); setStatus(['embedded', ' · ' + (EMBEDDED.updated || '')], 'ok'); }
+    else setStatus([scripts.length ? 'offShowing' : 'failLoad'], 'warn');
   }
   jsonBusy = false;
 }
 (async function initData(){
   renderHome();
-  setStatus(scripts.length ? 'Actualizando… (mostrando copia guardada)' : 'Cargando guiones…', 'warn');
+  setStatus([scripts.length ? 'updating' : 'loading'], 'warn');
   // Versión dentro de Claude: base de datos. Versión instalada: scripts.json.
   let db = null;
   try{ db = window.claude && await window.claude.use('db'); }catch(e){ db = null; }
   if (db){
-    let timer = setTimeout(() => setStatus(scripts.length ? 'Sin conexión: mostrando la última copia guardada' : 'No se pudo conectar. Revisa tu internet.', 'warn'), 10000);
+    let timer = setTimeout(() => setStatus([scripts.length ? 'offShowing' : 'failLoad'], 'warn'), 10000);
     try{
       db.collection('scripts').onSnapshot(snap => {
-        if (!snap.metadata.fromCache){ clearTimeout(timer); setStatus('Guiones al día ✓', 'ok'); }
+        if (!snap.metadata.fromCache){ clearTimeout(timer); setStatus(['upToDate'], 'ok'); }
         applySnapshot(snap);
-      }, err => { clearTimeout(timer); setStatus('Sin conexión: mostrando la última copia guardada', 'warn'); });
-    }catch(e){ clearTimeout(timer); setStatus('Sin conexión: mostrando la última copia guardada', 'warn'); }
+      }, err => { clearTimeout(timer); setStatus(['offShowing'], 'warn'); });
+    }catch(e){ clearTimeout(timer); setStatus(['offShowing'], 'warn'); }
   } else {
-    if (EMBEDDED && location.protocol === 'file:'){ fromJson(EMBEDDED); setStatus('Guiones incluidos en este archivo · ' + (EMBEDDED.updated || ''), 'ok'); }
+    if (EMBEDDED && location.protocol === 'file:'){ fromJson(EMBEDDED); setStatus(['embedded', ' · ' + (EMBEDDED.updated || '')], 'ok'); }
     else loadJson();
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && $('home').classList.contains('active')) loadJson(); });
     window.addEventListener('online', loadJson);
@@ -662,7 +850,7 @@ $('installBtn').onclick = async () => { if (!deferredPrompt) return; deferredPro
 window.addEventListener('appinstalled', () => { $('installBtn').style.display = 'none'; $('install').style.display = 'none'; });
 if (!standalone && !window.claude){
   $('install').style.display = 'block';
-  $('install').textContent = 'Para instalarla: en Chrome, menú ⋮ → "Instalar app"; en iPhone (Safari), compartir → "Agregar a inicio".';
+  $('install').textContent = t('installHow');
 }
 if ('serviceWorker' in navigator && window.isSecureContext){
   const hadController = !!navigator.serviceWorker.controller;
@@ -703,16 +891,16 @@ function renderReader(reset){
         if (prev) parts.push('<div class="end"></div>');
         parts.push('<div class="rule"></div><div class="big"></div><div class="new"></div><div class="rule"></div>');
         d.innerHTML = parts.join('');
-        if (prev) d.querySelector('.end').textContent = 'Fin · ' + (prev.title || ('Video ' + e.vi));
+        if (prev) d.querySelector('.end').textContent = t('fin') + ' · ' + (prev.title || (t('video') + ' ' + e.vi));
         d.querySelector('.big').textContent = e.text;
-        d.querySelector('.new').textContent = prev ? 'Nuevo video · empieza aquí' : 'Empieza aquí';
+        d.querySelector('.new').textContent = prev ? t('newVideo') : t('startHere');
       } else { d.className = 'ln'; d.textContent = e.text; }
       content.appendChild(d);
     });
     { /* marca de fin del último video */
       const last = current.videos[current.videos.length - 1], d = document.createElement('div');
       d.className = 'vd endmark'; d.innerHTML = '<div class="rule"></div><div class="end"></div><div class="rule"></div>';
-      d.querySelector('.end').textContent = 'Fin · ' + (last.title || ('Video ' + current.videos.length));
+      d.querySelector('.end').textContent = t('fin') + ' · ' + (last.title || (t('video') + ' ' + current.videos.length));
       content.appendChild(d);
     }
     layoutGuide();
@@ -815,13 +1003,13 @@ function renderLine(){
   const isD = e.t === 'd';
   $('lineDivider').textContent = isD ? e.text : '';
   const le = $('lineEnd'), pv = (isD && e.vi > 0) ? current.videos[e.vi - 1] : null;
-  le.classList.toggle('on', !!pv); le.textContent = pv ? 'Fin · ' + (pv.title || ('Video ' + e.vi)) : '';
+  le.classList.toggle('on', !!pv); le.textContent = pv ? t('fin') + ' · ' + (pv.title || (t('video') + ' ' + e.vi)) : '';
   $('lineText').style.display = isD ? 'none' : 'block';
   $('lineText').textContent = isD ? '' : e.text;
   if (!isD){ const lt = $('lineText'); lt.classList.remove('in'); void lt.offsetWidth; lt.classList.add('in'); }
-  $('lineTap').textContent = isD ? 'Toca para empezar' : '';
+  $('lineTap').textContent = isD ? t('tapStart') : '';
   const nx = flat[lineIdx + 1];
-  $('lineNext').textContent = (!isD && nx && nx.t === 'l') ? 'Sigue: ' + nx.text : '';
+  $('lineNext').textContent = (!isD && nx && nx.t === 'l') ? t('follows') + ': ' + nx.text : '';
   $('title').textContent = isD ? current.title : (current.title + ' · ' + (e.vi + 1) + ' · ' + (e.li + 1) + '/' + e.n);
 }
 function lineAdvance(){ if (S.mode !== 'line') return; if (lineIdx < flat.length - 1){ lineIdx++; renderLine(); } }
@@ -853,10 +1041,10 @@ async function requestWake(){
   try{
     if (!navigator.wakeLock) throw new Error('n/a');
     wl = await navigator.wakeLock.request('screen');
-    $('wlNote').textContent = 'La pantalla se mantiene encendida mientras lees.';
+    $('wlNote').textContent = t('wlOn');
   }catch(e){
     wl = null;
-    $('wlNote').textContent = 'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.';
+    $('wlNote').textContent = t('wlOff');
   }
 }
 function releaseWake(){ try{ if (wl) wl.release(); }catch(e){} wl = null; }
@@ -864,29 +1052,43 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 /* ---------- paleta, tipografías, pestañas y modo transparente de la hoja ---------- */
 (function(){
-  const sw = $('segTheme');
-  Object.keys(THEMES).forEach(k => {
-    const t = THEMES[k], b = document.createElement('button'); b.dataset.v = k;
-    const i = document.createElement('i'); i.className = 'gem';
-    i.style.setProperty('--c', t.accent);
-    const id = 'g' + k;
-    i.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><defs>' +
-      '<linearGradient id="' + id + 'a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + t.hi + '"/><stop offset=".45" stop-color="' + t.accent + '"/><stop offset="1" stop-color="' + t.accent2 + '"/></linearGradient>' +
-      '<linearGradient id="' + id + 'r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="' + t.hi + '" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/></linearGradient></defs>' +
-      '<polygon points="12,4 36,4 46,24 36,44 12,44 2,24" fill="url(#' + id + 'a)"/>' +
-      '<polygon points="12,4 36,4 31,14 17,14" fill="#fff" fill-opacity=".5"/>' +
-      '<polygon points="36,4 46,24 37,24 31,14" fill="#fff" fill-opacity=".16"/>' +
-      '<polygon points="12,4 17,14 11,24 2,24" fill="#fff" fill-opacity=".28"/>' +
-      '<polygon points="2,24 11,24 17,34 12,44" fill="#000" fill-opacity=".16"/>' +
-      '<polygon points="11,24 37,24 31,34 17,34" fill="#000" fill-opacity=".08"/>' +
-      '<polygon points="37,24 46,24 36,44 31,34" fill="#000" fill-opacity=".34"/>' +
-      '<polygon points="17,34 31,34 36,44 12,44" fill="#000" fill-opacity=".28"/>' +
-      '<polygon points="17,14 31,14 37,24 31,34 17,34 11,24" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width=".8"/>' +
-      '<path d="M18 9 L27 9" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"/>' +
-      '<polygon points="12,4 36,4 46,24 36,44 12,44 2,24" fill="none" stroke="url(#' + id + 'r)" stroke-width="1.6" stroke-linejoin="round"/></svg>';
-    const s = document.createElement('span'); s.textContent = t.n;
-    b.append(i, s); sw.appendChild(b);
-  });
+  window.renderThemes = function(){
+    const sw = $('segTheme'), biz = S.ui === 'business', src = biz ? BTHEMES : THEMES;
+    themesFor = S.ui + '|' + curLang(); sw.innerHTML = '';
+    Object.keys(src).forEach(k => {
+      const t_ = src[k], b = document.createElement('button'); b.dataset.v = k;
+      const i = document.createElement('i');
+      if (biz){
+        i.className = 'sq'; i.style.background = 'linear-gradient(135deg,' + t_.bg + ' 50%,' + t_.accent + ' 50%)';
+      } else {
+        i.className = 'gem'; i.style.setProperty('--c', t_.accent);
+        const id = 'g' + k;
+        i.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><defs>' +
+          '<linearGradient id="' + id + 'a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + t_.hi + '"/><stop offset=".45" stop-color="' + t_.accent + '"/><stop offset="1" stop-color="' + t_.accent2 + '"/></linearGradient>' +
+          '<linearGradient id="' + id + 'r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="' + t_.hi + '" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/></linearGradient></defs>' +
+          '<polygon points="12,4 36,4 46,24 36,44 12,44 2,24" fill="url(#' + id + 'a)"/>' +
+          '<polygon points="12,4 36,4 31,14 17,14" fill="#fff" fill-opacity=".5"/>' +
+          '<polygon points="36,4 46,24 37,24 31,14" fill="#fff" fill-opacity=".16"/>' +
+          '<polygon points="12,4 17,14 11,24 2,24" fill="#fff" fill-opacity=".28"/>' +
+          '<polygon points="2,24 11,24 17,34 12,44" fill="#000" fill-opacity=".16"/>' +
+          '<polygon points="11,24 37,24 31,34 17,34" fill="#000" fill-opacity=".08"/>' +
+          '<polygon points="37,24 46,24 36,44 31,34" fill="#000" fill-opacity=".34"/>' +
+          '<polygon points="17,34 31,34 36,44 12,44" fill="#000" fill-opacity=".28"/>' +
+          '<polygon points="17,14 31,14 37,24 31,34 17,34 11,24" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width=".8"/>' +
+          '<path d="M18 9 L27 9" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"/>' +
+          '<polygon points="12,4 36,4 46,24 36,44 12,44 2,24" fill="none" stroke="url(#' + id + 'r)" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+      }
+      const sp = document.createElement('span'); sp.textContent = tn(k, t_.n);
+      b.append(i, sp); sw.appendChild(b);
+    });
+    const cur = biz ? S.btheme : S.theme;
+    sw.querySelectorAll('button').forEach(b => b.classList.toggle('sel', b.dataset.v === cur));
+  };
+  window.renderThemes();
+  /* idiomas */
+  { const lg = $('segLang');
+    LANGS.forEach(l => { const b = document.createElement('button'); b.dataset.v = l.k;
+      b.innerHTML = '<span class="fl">' + l.fl + '</span><span>' + l.n + '</span><span class="ck">✓</span>'; lg.appendChild(b); }); }
   const ch = $('segFont');
   Object.keys(FONTS).forEach(k => {
     const f = FONTS[k], b = document.createElement('button'); b.dataset.v = k;
@@ -969,8 +1171,8 @@ applySettings();
     showBar(text);
   }
   document.addEventListener('selectionchange', () => { clearTimeout(onSelChange._t); onSelChange._t = setTimeout(onSelChange, 120); });
-  $('pronEn').onclick = () => speak(lastText, 'en-US');
-  $('pronEs').onclick = () => speak(lastText, 'es-MX');
+  $('pronEn').onclick = () => speak(lastText, curLang() === 'en' ? 'en-GB' : 'en-US');
+  $('pronEs').onclick = () => speak(lastText, LANGS.find(l => l.k === curLang()).tts);
   $('pronClose').onclick = () => {
     try{ window.getSelection().removeAllRanges(); }catch(e){}
     try{ speechSynthesis.cancel(); }catch(e){}
