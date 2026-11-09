@@ -104,10 +104,10 @@ button:focus{outline:none}
 #viewport{flex:1;position:relative;overflow:hidden}
 #mirrorBox{position:absolute;inset:0}
 #mirrorBox.mirror{transform:scaleX(-1)}
-#scroller{position:absolute;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior:contain}
+#scroller{position:absolute;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior:contain;contain:layout paint;will-change:scroll-position}
 #scroller::-webkit-scrollbar{display:none}
 #content{width:var(--width);margin:0 auto;text-align:center;font-family:var(--font);font-weight:var(--wght);font-size:var(--size);line-height:var(--lh);
-  letter-spacing:var(--ls);text-wrap:balance;-webkit-user-select:text;user-select:text}
+  letter-spacing:var(--ls);text-wrap:balance;-webkit-user-select:text;user-select:text;transform:translateZ(0)}
 .ln{margin:0 0 .85em;transition:opacity .5s var(--ease),transform .5s var(--ease);transform-origin:center}
 .dim .ln{opacity:.2;transform:scale(.93)}
 .dim .ln.cur{opacity:1;transform:scale(1)}
@@ -173,7 +173,7 @@ body.sheetopen #ctrl{opacity:0;pointer-events:none}
   background:var(--glass2);border:1px solid var(--line)!important;color:var(--fg)}
 .play{flex:0 0 76px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:var(--mbg);color:var(--on);
   box-shadow:var(--edge),0 12px 30px -8px var(--accent)}
-.play.on{animation:glowPulse 2.4s ease-in-out infinite}
+.play.on{animation:glowPulse 2.4s ease-in-out infinite;will-change:box-shadow}
 @keyframes glowPulse{0%,100%{box-shadow:var(--edge),0 12px 30px -8px var(--accent)}
   50%{box-shadow:var(--edge),0 12px 46px -4px var(--accent)}}
 #spd{min-width:58px;text-align:center;font-size:10px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
@@ -251,12 +251,13 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
 .sws button{min-width:0;display:flex;flex-direction:column;align-items:center;gap:7px;padding:6px 0 5px;background:none;border:none;
   border-radius:14px;color:#9aa3b8;font-size:11.5px;font-weight:600;cursor:pointer;transition:color .25s}
 .sws button:active .gem{transform:scale(.88)}
-.sws .gem{position:relative;display:block;width:46px;height:46px;transition:transform .5s var(--spring);filter:drop-shadow(0 6px 8px var(--c))}
+.sws .gem{position:relative;display:block;width:46px;height:46px;transition:transform .5s var(--spring)}
 .sws .gem svg{display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 50%;backface-visibility:visible}
 .sws .gem::after{content:'';position:absolute;left:50%;top:38%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;pointer-events:none;opacity:0;
   background:radial-gradient(circle,#fff 0,var(--c) 22%,transparent 65%);mix-blend-mode:screen}
 .sws button.sel{color:#fff}
-.sws button.sel .gem{transform:scale(1.18);filter:drop-shadow(0 0 9px var(--c)) drop-shadow(0 6px 10px var(--c))}
+.sws button.sel .gem{transform:scale(1.18);filter:drop-shadow(0 0 9px var(--c))}
+.sws .gem.jump{filter:drop-shadow(0 6px 10px var(--c))}
 .sws button:not(.sel) .gem{opacity:.78}
 .sws .gem.jump svg{animation:gemSpin .95s cubic-bezier(.3,.7,.3,1) both}
 .sws .gem.jump::after{animation:gemGlow .95s ease-out both}
@@ -483,6 +484,14 @@ body:not(.biz){
 body:not(.biz) .play,body:not(.biz) #ctrlLine button.primary,body:not(.biz) #panel .done,body:not(.biz) .card .go,body:not(.biz) .seg .thumb,
 body:not(.biz) .chips button.sel,body:not(.biz) .langs button.sel,body:not(.biz) .vlist button.sel{text-shadow:0 1px 0 rgba(255,255,255,.28)}
 body:not(.biz) #bar .b,body:not(.biz) #bar #gear,body:not(.biz) .round,body:not(.biz) #ctrlLine button:not(.primary),body:not(.biz) #fs,body:not(.biz) .hgear{border-color:rgba(255,255,255,.28)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+
+/* modo lectura fluida: durante el scroll automático se evita el backdrop-filter (el efecto más
+   caro de repintar en cada fotograma) y se usa un fondo sólido equivalente */
+body.running #bar,body.running #ctrlScroll,body.running #ctrlLine{
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  background:color-mix(in srgb, var(--bg) 88%, transparent)!important}
+body.running .play.on{animation:none}
+body.running #viewport.metal .ln,body.running #viewport.metal #lineText{will-change:auto}
 </style>
 </head>
 <body>
@@ -640,7 +649,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.5';
+const APP_VERSION = '3.6';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -1199,7 +1208,7 @@ function tick(ts){
 }
 function setRun(on){
   if (on === running) return;
-  running = on; $('play').innerHTML = on ? ICON_PAUSE : ICON_PLAY; $('play').classList.toggle('on', on);
+  running = on; document.body.classList.toggle('running', on); $('play').innerHTML = on ? ICON_PAUSE : ICON_PLAY; $('play').classList.toggle('on', on);
   if (on){ vCur = 0; last = performance.now(); raf = requestAnimationFrame(tick); }
   else { cancelAnimationFrame(raf); updateCur(); }
 }
@@ -1247,7 +1256,7 @@ function updateCur(){
   if (found !== curEl){ if (curEl) curEl.classList.remove('cur'); curEl = found; if (curEl) curEl.classList.add('cur'); }
 }
 function scheduleCur(){ if (curRaf) return; curRaf = requestAnimationFrame(() => { curRaf = 0; updateCur(); }); }
-setInterval(updateCur, 400);
+setInterval(() => { if ($('reader').classList.contains('active')) updateCur(); }, 400);
 
 /* modo línea por línea */
 function renderLine(){
