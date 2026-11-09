@@ -409,12 +409,10 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.3';
+const APP_VERSION = '2.4';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
-  light:{n:'Platino', bg:'#eceff5', fg:'#0a0d16', muted:'#5d667a', hi:'#9aa5ff', accent:'#4f46e5', accent2:'#0891b2', metal:'#4a556f', soft:'rgba(79,70,229,.10)', on:'#ffffff',
-        glass:'rgba(255,255,255,.62)', glass2:'rgba(255,255,255,.92)', line:'rgba(10,13,22,.10)', glow1:'rgba(120,130,255,.26)', glow2:'rgba(6,182,212,.18)'},
   yellow:{n:'Oro', bg:'#000000', fg:'#ffe9bd', muted:'#a08a5e', hi:'#fff1c9', accent:'#f6c85f', accent2:'#b86f1f', metal:'#d7a24c', soft:'rgba(246,200,95,.11)', on:'#1a1000',
         glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba(255,217,138,.16)', glow1:'rgba(255,170,80,.15)', glow2:'rgba(255,217,138,.08)'},
   garnet:{n:'Guinda', bg:'#0c0308', fg:'#ffe8ef', muted:'#b58d99', hi:'#ff9fb6', accent:'#d3144a', accent2:'#6e0b28', metal:'#f09ab0', soft:'rgba(211,20,74,.15)', on:'#fff0f4',
@@ -424,6 +422,7 @@ const THEMES = {
 [['verde','Verde','#19e06a','#c9ffd9','#067a35','#020c06','#02150a'],
  ['azul','Azul','#3a74ff','#c3d6ff','#0b2fa8','#030612','#ffffff'],
  ['purpura','Púrpura','#a855ff','#e6cdff','#50119e','#07030f','#ffffff'],
+ ['rosa','Rosa','#ff4fa8','#ffc2e0','#9c1664','#0d0309','#ffffff'],
  ['rojo','Rojo','#ff2f43','#ffb8bf','#8a0716','#0d0306','#ffffff'],
  ['amarillo','Amarillo','#ffd21f','#fff5b8','#b57a00','#0a0800','#1a1200'],
  ['cian','Cian','#22e5ff','#c9f9ff','#0586a8','#020b0d','#02141a'],
@@ -448,6 +447,31 @@ const FONTS = {
 };
 const ICON_PLAY = '<svg viewBox="0 0 24 24" width="30" height="30"><path d="M8.2 5.2v13.6a.6.6 0 0 0 .9.5l10.6-6.8a.6.6 0 0 0 0-1L9.1 4.7a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>';
 const ICON_PAUSE = '<svg viewBox="0 0 24 24" width="30" height="30"><rect x="6" y="4.5" width="4.4" height="15" rx="1.4" fill="currentColor"/><rect x="13.6" y="4.5" width="4.4" height="15" rx="1.4" fill="currentColor"/></svg>';
+let AC = null;
+function gemSound(idx){
+  try{
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+    const t0 = AC.currentTime + .01, out = AC.createGain(); out.gain.value = .5; out.connect(AC.destination);
+    const base = 523.25 * Math.pow(2, [0,2,4,5,7,9,11,12,14,16,17,19][idx % 12] / 12);
+    /* salto: barrido ascendente rápido */
+    const o = AC.createOscillator(), g = AC.createGain(); o.type = 'sine';
+    o.frequency.setValueAtTime(base * .5, t0); o.frequency.exponentialRampToValueAtTime(base, t0 + .16);
+    g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(.35, t0 + .02); g.gain.exponentialRampToValueAtTime(.0001, t0 + .2);
+    o.connect(g); g.connect(out); o.start(t0); o.stop(t0 + .22);
+    /* brillo: campanita metálica con armónicos inarmónicos */
+    [[1,.30,.9],[2.76,.16,.6],[5.4,.09,.4],[1.5,.12,.7]].forEach(([m,v,d],i) => {
+      const c = AC.createOscillator(), h = AC.createGain(), st = t0 + .14 + i * .015;
+      c.type = 'sine'; c.frequency.value = base * 2 * m;
+      h.gain.setValueAtTime(.0001, st); h.gain.exponentialRampToValueAtTime(v, st + .01); h.gain.exponentialRampToValueAtTime(.0001, st + d);
+      c.connect(h); h.connect(out); c.start(st); c.stop(st + d + .05);
+    });
+    /* aterrizaje: clic suave */
+    const l = AC.createOscillator(), lg = AC.createGain(); l.type = 'triangle'; l.frequency.setValueAtTime(220, t0 + .8); l.frequency.exponentialRampToValueAtTime(90, t0 + .88);
+    lg.gain.setValueAtTime(.0001, t0 + .8); lg.gain.exponentialRampToValueAtTime(.22, t0 + .81); lg.gain.exponentialRampToValueAtTime(.0001, t0 + .9);
+    l.connect(lg); lg.connect(out); l.start(t0 + .8); l.stop(t0 + .95);
+  }catch(e){}
+}
 function tap(ms){ try{ if (navigator.vibrate) navigator.vibrate(ms || 8); }catch(e){} }
 function syncThumbs(){
   document.querySelectorAll('.seg').forEach(seg => {
@@ -476,6 +500,7 @@ function anchorSet(a){
 function applySettings(){
   const anchor = anchorGet();
   if (S.theme === 'emerald') S.theme = 'verde';
+  if (S.theme === 'light') S.theme = 'rosa';
   const r = document.documentElement.style, t = THEMES[S.theme] || THEMES.dark, f = FONTS[S.font] || FONTS.sys;
   r.setProperty('--bg', t.bg); r.setProperty('--fg', t.fg); r.setProperty('--muted', t.muted);
   r.setProperty('--hi', t.hi); r.setProperty('--metal', t.metal);
@@ -507,7 +532,7 @@ function bindSeg(seg, key, num){
   $(seg).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; tap(6);
     S[key] = num ? Number(b.dataset.v) : b.dataset.v; saveS();
-    if (key === 'theme'){ const g = b.querySelector('.gem'); if (g){ g.classList.remove('jump'); void g.offsetWidth; g.classList.add('jump'); tap([10,30,14]); g.onanimationend = ev => { if (ev.target.tagName.toLowerCase() === 'svg') g.classList.remove('jump'); }; } }
+    if (key === 'theme'){ const g = b.querySelector('.gem'); if (g){ g.classList.remove('jump'); void g.offsetWidth; g.classList.add('jump'); tap([10,30,14]); gemSound(Object.keys(THEMES).indexOf(b.dataset.v)); g.onanimationend = ev => { if (ev.target.tagName.toLowerCase() === 'svg') g.classList.remove('jump'); }; } }
     if (key === 'mode'){ setRun(false); applySettings(); if (current) renderReader(true); }
     else applySettings();
   });
