@@ -650,7 +650,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.9';
+const APP_VERSION = '3.10';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -938,11 +938,21 @@ function bindSeg(seg, key, num){
 bindSeg('segMode','mode'); bindSeg('segTheme','theme'); bindSeg('segCount','count',true);
 bindSeg('segGuide','guide',true); bindSeg('segMirror','mirror',true);
 bindSeg('segFont','font'); bindSeg('segUi','ui'); bindSeg('segLang','lang'); bindSeg('segFinish','finish');
-$('size').addEventListener('input', e => { S.size = +e.target.value; saveS(); applySettings(); });
-$('speed').addEventListener('input', e => { S.speed = +e.target.value; saveS(); applySettings(); });
-$('width').addEventListener('input', e => { S.width = +e.target.value; saveS(); applySettings(); });
-$('weight').addEventListener('input', e => { S.weight = +e.target.value; saveS(); applySettings(); });
-$('lh').addEventListener('input', e => { S.lh = (+e.target.value) / 100; saveS(); applySettings(); });
+/* "clic" mecánico al mover los deslizadores con el dedo: uno por cada paso, como un dial real */
+const lastTickVal = {};
+function rangeTick(id, val){
+  if (lastTickVal[id] === val) return;
+  const first = !(id in lastTickVal); lastTickVal[id] = val;
+  if (first) return;              /* no suena al abrir el panel, solo al mover */
+  tap(3);
+  if (!S.sound) return;
+  try{ blip(1500 + Math.random() * 260, 0, .024, .05, 'square'); }catch(e){}
+}
+$('size').addEventListener('input', e => { S.size = +e.target.value; rangeTick('size', S.size); saveS(); applySettings(); });
+$('speed').addEventListener('input', e => { S.speed = +e.target.value; rangeTick('speed', S.speed); saveS(); applySettings(); });
+$('width').addEventListener('input', e => { S.width = +e.target.value; rangeTick('width', S.width); saveS(); applySettings(); });
+$('weight').addEventListener('input', e => { S.weight = +e.target.value; rangeTick('weight', S.weight); saveS(); applySettings(); });
+$('lh').addEventListener('input', e => { S.lh = (+e.target.value) / 100; rangeTick('lh', e.target.value); saveS(); applySettings(); });
 
 /* ---------- más productos (añade aquí los siguientes: se acomodan de 3 en 3) ---------- */
 const PRODUCTS = [
