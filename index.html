@@ -236,15 +236,29 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
 .seg button.sel{color:var(--on);font-weight:700}
 .seg .thumb{position:absolute;top:3px;bottom:3px;left:0;width:0;border-radius:12px;background:var(--mbg);
   box-shadow:var(--edge),0 6px 18px -6px var(--accent);transition:transform .5s var(--ease),width .5s var(--ease)}
-.sws{display:flex;gap:4px;justify-content:space-between}
-.sws button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0 6px;background:none;border:none;
-  border-radius:14px;color:#9aa3b8;font-size:11.5px;font-weight:600;cursor:pointer;transition:transform .35s var(--ease),color .25s}
-.sws button:active{transform:scale(.92)}
-.sws i{display:block;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.14);
-  box-shadow:inset 0 3px 4px rgba(255,255,255,.55),inset 0 -6px 9px rgba(0,0,0,.38),0 10px 20px -8px var(--c);
-  transition:transform .5s var(--spring),border-color .25s}
+.sws{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 2px;padding-top:14px}
+.sws button{min-width:0;display:flex;flex-direction:column;align-items:center;gap:7px;padding:6px 0 5px;background:none;border:none;
+  border-radius:14px;color:#9aa3b8;font-size:11.5px;font-weight:600;cursor:pointer;transition:color .25s}
+.sws button:active .gem{transform:scale(.88)}
+.sws .gem{position:relative;display:block;width:46px;height:46px;transition:transform .5s var(--spring);filter:drop-shadow(0 6px 8px var(--c))}
+.sws .gem svg{display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 50%;backface-visibility:visible}
+.sws .gem::after{content:'';position:absolute;left:50%;top:38%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,#fff 0,var(--c) 22%,transparent 65%);mix-blend-mode:screen}
 .sws button.sel{color:#fff}
-.sws button.sel i{transform:scale(1.14);border-color:#fff}
+.sws button.sel .gem{transform:scale(1.18);filter:drop-shadow(0 0 9px var(--c)) drop-shadow(0 6px 10px var(--c))}
+.sws button:not(.sel) .gem{opacity:.78}
+.sws .gem.jump svg{animation:gemSpin .95s cubic-bezier(.3,.7,.3,1) both}
+.sws .gem.jump::after{animation:gemGlow .95s ease-out both}
+@keyframes gemSpin{
+  0%{transform:perspective(240px) translateY(0) rotateY(0) scale(1);filter:brightness(1)}
+  12%{transform:perspective(240px) translateY(3px) rotateY(0) scale(1.04,.94);filter:brightness(1.1)}
+  38%{transform:perspective(240px) translateY(-17px) rotateY(150deg) scale(1.14);filter:brightness(1.9) saturate(1.3)}
+  62%{transform:perspective(240px) translateY(-14px) rotateY(270deg) scale(1.14);filter:brightness(1.7) saturate(1.25)}
+  82%{transform:perspective(240px) translateY(0) rotateY(360deg) scale(1.06,.94);filter:brightness(1.3)}
+  92%{transform:perspective(240px) translateY(-4px) rotateY(360deg) scale(1);filter:brightness(1.15)}
+  100%{transform:perspective(240px) translateY(0) rotateY(360deg) scale(1);filter:brightness(1)}}
+@keyframes gemGlow{0%{opacity:0;transform:scale(.4)}35%{opacity:.95;transform:scale(1.15)}70%{opacity:.55;transform:scale(1.35)}100%{opacity:0;transform:scale(1.6)}}
+@media (prefers-reduced-motion:reduce){.sws .gem.jump svg,.sws .gem.jump::after{animation:none}}
 .chips{display:flex;gap:8px;overflow-x:auto;margin:0 -18px;padding:2px 18px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .chips::-webkit-scrollbar{display:none}
 .chips button{flex:none;min-width:96px;height:62px;padding:0 14px;border-radius:16px;border:1px solid rgba(255,255,255,.1);
@@ -395,7 +409,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.2';
+const APP_VERSION = '2.3';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -403,11 +417,23 @@ const THEMES = {
         glass:'rgba(255,255,255,.62)', glass2:'rgba(255,255,255,.92)', line:'rgba(10,13,22,.10)', glow1:'rgba(120,130,255,.26)', glow2:'rgba(6,182,212,.18)'},
   yellow:{n:'Oro', bg:'#000000', fg:'#ffe9bd', muted:'#a08a5e', hi:'#fff1c9', accent:'#f6c85f', accent2:'#b86f1f', metal:'#d7a24c', soft:'rgba(246,200,95,.11)', on:'#1a1000',
         glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba(255,217,138,.16)', glow1:'rgba(255,170,80,.15)', glow2:'rgba(255,217,138,.08)'},
-  emerald:{n:'Esmeralda', bg:'#020b08', fg:'#e6fff3', muted:'#7ea592', hi:'#b9ffe2', accent:'#1fd38f', accent2:'#05804f', metal:'#7fd9b2', soft:'rgba(31,211,143,.12)', on:'#02150d',
-        glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba(150,255,210,.15)', glow1:'rgba(16,185,129,.22)', glow2:'rgba(110,255,200,.10)'},
   garnet:{n:'Guinda', bg:'#0c0308', fg:'#ffe8ef', muted:'#b58d99', hi:'#ff9fb6', accent:'#d3144a', accent2:'#6e0b28', metal:'#f09ab0', soft:'rgba(211,20,74,.15)', on:'#fff0f4',
         glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba(255,150,175,.17)', glow1:'rgba(214,20,74,.24)', glow2:'rgba(255,120,150,.10)'}
 };
+/* Esmeraldas del Caos: [clave, nombre, acento, brillo, sombra, fondo, texto sobre acento] */
+[['verde','Verde','#19e06a','#c9ffd9','#067a35','#020c06','#02150a'],
+ ['azul','Azul','#3a74ff','#c3d6ff','#0b2fa8','#030612','#ffffff'],
+ ['purpura','Púrpura','#a855ff','#e6cdff','#50119e','#07030f','#ffffff'],
+ ['rojo','Rojo','#ff2f43','#ffb8bf','#8a0716','#0d0306','#ffffff'],
+ ['amarillo','Amarillo','#ffd21f','#fff5b8','#b57a00','#0a0800','#1a1200'],
+ ['cian','Cian','#22e5ff','#c9f9ff','#0586a8','#020b0d','#02141a'],
+ ['blanco','Blanco','#eef2f8','#ffffff','#9aa6ba','#07080b','#0a0d14'],
+ ['gris','Gris','#9aa4b6','#e6ebf3','#4a5365','#060708','#0a0d14']
+].forEach(([k,n,ac,hi,a2,bg,on]) => {
+  const c = ac.slice(1).match(/../g).map(h => parseInt(h,16)).join(',');
+  THEMES[k] = {n, gem:1, bg, fg:'#f4f7fb', muted:'#8d96a8', hi, accent:ac, accent2:a2, metal:hi, soft:'rgba('+c+',.13)', on,
+    glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba('+c+',.20)', glow1:'rgba('+c+',.22)', glow2:'rgba('+c+',.10)'};
+});
 const FONTS = {
   sys:{n:'Sistema', st:'-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",sans-serif', ls:'-.02em'},
   inter:{n:'Inter', st:"'TP Inter',sans-serif", ls:'-.02em'},
@@ -449,6 +475,7 @@ function anchorSet(a){
 }
 function applySettings(){
   const anchor = anchorGet();
+  if (S.theme === 'emerald') S.theme = 'verde';
   const r = document.documentElement.style, t = THEMES[S.theme] || THEMES.dark, f = FONTS[S.font] || FONTS.sys;
   r.setProperty('--bg', t.bg); r.setProperty('--fg', t.fg); r.setProperty('--muted', t.muted);
   r.setProperty('--hi', t.hi); r.setProperty('--metal', t.metal);
@@ -480,6 +507,7 @@ function bindSeg(seg, key, num){
   $(seg).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; tap(6);
     S[key] = num ? Number(b.dataset.v) : b.dataset.v; saveS();
+    if (key === 'theme'){ const g = b.querySelector('.gem'); if (g){ g.classList.remove('jump'); void g.offsetWidth; g.classList.add('jump'); tap([10,30,14]); g.onanimationend = ev => { if (ev.target.tagName.toLowerCase() === 'svg') g.classList.remove('jump'); }; } }
     if (key === 'mode'){ setRun(false); applySettings(); if (current) renderReader(true); }
     else applySettings();
   });
@@ -813,9 +841,23 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
   const sw = $('segTheme');
   Object.keys(THEMES).forEach(k => {
     const t = THEMES[k], b = document.createElement('button'); b.dataset.v = k;
-    const i = document.createElement('i');
-    i.style.background = 'linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 50%,rgba(0,0,0,.2)),linear-gradient(140deg,' + t.hi + ' 0%,' + t.accent + ' 48%,' + t.accent2 + ' 100%)';
+    const i = document.createElement('i'); i.className = 'gem';
     i.style.setProperty('--c', t.accent);
+    const id = 'g' + k;
+    i.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><defs>' +
+      '<linearGradient id="' + id + 'a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + t.hi + '"/><stop offset=".45" stop-color="' + t.accent + '"/><stop offset="1" stop-color="' + t.accent2 + '"/></linearGradient>' +
+      '<linearGradient id="' + id + 'r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="' + t.hi + '" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/></linearGradient></defs>' +
+      '<polygon points="12,4 36,4 46,24 36,44 12,44 2,24" fill="url(#' + id + 'a)"/>' +
+      '<polygon points="12,4 36,4 31,14 17,14" fill="#fff" fill-opacity=".5"/>' +
+      '<polygon points="36,4 46,24 37,24 31,14" fill="#fff" fill-opacity=".16"/>' +
+      '<polygon points="12,4 17,14 11,24 2,24" fill="#fff" fill-opacity=".28"/>' +
+      '<polygon points="2,24 11,24 17,34 12,44" fill="#000" fill-opacity=".16"/>' +
+      '<polygon points="11,24 37,24 31,34 17,34" fill="#000" fill-opacity=".08"/>' +
+      '<polygon points="37,24 46,24 36,44 31,34" fill="#000" fill-opacity=".34"/>' +
+      '<polygon points="17,34 31,34 36,44 12,44" fill="#000" fill-opacity=".28"/>' +
+      '<polygon points="17,14 31,14 37,24 31,34 17,34 11,24" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width=".8"/>' +
+      '<path d="M18 9 L27 9" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"/>' +
+      '<polygon points="12,4 36,4 46,24 36,44 12,44 2,24" fill="none" stroke="url(#' + id + 'r)" stroke-width="1.6" stroke-linejoin="round"/></svg>';
     const s = document.createElement('span'); s.textContent = t.n;
     b.append(i, s); sw.appendChild(b);
   });
