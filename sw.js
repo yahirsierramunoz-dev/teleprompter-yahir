@@ -1,8 +1,8 @@
 // Teleprompter Yahir · service worker
-// App (index, iconos): guardada para abrir sin internet y se actualiza sola en segundo plano.
+// App (index, iconos): con internet siempre baja la versión más nueva; sin internet abre la copia guardada.
 // scripts.json: siempre se intenta bajar fresco; si no hay internet, usa la última copia.
-const V = 'tp-v1';
-const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png'];
+const V = 'tp-v2';
+const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-512-maskable.png'];
 const JSON_KEY = new Request('scripts.json');
 
 self.addEventListener('install', e => {
@@ -37,7 +37,13 @@ self.addEventListener('fetch', e => {
   e.respondWith((async () => {
     const cache = await caches.open(V);
     const hit = await cache.match(req, {ignoreSearch: true});
-    const net = fetch(req).then(r => { if (r.ok) cache.put(req, r.clone()); return r; }).catch(() => null);
+    const isShell = req.mode === 'navigate' || /\.(html|webmanifest|js)$/.test(url.pathname) || url.pathname.endsWith('/');
+    const net = fetch(req, isShell ? {cache: 'no-cache'} : undefined).then(r => { if (r.ok) cache.put(req, r.clone()); return r; }).catch(() => null);
+    if (isShell){
+      /* red primero (máx. 3 s) para que los cambios de diseño lleguen enseguida; si falla, copia guardada */
+      const fresh = await Promise.race([net, new Promise(res => setTimeout(() => res(null), 3000))]);
+      return fresh || hit || (await net) || new Response('Sin conexión', {status: 503});
+    }
     return hit || (await net) || new Response('Sin conexión', {status: 503});
   })());
 });
