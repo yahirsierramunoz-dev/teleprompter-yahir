@@ -288,6 +288,49 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
 .credit.in b{font-size:22px}
 @keyframes goldSheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 body.biz .credit b{animation:none;filter:none}
+/* ===== ORVEX: botones estilo iPhone (iOS) ===== */
+body:not(.biz) #bar .b{background:transparent;border-color:transparent;color:var(--accent);font-weight:500;padding:0 10px 0 4px;height:40px;border-radius:12px}
+body:not(.biz) #bar #gear{width:40px;padding:0;background:rgba(120,120,128,.24);color:var(--fg);border-radius:50%}
+body:not(.biz) #bar .b:active{opacity:.45;transform:none;background:transparent}
+body:not(.biz) #bar #gear:active{background:rgba(120,120,128,.4)}
+body:not(.biz) .round{background:rgba(120,120,128,.26);border:none!important;color:var(--fg)}
+body:not(.biz) .round:active{background:rgba(120,120,128,.46)}
+body:not(.biz) .play{background:var(--accent);box-shadow:none;color:var(--on)}
+body:not(.biz) .play.on{animation:none}
+body:not(.biz) #ctrlLine button{border-radius:14px;background:rgba(120,120,128,.26);border:none;color:var(--fg);height:54px;font-weight:600}
+body:not(.biz) #ctrlLine button.primary{background:var(--accent);color:var(--on);box-shadow:none}
+body:not(.biz) #ctrl button:active{opacity:.6;transform:scale(.97)}
+body:not(.biz) #panel .done{border-radius:14px;background:var(--accent);box-shadow:none;height:50px;padding:0}
+body:not(.biz) #panel .done:active{opacity:.6;transform:scale(.98)}
+body:not(.biz) #fs{border-radius:14px;border:none;background:var(--soft);color:var(--accent);padding:14px}
+body:not(.biz) #fs:active{opacity:.6}
+body:not(.biz) .card .go{background:var(--accent);box-shadow:none}
+body:not(.biz) #installBtn .go{background:var(--accent)}
+body:not(.biz) .pronBtn{}
+body:not(.biz) #pronBar button{background:var(--accent);box-shadow:none;border-radius:12px}
+body:not(.biz) #pronBar button.alt{background:rgba(120,120,128,.4)}
+body:not(.biz) .seg{background:rgba(118,118,128,.24);border:none;border-radius:11px;padding:2px}
+body:not(.biz) .seg button{border-radius:9px;color:#d8dbe6;font-weight:500}
+body:not(.biz) .seg button.sel{color:#fff;font-weight:600}
+body:not(.biz) .seg .thumb{top:2px;bottom:2px;border-radius:9px;background:#636366;box-shadow:0 3px 8px rgba(0,0,0,.28),0 1px 1px rgba(0,0,0,.3)}
+body:not(.biz) .chips button{border-radius:14px;border:none;background:rgba(118,118,128,.24)}
+body:not(.biz) .chips button.sel{background:var(--accent);box-shadow:none}
+body:not(.biz) .langs button{border-radius:12px;border:none;background:rgba(118,118,128,.2)}
+body:not(.biz) .langs button.sel{background:var(--accent);box-shadow:none}
+body:not(.biz) .vlist button{border-radius:12px;border:none;background:rgba(118,118,128,.2)}
+body:not(.biz) .vlist button.sel{background:var(--accent);box-shadow:none}
+/* interruptor iOS (Sí/No) */
+.swrow{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.swrow label{flex:1;margin:0!important}
+.ios-sw{flex:none;position:relative;width:51px;height:31px;border-radius:16px;border:none;padding:0;cursor:pointer;background:rgba(120,120,128,.36);transition:background .3s var(--ease)}
+.ios-sw::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.3),0 1px 1px rgba(0,0,0,.2);transition:transform .35s var(--spring)}
+.ios-sw.on{background:#34c759}
+.ios-sw.on::after{transform:translateX(20px)}
+.ios-sw:active::after{width:32px}
+.ios-sw.on:active::after{transform:translateX(15px)}
+body:not(.biz) .swrow + .seg,body:not(.biz) .swrow > .seg{display:none}
+body.biz .ios-sw{display:none}
+body.biz .swrow > .seg{display:flex}
 /* lista de videos */
 .vlist{display:flex;flex-direction:column;gap:7px}
 .vlist button{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);
@@ -518,7 +561,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.8';
+const APP_VERSION = '2.9';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -744,9 +787,21 @@ function applySettings(){
   $('ctrlScroll').style.display = S.mode === 'scroll' ? 'flex' : 'none';
   $('ctrlLine').style.display = S.mode === 'line' ? 'flex' : 'none';
   $('ver').textContent = 'Teleprompter Yahir · ' + t('ver') + ' ' + APP_VERSION;
-  translateStatic();
+  translateStatic(); syncSwitches();
   layoutGuide(); syncThumbs(); anchorSet(anchor);
 }
+function buildSwitches(){
+  [['segGuide','guide'],['segMirror','mirror']].forEach(([id,key]) => {
+    const seg = $(id), lab = seg.previousElementSibling; if (!lab || seg.parentNode.classList.contains('swrow')) return;
+    const row = document.createElement('div'); row.className = 'swrow';
+    seg.parentNode.insertBefore(row, lab); row.append(lab, seg);
+    const sw = document.createElement('button'); sw.className = 'ios-sw'; sw.id = 'sw_' + key; sw.setAttribute('role','switch');
+    sw.onclick = () => { tap(8); S[key] = S[key] ? 0 : 1; saveS(); applySettings(); };
+    row.insertBefore(sw, seg);
+  });
+}
+buildSwitches();
+function syncSwitches(){ ['guide','mirror'].forEach(k => { const e = $('sw_' + k); if (e){ e.classList.toggle('on', !!S[k]); e.setAttribute('aria-checked', !!S[k]); } }); }
 function bindSeg(seg, key, num){
   $(seg).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; tap(6);
