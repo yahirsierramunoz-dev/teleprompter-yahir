@@ -462,6 +462,20 @@ body:not(.biz) .seg .thumb{background:var(--lg-tint);background-color:transparen
 body:not(.biz) .chips button:not(.sel),body:not(.biz) .langs button:not(.sel),body:not(.biz) .vlist button:not(.sel){background:linear-gradient(150deg,color-mix(in srgb,var(--hi) 22%,transparent),color-mix(in srgb,var(--accent) 12%,transparent) 55%,color-mix(in srgb,var(--accent2) 26%,transparent))}
 body.biz .hgear{border-radius:10px;background:transparent}
 body.biz #sw_sound{display:block}
+
+/* acabado metálico facetado (como las esmeraldas): brillo especular, horizonte cromado y bisel */
+body:not(.biz){
+  --lg-tint:linear-gradient(115deg,transparent 36%,rgba(255,255,255,.42) 45%,rgba(255,255,255,.1) 55%,transparent 64%),
+    linear-gradient(180deg,rgba(255,255,255,.62) 0%,rgba(255,255,255,.16) 47%,rgba(255,255,255,0) 50%,rgba(0,0,0,.16) 100%),
+    linear-gradient(160deg,var(--hi) 0%,var(--accent) 34%,var(--accent2) 66%,color-mix(in srgb,var(--accent) 78%,var(--hi)) 100%);
+  --lg-bg:linear-gradient(115deg,transparent 36%,rgba(255,255,255,.3) 45%,rgba(255,255,255,.06) 55%,transparent 64%),
+    linear-gradient(180deg,rgba(255,255,255,.38) 0%,rgba(255,255,255,.08) 47%,rgba(255,255,255,0) 50%,rgba(0,0,0,.14) 100%),
+    linear-gradient(160deg,color-mix(in srgb,var(--hi) 72%,transparent) 0%,color-mix(in srgb,var(--accent) 46%,transparent) 34%,color-mix(in srgb,var(--accent2) 68%,transparent) 66%,color-mix(in srgb,var(--accent) 52%,transparent) 100%);
+  --lg-tedge:inset 0 1.5px 0 rgba(255,255,255,.9),inset 0 -2.5px 3px rgba(0,0,0,.32),inset 1px 0 1px rgba(255,255,255,.35),inset -1px 0 1px rgba(0,0,0,.18),0 10px 22px -8px var(--accent);
+  --lg-edge:inset 0 1.5px 0 rgba(255,255,255,.85),inset 0 -2.5px 3px rgba(0,0,0,.34),inset 1px 0 1px rgba(255,255,255,.3),inset -1px 0 1px rgba(0,0,0,.16),0 10px 20px -8px color-mix(in srgb,var(--accent) 70%,#000)}
+body:not(.biz) .play,body:not(.biz) #ctrlLine button.primary,body:not(.biz) #panel .done,body:not(.biz) .card .go,body:not(.biz) .seg .thumb,
+body:not(.biz) .chips button.sel,body:not(.biz) .langs button.sel,body:not(.biz) .vlist button.sel{text-shadow:0 1px 0 rgba(255,255,255,.28)}
+body:not(.biz) #bar .b,body:not(.biz) #bar #gear,body:not(.biz) .round,body:not(.biz) #ctrlLine button:not(.primary),body:not(.biz) #fs,body:not(.biz) .hgear{border-color:rgba(255,255,255,.28)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
@@ -620,7 +634,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.2';
+const APP_VERSION = '3.3';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
