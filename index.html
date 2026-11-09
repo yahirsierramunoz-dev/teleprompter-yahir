@@ -650,17 +650,16 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.8';
+const APP_VERSION = '3.9';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
-  yellow:{n:'Oro', bg:'#000000', fg:'#ffe9bd', muted:'#a08a5e', hi:'#fff1c9', accent:'#f6c85f', accent2:'#b86f1f', metal:'#d7a24c', soft:'rgba(246,200,95,.11)', on:'#1a1000',
-        glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba(255,217,138,.16)', glow1:'rgba(255,170,80,.15)', glow2:'rgba(255,217,138,.08)'},
   garnet:{n:'Guinda', bg:'#0c0308', fg:'#ffe8ef', muted:'#b58d99', hi:'#ff9fb6', accent:'#d3144a', accent2:'#6e0b28', metal:'#f09ab0', soft:'rgba(211,20,74,.15)', on:'#fff0f4',
         glass:'rgba(255,255,255,.05)', glass2:'rgba(255,255,255,.085)', line:'rgba(255,150,175,.17)', glow1:'rgba(214,20,74,.24)', glow2:'rgba(255,120,150,.10)'}
 };
 /* Esmeraldas del Caos: [clave, nombre, acento, brillo, sombra, fondo, texto sobre acento] */
-[['verde','Verde','#19e06a','#c9ffd9','#067a35','#020c06','#02150a'],
+[['dorado','Dorado','#d4a43c','#fff1c2','#7a5212','#0c0801','#1a1200'],
+ ['verde','Verde','#19e06a','#c9ffd9','#067a35','#020c06','#02150a'],
  ['azul','Azul','#3a74ff','#c3d6ff','#0b2fa8','#030612','#ffffff'],
  ['morado','Morado','#8a2be2','#dcb8ff','#38087a','#06020d','#ffffff'],
  ['rosa','Rosa','#ff4fa8','#ffc2e0','#9c1664','#0d0309','#ffffff'],
@@ -719,7 +718,7 @@ const I18N = {
   wlOn:'La pantalla se mantiene encendida mientras lees.',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.',ver:'versión',
   empty:'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.',lines:'líneas',video1:'video',videoN:'videos',offSaved:'Sin conexión: copia guardada',upToDate:'Guiones al día ✓',embedded:'Guiones incluidos en este archivo',offShowing:'Sin conexión: mostrando la última copia guardada',failLoad:'No se pudo cargar. Revisa tu internet.',updating:'Actualizando… (mostrando copia guardada)',loading:'Cargando guiones…',
   installHow:'Para instalarla: en Chrome, menú ⋮ → "Instalar app"; en iPhone (Safari), compartir → "Agregar a inicio".',fin:'Fin',newVideo:'Nuevo video · empieza aquí',startHere:'Empieza aquí',tapStart:'Toca para empezar',follows:'Sigue',video:'Video',sys:'Sistema',
-  th_dark:'Obsidiana',th_yellow:'Oro',th_garnet:'Guinda',th_verde:'Verde',th_azul:'Azul',th_morado:'Morado',th_rosa:'Rosa',th_rojo:'Rojo',th_amarillo:'Amarillo',th_naranja:'Naranja',th_cafe:'Café',th_blanco:'Blanco',th_gris:'Gris',
+  th_dark:'Obsidiana',th_dorado:'Dorado',th_garnet:'Guinda',th_verde:'Verde',th_azul:'Azul',th_morado:'Morado',th_rosa:'Rosa',th_rojo:'Rojo',th_amarillo:'Amarillo',th_naranja:'Naranja',th_cafe:'Café',th_blanco:'Blanco',th_gris:'Gris',
   th_grafito:'Grafito',th_marfil:'Marfil',th_marino:'Azul marino',th_pizarra:'Pizarra',th_bosque:'Verde bosque',th_burdeos:'Burdeos'},
  'en':{html:'en',sub:'Your scripts, ready to record',installT:'Install as app',installS:'Opens on its own, full screen and offline',back:'Back',settings:'Settings',slower:'Slower',faster:'Faster',playpause:'Play or pause',speed:'speed',next:'Next',
   tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',credit:'Developed by',sounds:'Sounds',more:'More products',nexaTag:'AI-powered video',tab_jump:'Videos',jumpHint:'Tap a video to jump straight to it.',here:'You are here',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
@@ -728,7 +727,7 @@ const I18N = {
   wlOn:'The screen stays on while you read.',wlOff:'This browser can\'t keep the screen on: in your phone settings set "Screen timeout" to the maximum before recording.',ver:'version',
   empty:'No scripts loaded yet. Ask Claude to load the next one.',lines:'lines',video1:'video',videoN:'videos',offSaved:'Offline: saved copy',upToDate:'Scripts up to date ✓',embedded:'Scripts included in this file',offShowing:'Offline: showing the last saved copy',failLoad:'Couldn\'t load. Check your internet.',updating:'Updating… (showing saved copy)',loading:'Loading scripts…',
   installHow:'To install: in Chrome, menu ⋮ → "Install app"; on iPhone (Safari), Share → "Add to Home Screen".',fin:'End',newVideo:'New video · starts here',startHere:'Starts here',tapStart:'Tap to start',follows:'Next',video:'Video',sys:'System',
-  th_dark:'Obsidian',th_yellow:'Gold',th_garnet:'Garnet',th_verde:'Green',th_azul:'Blue',th_morado:'Purple',th_rosa:'Pink',th_rojo:'Red',th_amarillo:'Yellow',th_naranja:'Orange',th_cafe:'Brown',th_blanco:'White',th_gris:'Gray',
+  th_dark:'Obsidian',th_dorado:'Gold',th_garnet:'Garnet',th_verde:'Green',th_azul:'Blue',th_morado:'Purple',th_rosa:'Pink',th_rojo:'Red',th_amarillo:'Yellow',th_naranja:'Orange',th_cafe:'Brown',th_blanco:'White',th_gris:'Gray',
   th_grafito:'Graphite',th_marfil:'Ivory',th_marino:'Navy',th_pizarra:'Slate',th_bosque:'Forest',th_burdeos:'Burgundy'},
  'pt-PT':{html:'pt-PT',sub:'Os teus guiões, prontos para gravar',installT:'Instalar como aplicação',installS:'Abre sozinha, em ecrã inteiro e sem internet',back:'Voltar',settings:'Definições',slower:'Mais lento',faster:'Mais rápido',playpause:'Reproduzir ou pausar',speed:'velocidade',next:'Seguinte',
   tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',credit:'Desenvolvida por',sounds:'Sons',more:'Mais produtos',nexaTag:'Vídeos com IA',tab_jump:'Vídeos',jumpHint:'Toca num vídeo para ir diretamente para ele.',here:'Estás aqui',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
@@ -737,7 +736,7 @@ const I18N = {
   wlOn:'O ecrã mantém-se ligado enquanto lês.',wlOff:'Este navegador não permite manter o ecrã ligado: nas definições do telemóvel, põe o "Tempo de ecrã" no máximo antes de gravar.',ver:'versão',
   empty:'Ainda não há guiões carregados. Pede ao Claude que carregue o seguinte.',lines:'linhas',video1:'vídeo',videoN:'vídeos',offSaved:'Sem ligação: cópia guardada',upToDate:'Guiões atualizados ✓',embedded:'Guiões incluídos neste ficheiro',offShowing:'Sem ligação: a mostrar a última cópia guardada',failLoad:'Não foi possível carregar. Verifica a tua internet.',updating:'A atualizar… (a mostrar cópia guardada)',loading:'A carregar guiões…',
   installHow:'Para instalar: no Chrome, menu ⋮ → "Instalar aplicação"; no iPhone (Safari), partilhar → "Adicionar ao ecrã principal".',fin:'Fim',newVideo:'Novo vídeo · começa aqui',startHere:'Começa aqui',tapStart:'Toca para começar',follows:'Segue',video:'Vídeo',sys:'Sistema',
-  th_dark:'Obsidiana',th_yellow:'Ouro',th_garnet:'Granada',th_verde:'Verde',th_azul:'Azul',th_morado:'Roxo',th_rosa:'Rosa',th_rojo:'Vermelho',th_amarillo:'Amarelo',th_naranja:'Laranja',th_cafe:'Castanho',th_blanco:'Branco',th_gris:'Cinzento',
+  th_dark:'Obsidiana',th_dorado:'Ouro',th_garnet:'Granada',th_verde:'Verde',th_azul:'Azul',th_morado:'Roxo',th_rosa:'Rosa',th_rojo:'Vermelho',th_amarillo:'Amarelo',th_naranja:'Laranja',th_cafe:'Castanho',th_blanco:'Branco',th_gris:'Cinzento',
   th_grafito:'Grafite',th_marfil:'Marfim',th_marino:'Azul-marinho',th_pizarra:'Ardósia',th_bosque:'Verde-floresta',th_burdeos:'Bordéus'},
  'es-ES':{html:'es-ES',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del móvil pon "Tiempo de pantalla" en el máximo antes de grabar.',
   installS:'Se abre sola, a pantalla completa y sin conexión',mirror:'Espejo (para el cristal del teleprompter)',
@@ -752,7 +751,7 @@ const I18N = {
   wlOn:'L\'écran reste allumé pendant la lecture.',wlOff:'Ce navigateur ne peut pas garder l\'écran allumé : dans les réglages du téléphone, mettez « Mise en veille » au maximum avant d\'enregistrer.',ver:'version',
   empty:'Aucun script chargé pour le moment. Demandez à Claude de charger le suivant.',lines:'lignes',video1:'vidéo',videoN:'vidéos',offSaved:'Hors connexion : copie enregistrée',upToDate:'Scripts à jour ✓',embedded:'Scripts inclus dans ce fichier',offShowing:'Hors connexion : dernière copie enregistrée affichée',failLoad:'Chargement impossible. Vérifiez votre connexion.',updating:'Mise à jour… (copie enregistrée affichée)',loading:'Chargement des scripts…',
   installHow:'Pour l\'installer : dans Chrome, menu ⋮ → « Installer l\'application » ; sur iPhone (Safari), Partager → « Sur l\'écran d\'accueil ».',fin:'Fin',newVideo:'Nouvelle vidéo · commence ici',startHere:'Commence ici',tapStart:'Touchez pour commencer',follows:'Suite',video:'Vidéo',sys:'Système',
-  th_dark:'Obsidienne',th_yellow:'Or',th_garnet:'Grenat',th_verde:'Vert',th_azul:'Bleu',th_morado:'Violet',th_rosa:'Rose',th_rojo:'Rouge',th_amarillo:'Jaune',th_naranja:'Orange',th_cafe:'Marron',th_blanco:'Blanc',th_gris:'Gris',
+  th_dark:'Obsidienne',th_dorado:'Or',th_garnet:'Grenat',th_verde:'Vert',th_azul:'Bleu',th_morado:'Violet',th_rosa:'Rose',th_rojo:'Rouge',th_amarillo:'Jaune',th_naranja:'Orange',th_cafe:'Marron',th_blanco:'Blanc',th_gris:'Gris',
   th_grafito:'Graphite',th_marfil:'Ivoire',th_marino:'Bleu marine',th_pizarra:'Ardoise',th_bosque:'Vert forêt',th_burdeos:'Bordeaux'}
 };
 function curLang(){ return LANGS.some(l => l.k === S.lang) ? S.lang : 'es-MX'; }
@@ -877,6 +876,7 @@ function applySettings(){
   if (S.theme === 'light') S.theme = 'rosa';
   if (S.theme === 'cian') S.theme = 'naranja';
   if (S.theme === 'purpura') S.theme = 'morado';
+  if (S.theme === 'yellow') S.theme = 'dorado';
   const biz = S.ui === 'business';
   const tk = biz ? (BTHEMES[S.btheme] ? S.btheme : 'grafito') : (THEMES[S.theme] ? S.theme : 'dark');
   const th = biz ? BTHEMES[tk] : THEMES[tk], f = FONTS[S.font] || FONTS.sys;
