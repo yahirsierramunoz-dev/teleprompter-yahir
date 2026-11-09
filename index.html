@@ -196,6 +196,13 @@ body.sheetopen #ctrl{opacity:0;pointer-events:none}
   background:var(--mbg);color:var(--on);box-shadow:var(--edge);transition:transform .3s var(--ease)}
 #pronBar button:active{transform:scale(.9);transition-duration:.1s}
 #pronBar button.alt{background:rgba(255,255,255,.12);color:#f2f5fb}
+#pronBar{flex-wrap:wrap;row-gap:8px}
+#pronWord{order:1}
+#pronBar button.x{order:2}
+#pronLangs{order:3;flex:0 0 100%;display:flex;gap:6px}
+#pronLangs button{flex:1;min-width:0;padding:0 2px;height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1}
+#pronLangs button span{font-size:19px}
+#pronLangs button small{font-size:9.5px;font-weight:700;letter-spacing:.06em}
 #pronBar button.x{background:none;color:#9aa3b8;width:34px;padding:0;font-size:17px;font-weight:400}
 
 /* AJUSTES (hoja translúcida: el guion se ve detrás y se actualiza en vivo) */
@@ -521,9 +528,8 @@ body:not(.biz) #bar .b,body:not(.biz) #bar #gear,body:not(.biz) .round,body:not(
     <div id="count"><i id="cn"></i></div>
     <div id="pronBar">
       <span id="pronWord"></span>
-      <button class="alt" id="pronEs">🔊 ES</button>
-      <button id="pronEn">🔊 EN</button>
       <button class="x" id="pronClose">✕</button>
+      <div id="pronLangs"></div>
     </div>
   </div>
   <div id="ctrl">
@@ -634,7 +640,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.4';
+const APP_VERSION = '3.5';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -771,7 +777,6 @@ function translateStatic(){
   ['segGuide','segMirror'].forEach(id => { q('#'+id+' [data-v="1"]','yes'); q('#'+id+' [data-v="0"]','no'); });
   const sysChip = document.querySelector('#segFont [data-v="sys"] small'); if (sysChip) sysChip.textContent = t('sys');
   const L = LANGS.find(l => l.k === curLang());
-  $('pronEs').textContent = '🔊 ' + L.tag; $('pronEn').textContent = '🔊 ' + (L.k === 'en' ? 'UK' : 'EN');
   if ($('install').style.display === 'block') $('install').textContent = t('installHow');
   $('styleNote').textContent = t(S.ui === 'business' ? 'note_business' : 'note_orvex');
 }
@@ -1419,8 +1424,10 @@ applySettings();
     showBar(text);
   }
   document.addEventListener('selectionchange', () => { clearTimeout(onSelChange._t); onSelChange._t = setTimeout(onSelChange, 120); });
-  $('pronEn').onclick = () => speak(lastText, curLang() === 'en' ? 'en-GB' : 'en-US');
-  $('pronEs').onclick = () => speak(lastText, LANGS.find(l => l.k === curLang()).tts);
+  { const box = $('pronLangs'); const short = {'es-MX':'MX','en':'EN','pt-PT':'PT','es-ES':'ES','fr':'FR'};
+    LANGS.forEach(l => { const b = document.createElement('button'); b.className = 'alt';
+      b.innerHTML = '<span>' + l.fl + '</span><small>' + short[l.k] + '</small>'; b.title = l.n;
+      b.onclick = () => speak(lastText, l.tts); box.appendChild(b); }); }
   $('pronClose').onclick = () => {
     try{ window.getSelection().removeAllRanges(); }catch(e){}
     try{ speechSynthesis.cancel(); }catch(e){}
