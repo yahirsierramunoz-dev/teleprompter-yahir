@@ -423,6 +423,30 @@ body.biz .sws button.sel{color:var(--fg)}
 body.biz #panel .note{color:var(--muted)}
 body.biz .vlist button{border-radius:10px;background:transparent;border-color:var(--line);color:var(--fg)}
 body.biz .vlist button.sel{background:var(--accent);color:var(--on);box-shadow:none}
+
+.verline{text-align:center;font-size:11px;letter-spacing:.14em;color:var(--muted);opacity:.75;margin:6px 0 4px;text-transform:uppercase}
+/* ===== ORVEX: botones redondos tipo cristal 3D (estilo iOS 26, sutil) ===== */
+body:not(.biz){--lg-bg:linear-gradient(150deg,rgba(255,255,255,.26),rgba(255,255,255,.07) 48%,rgba(255,255,255,.14));
+  --lg-edge:inset 0 1.5px 1px rgba(255,255,255,.65),inset 0 -1.5px 2px rgba(255,255,255,.14),inset 0 0 16px rgba(255,255,255,.08),0 10px 20px -8px rgba(0,0,0,.55);
+  --lg-tint:linear-gradient(150deg,color-mix(in srgb,var(--accent) 62%,#fff) 0%,var(--accent) 46%,color-mix(in srgb,var(--accent) 78%,var(--accent2)) 100%);
+  --lg-tedge:inset 0 1.5px 1px rgba(255,255,255,.75),inset 0 -2px 3px rgba(0,0,0,.18),inset 0 0 14px rgba(255,255,255,.15),0 10px 22px -8px var(--accent)}
+body:not(.biz) #bar .b,body:not(.biz) #bar #gear,body:not(.biz) .round,body:not(.biz) #ctrlLine button,body:not(.biz) #fs,body:not(.biz) #pronBar button.alt{
+  background:var(--lg-bg);border:1px solid rgba(255,255,255,.2)!important;box-shadow:var(--lg-edge);backdrop-filter:blur(14px) saturate(1.6);-webkit-backdrop-filter:blur(14px) saturate(1.6)}
+body:not(.biz) #bar .b{padding:0 14px 0 8px;color:var(--fg);border-radius:999px}
+body:not(.biz) #bar #gear{border-radius:50%;padding:0}
+body:not(.biz) #bar .b:active,body:not(.biz) .round:active,body:not(.biz) #ctrlLine button:active,body:not(.biz) #fs:active{opacity:1;filter:brightness(1.25);transform:scale(.93)}
+body:not(.biz) #fs{color:var(--fg);border-radius:999px}
+body:not(.biz) #ctrlLine button{border-radius:999px;color:var(--fg)}
+body:not(.biz) .play,body:not(.biz) #ctrlLine button.primary,body:not(.biz) #panel .done,body:not(.biz) .card .go,body:not(.biz) #pronBar button:not(.alt):not(.x){
+  background:var(--lg-tint);border:1px solid rgba(255,255,255,.28)!important;box-shadow:var(--lg-tedge);color:var(--on)}
+body:not(.biz) .play{border-radius:50%}
+body:not(.biz) #panel .done{border-radius:999px}
+body:not(.biz) .play:active,body:not(.biz) #panel .done:active,body:not(.biz) #ctrlLine button.primary:active{opacity:1;filter:brightness(1.12);transform:scale(.94)}
+body:not(.biz) .seg .thumb{background:var(--lg-bg);background-color:rgba(255,255,255,.1);box-shadow:var(--lg-edge);border:1px solid rgba(255,255,255,.22)}
+body:not(.biz) .seg button.sel{color:#fff}
+body:not(.biz) .chips button,body:not(.biz) .langs button,body:not(.biz) .vlist button{background:var(--lg-bg);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 1px rgba(255,255,255,.4),inset 0 -1px 2px rgba(255,255,255,.08)}
+body:not(.biz) .chips button.sel,body:not(.biz) .langs button.sel,body:not(.biz) .vlist button.sel{background:var(--lg-tint);border-color:rgba(255,255,255,.3);box-shadow:var(--lg-tedge)}
+body:not(.biz) .ios-sw::after{box-shadow:inset 0 -1px 2px rgba(0,0,0,.12),0 3px 8px rgba(0,0,0,.3)}
 </style>
 </head>
 <body>
@@ -442,6 +466,7 @@ body.biz .vlist button.sel{background:var(--accent);color:var(--on);box-shadow:n
   <div class="group" id="moreT">Más productos</div>
   <div class="shelf" id="shelf"></div>
   <div class="credit"><i class="orn"></i><small data-credit>Desarrollada por</small><b>Nexa IA Studio</b><i class="orn"></i></div>
+  <div class="verline" id="verHome"></div>
 </div>
 
 <div id="reader" class="screen">
@@ -559,6 +584,7 @@ body.biz .vlist button.sel{background:var(--accent);color:var(--on);box-shadow:n
         <label>Idioma</label>
         <div class="langs" id="segLang"></div>
         <div class="credit in"><small data-credit>Desarrollada por</small><b>Nexa IA Studio</b></div>
+        <div class="verline" id="verGen"></div>
       </div>
     </div>
     <button class="done" id="closeSheet">Listo</button>
@@ -577,7 +603,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.0';
+const APP_VERSION = '3.1';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -805,6 +831,7 @@ function applySettings(){
   $('ctrlLine').style.display = S.mode === 'line' ? 'flex' : 'none';
   $('ver').textContent = 'Teleprompter Yahir · ' + t('ver') + ' ' + APP_VERSION;
   translateStatic(); syncSwitches();
+  ['verHome','verGen'].forEach(id => { const e = $(id); if (e) e.textContent = (biz ? 'Business' : 'Orvex') + ' · ' + t('ver') + ' ' + APP_VERSION; });
   layoutGuide(); syncThumbs(); anchorSet(anchor);
 }
 function buildSwitches(){
