@@ -1,7 +1,7 @@
 // Teleprompter Yahir · service worker
 // App (index, iconos): con internet siempre baja la versión más nueva; sin internet abre la copia guardada.
 // scripts.json: siempre se intenta bajar fresco; si no hay internet, usa la última copia.
-const V = 'tp-v23';
+const V = 'tp-v24';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-512-maskable.png',
   'fonts/inter.woff2', 'fonts/manrope.woff2', 'fonts/space-grotesk.woff2', 'fonts/sora.woff2', 'fonts/orbitron.woff2',
   'fonts/oswald.woff2', 'fonts/playfair-display.woff2', 'fonts/lora.woff2', 'fonts/jetbrains-mono.woff2'];

@@ -157,7 +157,8 @@ button:focus{outline:none}
 #count.active{display:flex}
 #cn{font-style:normal;font-size:38vw;font-weight:200;line-height:1;letter-spacing:-.04em;
   background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 0 40px var(--accent))}
+  filter:drop-shadow(0 0 40px var(--accent));max-width:90vw;white-space:nowrap;text-align:center}
+#cn.wide{font-size:19vw;letter-spacing:-.02em}
 #cn.pop{animation:cdPop .6s var(--ease) both}
 @keyframes cdPop{from{opacity:0;transform:scale(1.5)}to{opacity:1;transform:scale(1)}}
 
@@ -650,7 +651,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '4.0';
+const APP_VERSION = '4.1';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -1242,7 +1243,7 @@ function startWithCountdown(){
   let n = S.count;
   if (!n){ setRun(true); return; }
   const c = $('count'), cn = $('cn');
-  const show = v => { cn.textContent = v; cn.classList.remove('pop'); void cn.offsetWidth; cn.classList.add('pop'); tap(10); countSound(v); };
+  const show = v => { cn.textContent = v; cn.classList.toggle('wide', String(v).length > 1); cn.classList.remove('pop'); void cn.offsetWidth; cn.classList.add('pop'); tap(10); countSound(v); };
   c.classList.add('active'); show(n);
   cdTimer = setInterval(() => {
     n--;
