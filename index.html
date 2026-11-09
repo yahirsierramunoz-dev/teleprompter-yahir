@@ -649,7 +649,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.6';
+const APP_VERSION = '3.7';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -1399,22 +1399,47 @@ applySettings();
   if (!TTS){ return; } // sin soporte: la selección de texto sigue funcionando (copiar), solo no hay botones de voz
   let lastText = '';
   let voices = [];
-  function loadVoices(){ voices = speechSynthesis.getVoices() || []; }
+  function loadVoices(){ const v = speechSynthesis.getVoices(); if (v && v.length) voices = v; }
   loadVoices();
   if ('onvoiceschanged' in speechSynthesis){ speechSynthesis.onvoiceschanged = loadVoices; }
+  /* algunos navegadores (sobre todo en Android) tardan en entregar la lista de voces o no
+     avisan con onvoiceschanged: se reintenta un par de segundos para no quedarse con 0 voces */
+  let voiceTries = 0;
+  (function waitVoices(){ if (voices.length || voiceTries++ > 20) return; loadVoices(); setTimeout(waitVoices, 150); })();
+
+  /* elige, de entre las voces instaladas, la más natural para ese idioma:
+     prioriza motores de calidad (Natural/Neural/Enhanced/Premium/Wavenet/Google) y evita las
+     compactas/robóticas; si no hay ninguna del idioma exacto, cae al idioma base (es, en, pt, fr) */
+  const QUALITY_HINTS = ['natural', 'neural', 'enhanced', 'premium', 'wavenet', 'siri', 'google'];
+  const LOW_QUALITY_HINTS = ['compact', 'espeak', 'robot'];
+  function score(v){
+    const n = (v.name || '').toLowerCase();
+    let s = 0;
+    if (QUALITY_HINTS.some(h => n.includes(h))) s += 10;
+    if (LOW_QUALITY_HINTS.some(h => n.includes(h))) s -= 10;
+    if (v.localService) s += 1;      /* suele sonar más estable y sin retardo de red */
+    if (v.default) s += 1;
+    return s;
+  }
   function pickVoice(lang){
-    const pref = voices.find(v => v.lang && v.lang.toLowerCase() === lang.toLowerCase());
-    if (pref) return pref;
+    if (!voices.length) loadVoices();
+    const exact = voices.filter(v => v.lang && v.lang.toLowerCase() === lang.toLowerCase());
     const base = lang.split('-')[0];
-    return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(base)) || null;
+    const byBase = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith(base));
+    const pool = exact.length ? exact : byBase;
+    if (!pool.length) return null;
+    return pool.slice().sort((a, b) => score(b) - score(a))[0];
   }
   function speak(text, lang){
     if (!text) return;
     try{ speechSynthesis.cancel(); }catch(e){}
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang; u.rate = 0.82; u.pitch = 1;
+    const words = text.trim().split(/\s+/).length;
+    /* una sola palabra se dice más despacio y clara; una frase fluye a ritmo casi natural */
+    u.lang = lang; u.rate = words <= 2 ? 0.76 : 0.95; u.pitch = 1; u.volume = 1;
     const v = pickVoice(lang); if (v) u.voice = v;
-    try{ speechSynthesis.speak(u); }catch(e){}
+    const say = () => { try{ speechSynthesis.speak(u); }catch(e){} };
+    if (!voices.length){ setTimeout(say, 200); } else say();
   }
   function showBar(text){
     lastText = text;
