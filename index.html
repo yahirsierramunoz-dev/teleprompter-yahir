@@ -276,6 +276,18 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
 #panel .note{font-size:12px;color:#7d869b;line-height:1.5;text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 
+/* créditos Nexa IA Studio: tipografía elegante, oro metálico */
+.credit{margin:34px 0 6px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.credit small{font-family:'TP Playfair',Georgia,serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#b89a55;opacity:.85}
+.credit b{font-family:'TP Playfair',Georgia,serif;font-style:italic;font-weight:700;font-size:27px;letter-spacing:.02em;line-height:1.15;padding:0 4px 3px;
+  background:linear-gradient(100deg,#8a6420 0%,#e9c46a 22%,#fff1c2 38%,#d4a43c 52%,#fbe7a1 68%,#a47a24 84%,#e9c46a 100%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 8px rgba(233,196,106,.28));
+  animation:goldSheen 7s ease-in-out infinite}
+.credit .orn{display:block;width:120px;height:1px;background:linear-gradient(90deg,transparent,#d4a43c,transparent);opacity:.7}
+.credit.in{margin:22px 0 4px}
+.credit.in b{font-size:22px}
+@keyframes goldSheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+body.biz .credit b{animation:none;filter:none}
 /* lista de videos */
 .vlist{display:flex;flex-direction:column;gap:7px}
 .vlist button{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);
@@ -370,6 +382,7 @@ body.biz .vlist button.sel{background:var(--accent);color:var(--on);box-shadow:n
   <div id="list"></div>
   <button class="card" id="installBtn"><div class="txt"><b>Instalar como app</b><span>Se abre sola, a pantalla completa y sin internet</span></div></button>
   <div id="install"></div>
+  <div class="credit"><i class="orn"></i><small data-credit>Desarrollada por</small><b>Nexa IA Studio</b><i class="orn"></i></div>
 </div>
 
 <div id="reader" class="screen">
@@ -486,6 +499,7 @@ body.biz .vlist button.sel{background:var(--accent);color:var(--on);box-shadow:n
         <div class="note" id="styleNote"></div>
         <label>Idioma</label>
         <div class="langs" id="segLang"></div>
+        <div class="credit in"><small data-credit>Desarrollada por</small><b>Nexa IA Studio</b></div>
       </div>
     </div>
     <button class="done" id="closeSheet">Listo</button>
@@ -504,7 +518,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.7';
+const APP_VERSION = '2.8';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -566,7 +580,7 @@ const LANGS = [
 ];
 const I18N = {
  'es-MX':{html:'es-MX',sub:'Tus guiones, listos para grabar',installT:'Instalar como app',installS:'Se abre sola, a pantalla completa y sin internet',back:'Atrás',settings:'Ajustes',slower:'Más lento',faster:'Más rápido',playpause:'Reproducir o pausar',speed:'velocidad',next:'Siguiente',
-  tab_text:'Texto',tab_color:'Color',tab_read:'Lectura',tab_gen:'General',tab_jump:'Videos',jumpHint:'Toca un video para ir directo a él.',here:'Estás aquí',size:'Tamaño de letra',weight:'Grosor',lh:'Interlineado',font:'Tipografía',palette:'Paleta',finish:'Acabado del texto',metal:'Metálico',flat:'Liso',
+  tab_text:'Texto',tab_color:'Color',tab_read:'Lectura',tab_gen:'General',credit:'Desarrollada por',tab_jump:'Videos',jumpHint:'Toca un video para ir directo a él.',here:'Estás aquí',size:'Tamaño de letra',weight:'Grosor',lh:'Interlineado',font:'Tipografía',palette:'Paleta',finish:'Acabado del texto',metal:'Metálico',flat:'Liso',
   scrollSpeed:'Velocidad de desplazamiento',width:'Ancho del texto',mode:'Modo',m_scroll:'Scroll continuo',m_line:'Línea por línea',countdown:'Cuenta regresiva al iniciar',none:'Sin',guide:'Línea guía y atenuar lo demás',yes:'Sí',no:'No',mirror:'Espejo (para cristal de teleprompter)',fullscreen:'Pantalla completa',done:'Listo',
   style:'Estilo de la app',language:'Idioma',note_orvex:'Futurista, con brillos y acabado metálico.',note_business:'Sobrio, plano y profesional.',
   wlOn:'La pantalla se mantiene encendida mientras lees.',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.',ver:'versión',
@@ -575,7 +589,7 @@ const I18N = {
   th_dark:'Obsidiana',th_yellow:'Oro',th_garnet:'Guinda',th_verde:'Verde',th_azul:'Azul',th_morado:'Morado',th_rosa:'Rosa',th_rojo:'Rojo',th_amarillo:'Amarillo',th_naranja:'Naranja',th_blanco:'Blanco',th_gris:'Gris',
   th_grafito:'Grafito',th_marfil:'Marfil',th_marino:'Azul marino',th_pizarra:'Pizarra',th_bosque:'Verde bosque',th_burdeos:'Burdeos'},
  'en':{html:'en',sub:'Your scripts, ready to record',installT:'Install as app',installS:'Opens on its own, full screen and offline',back:'Back',settings:'Settings',slower:'Slower',faster:'Faster',playpause:'Play or pause',speed:'speed',next:'Next',
-  tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',tab_jump:'Videos',jumpHint:'Tap a video to jump straight to it.',here:'You are here',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
+  tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',credit:'Developed by',tab_jump:'Videos',jumpHint:'Tap a video to jump straight to it.',here:'You are here',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
   scrollSpeed:'Scroll speed',width:'Text width',mode:'Mode',m_scroll:'Continuous scroll',m_line:'Line by line',countdown:'Countdown before starting',none:'None',guide:'Guide line and dim the rest',yes:'Yes',no:'No',mirror:'Mirror (for teleprompter glass)',fullscreen:'Full screen',done:'Done',
   style:'App style',language:'Language',note_orvex:'Futuristic, with glow and a metallic finish.',note_business:'Clean, flat and professional.',
   wlOn:'The screen stays on while you read.',wlOff:'This browser can\'t keep the screen on: in your phone settings set "Screen timeout" to the maximum before recording.',ver:'version',
@@ -584,7 +598,7 @@ const I18N = {
   th_dark:'Obsidian',th_yellow:'Gold',th_garnet:'Garnet',th_verde:'Green',th_azul:'Blue',th_morado:'Purple',th_rosa:'Pink',th_rojo:'Red',th_amarillo:'Yellow',th_naranja:'Orange',th_blanco:'White',th_gris:'Gray',
   th_grafito:'Graphite',th_marfil:'Ivory',th_marino:'Navy',th_pizarra:'Slate',th_bosque:'Forest',th_burdeos:'Burgundy'},
  'pt-PT':{html:'pt-PT',sub:'Os teus guiões, prontos para gravar',installT:'Instalar como aplicação',installS:'Abre sozinha, em ecrã inteiro e sem internet',back:'Voltar',settings:'Definições',slower:'Mais lento',faster:'Mais rápido',playpause:'Reproduzir ou pausar',speed:'velocidade',next:'Seguinte',
-  tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',tab_jump:'Vídeos',jumpHint:'Toca num vídeo para ir diretamente para ele.',here:'Estás aqui',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
+  tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',credit:'Desenvolvida por',tab_jump:'Vídeos',jumpHint:'Toca num vídeo para ir diretamente para ele.',here:'Estás aqui',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
   scrollSpeed:'Velocidade de deslocamento',width:'Largura do texto',mode:'Modo',m_scroll:'Deslocamento contínuo',m_line:'Linha a linha',countdown:'Contagem decrescente ao iniciar',none:'Sem',guide:'Linha-guia e esbater o resto',yes:'Sim',no:'Não',mirror:'Espelho (para vidro de teleponto)',fullscreen:'Ecrã inteiro',done:'Concluído',
   style:'Estilo da aplicação',language:'Idioma',note_orvex:'Futurista, com brilhos e acabamento metálico.',note_business:'Sóbrio, plano e profissional.',
   wlOn:'O ecrã mantém-se ligado enquanto lês.',wlOff:'Este navegador não permite manter o ecrã ligado: nas definições do telemóvel, põe o "Tempo de ecrã" no máximo antes de gravar.',ver:'versão',
@@ -599,7 +613,7 @@ const I18N = {
   empty:'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.',offSaved:'Sin conexión: copia guardada',failLoad:'No se ha podido cargar. Revisa tu conexión.',
   note_orvex:'Futurista, con brillos y acabado metálico.',countdown:'Cuenta atrás al iniciar',fullscreen:'Pantalla completa',scrollSpeed:'Velocidad de desplazamiento'},
  'fr':{html:'fr',sub:'Vos scripts, prêts à être enregistrés',installT:'Installer comme application',installS:'S\'ouvre seule, en plein écran et hors connexion',back:'Retour',settings:'Réglages',slower:'Plus lent',faster:'Plus rapide',playpause:'Lecture ou pause',speed:'vitesse',next:'Suivant',
-  tab_text:'Texte',tab_color:'Couleur',tab_read:'Lecture',tab_gen:'Général',tab_jump:'Vidéos',jumpHint:'Touchez une vidéo pour y aller directement.',here:'Vous êtes ici',size:'Taille du texte',weight:'Épaisseur',lh:'Interligne',font:'Police',palette:'Palette',finish:'Finition du texte',metal:'Métallique',flat:'Uni',
+  tab_text:'Texte',tab_color:'Couleur',tab_read:'Lecture',tab_gen:'Général',credit:'Développée par',tab_jump:'Vidéos',jumpHint:'Touchez une vidéo pour y aller directement.',here:'Vous êtes ici',size:'Taille du texte',weight:'Épaisseur',lh:'Interligne',font:'Police',palette:'Palette',finish:'Finition du texte',metal:'Métallique',flat:'Uni',
   scrollSpeed:'Vitesse de défilement',width:'Largeur du texte',mode:'Mode',m_scroll:'Défilement continu',m_line:'Ligne par ligne',countdown:'Compte à rebours au démarrage',none:'Aucun',guide:'Ligne guide et atténuer le reste',yes:'Oui',no:'Non',mirror:'Miroir (pour vitre de prompteur)',fullscreen:'Plein écran',done:'Terminé',
   style:'Style de l\'application',language:'Langue',note_orvex:'Futuriste, avec des reflets et une finition métallique.',note_business:'Sobre, épuré et professionnel.',
   wlOn:'L\'écran reste allumé pendant la lecture.',wlOff:'Ce navigateur ne peut pas garder l\'écran allumé : dans les réglages du téléphone, mettez « Mise en veille » au maximum avant d\'enregistrer.',ver:'version',
@@ -631,6 +645,7 @@ function translateStatic(){
   ['scrollSpeed','width','mode','countdown','guide','mirror'].forEach((k,i) => setT(document.querySelector('#pane-read label:nth-of-type('+(i+1)+')'), t(k)));
   ['style','language'].forEach((k,i) => setT(document.querySelector('#pane-gen label:nth-of-type('+(i+1)+')'), t(k)));
   $('jumpHint').textContent = t('jumpHint');
+  document.querySelectorAll('[data-credit]').forEach(e => e.textContent = t('credit'));
   q('#segFinish [data-v="metal"]','metal'); q('#segFinish [data-v="flat"]','flat');
   q('#segMode [data-v="scroll"]','m_scroll'); q('#segMode [data-v="line"]','m_line');
   q('#segCount [data-v="0"]','none');
