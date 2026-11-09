@@ -56,8 +56,12 @@ button:focus{outline:none}
 /* HOME */
 #home{padding:calc(30px + env(safe-area-inset-top)) 20px calc(34px + env(safe-area-inset-bottom));overflow-y:auto;
   -webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.hgear{position:absolute;top:calc(24px + env(safe-area-inset-top));right:18px;z-index:3;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  border:1px solid var(--line);background:var(--glass2);color:var(--fg);transition:transform .35s var(--ease),filter .2s}
+.hgear:active{transform:scale(.92)}
 .brand{display:flex;align-items:center;gap:14px}
 .brand img{width:50px;height:50px;border-radius:14px;box-shadow:0 10px 28px -6px rgba(0,0,0,.7),0 0 0 1px var(--line)}
+#home .brand{padding-right:54px}
 #home h1{margin:0;font-size:30px;line-height:1.05;font-weight:700;letter-spacing:-.9px;
   background:linear-gradient(180deg,var(--fg) 25%,var(--metal));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{font-size:13px;color:var(--muted);margin-top:4px;letter-spacing:.2px}
@@ -447,11 +451,23 @@ body:not(.biz) .seg button.sel{color:#fff}
 body:not(.biz) .chips button,body:not(.biz) .langs button,body:not(.biz) .vlist button{background:var(--lg-bg);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 1px rgba(255,255,255,.4),inset 0 -1px 2px rgba(255,255,255,.08)}
 body:not(.biz) .chips button.sel,body:not(.biz) .langs button.sel,body:not(.biz) .vlist button.sel{background:var(--lg-tint);border-color:rgba(255,255,255,.3);box-shadow:var(--lg-tedge)}
 body:not(.biz) .ios-sw::after{box-shadow:inset 0 -1px 2px rgba(0,0,0,.12),0 3px 8px rgba(0,0,0,.3)}
+
+/* los botones conservan el color metálico del tema */
+body:not(.biz){--lg-bg:linear-gradient(150deg,color-mix(in srgb,var(--hi) 62%,transparent) 0%,color-mix(in srgb,var(--accent) 34%,transparent) 46%,color-mix(in srgb,var(--accent2) 52%,transparent) 100%);
+  --lg-edge:inset 0 1.5px 1px rgba(255,255,255,.7),inset 0 -2px 3px rgba(0,0,0,.2),inset 0 0 16px rgba(255,255,255,.1),0 10px 20px -8px color-mix(in srgb,var(--accent) 70%,#000)}
+body:not(.biz) #bar .b,body:not(.biz) #bar #gear,body:not(.biz) .round,body:not(.biz) #ctrlLine button:not(.primary),body:not(.biz) #fs,body:not(.biz) .hgear{color:var(--fg)}
+body:not(.biz) .hgear{background:var(--lg-bg);border:1px solid rgba(255,255,255,.22);box-shadow:var(--lg-edge);backdrop-filter:blur(14px) saturate(1.6);-webkit-backdrop-filter:blur(14px) saturate(1.6)}
+body:not(.biz) .hgear:active{filter:brightness(1.25)}
+body:not(.biz) .seg .thumb{background:var(--lg-tint);background-color:transparent;box-shadow:var(--lg-tedge)}
+body:not(.biz) .chips button:not(.sel),body:not(.biz) .langs button:not(.sel),body:not(.biz) .vlist button:not(.sel){background:linear-gradient(150deg,color-mix(in srgb,var(--hi) 22%,transparent),color-mix(in srgb,var(--accent) 12%,transparent) 55%,color-mix(in srgb,var(--accent2) 26%,transparent))}
+body.biz .hgear{border-radius:10px;background:transparent}
+body.biz #sw_sound{display:block}
 </style>
 </head>
 <body>
 
 <div id="home" class="screen active">
+  <button class="hgear" id="gearHome" aria-label="Ajustes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.4"/><circle cx="8" cy="17" r="2.4"/></svg></button>
   <div class="brand">
     <img src="icon-192.png" alt="">
     <div>
@@ -581,6 +597,7 @@ body:not(.biz) .ios-sw::after{box-shadow:inset 0 -1px 2px rgba(0,0,0,.12),0 3px 
           <button data-v="business">Business</button>
         </div>
         <div class="note" id="styleNote"></div>
+        <div class="swrow"><label>Sonidos</label><button class="ios-sw" id="sw_sound" role="switch"></button></div>
         <label>Idioma</label>
         <div class="langs" id="segLang"></div>
         <div class="credit in"><small data-credit>Desarrollada por</small><b>Nexa IA Studio</b></div>
@@ -600,10 +617,10 @@ const LS = {
 };
 
 /* ---------- settings ---------- */
-const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', ui:'orvex', btheme:'grafito', lang:'es-MX'};
+const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '3.1';
+const APP_VERSION = '3.2';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -665,7 +682,7 @@ const LANGS = [
 ];
 const I18N = {
  'es-MX':{html:'es-MX',sub:'Tus guiones, listos para grabar',installT:'Instalar como app',installS:'Se abre sola, a pantalla completa y sin internet',back:'Atrás',settings:'Ajustes',slower:'Más lento',faster:'Más rápido',playpause:'Reproducir o pausar',speed:'velocidad',next:'Siguiente',
-  tab_text:'Texto',tab_color:'Color',tab_read:'Lectura',tab_gen:'General',credit:'Desarrollada por',more:'Más productos',nexaTag:'Videos con IA',tab_jump:'Videos',jumpHint:'Toca un video para ir directo a él.',here:'Estás aquí',size:'Tamaño de letra',weight:'Grosor',lh:'Interlineado',font:'Tipografía',palette:'Paleta',finish:'Acabado del texto',metal:'Metálico',flat:'Liso',
+  tab_text:'Texto',tab_color:'Color',tab_read:'Lectura',tab_gen:'General',credit:'Desarrollada por',sounds:'Sonidos',more:'Más productos',nexaTag:'Videos con IA',tab_jump:'Videos',jumpHint:'Toca un video para ir directo a él.',here:'Estás aquí',size:'Tamaño de letra',weight:'Grosor',lh:'Interlineado',font:'Tipografía',palette:'Paleta',finish:'Acabado del texto',metal:'Metálico',flat:'Liso',
   scrollSpeed:'Velocidad de desplazamiento',width:'Ancho del texto',mode:'Modo',m_scroll:'Scroll continuo',m_line:'Línea por línea',countdown:'Cuenta regresiva al iniciar',none:'Sin',guide:'Línea guía y atenuar lo demás',yes:'Sí',no:'No',mirror:'Espejo (para cristal de teleprompter)',fullscreen:'Pantalla completa',done:'Listo',
   style:'Estilo de la app',language:'Idioma',note_orvex:'Futurista, con brillos y acabado metálico.',note_business:'Sobrio, plano y profesional.',
   wlOn:'La pantalla se mantiene encendida mientras lees.',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.',ver:'versión',
@@ -674,7 +691,7 @@ const I18N = {
   th_dark:'Obsidiana',th_yellow:'Oro',th_garnet:'Guinda',th_verde:'Verde',th_azul:'Azul',th_morado:'Morado',th_rosa:'Rosa',th_rojo:'Rojo',th_amarillo:'Amarillo',th_naranja:'Naranja',th_blanco:'Blanco',th_gris:'Gris',
   th_grafito:'Grafito',th_marfil:'Marfil',th_marino:'Azul marino',th_pizarra:'Pizarra',th_bosque:'Verde bosque',th_burdeos:'Burdeos'},
  'en':{html:'en',sub:'Your scripts, ready to record',installT:'Install as app',installS:'Opens on its own, full screen and offline',back:'Back',settings:'Settings',slower:'Slower',faster:'Faster',playpause:'Play or pause',speed:'speed',next:'Next',
-  tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',credit:'Developed by',more:'More products',nexaTag:'AI-powered video',tab_jump:'Videos',jumpHint:'Tap a video to jump straight to it.',here:'You are here',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
+  tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',credit:'Developed by',sounds:'Sounds',more:'More products',nexaTag:'AI-powered video',tab_jump:'Videos',jumpHint:'Tap a video to jump straight to it.',here:'You are here',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
   scrollSpeed:'Scroll speed',width:'Text width',mode:'Mode',m_scroll:'Continuous scroll',m_line:'Line by line',countdown:'Countdown before starting',none:'None',guide:'Guide line and dim the rest',yes:'Yes',no:'No',mirror:'Mirror (for teleprompter glass)',fullscreen:'Full screen',done:'Done',
   style:'App style',language:'Language',note_orvex:'Futuristic, with glow and a metallic finish.',note_business:'Clean, flat and professional.',
   wlOn:'The screen stays on while you read.',wlOff:'This browser can\'t keep the screen on: in your phone settings set "Screen timeout" to the maximum before recording.',ver:'version',
@@ -683,7 +700,7 @@ const I18N = {
   th_dark:'Obsidian',th_yellow:'Gold',th_garnet:'Garnet',th_verde:'Green',th_azul:'Blue',th_morado:'Purple',th_rosa:'Pink',th_rojo:'Red',th_amarillo:'Yellow',th_naranja:'Orange',th_blanco:'White',th_gris:'Gray',
   th_grafito:'Graphite',th_marfil:'Ivory',th_marino:'Navy',th_pizarra:'Slate',th_bosque:'Forest',th_burdeos:'Burgundy'},
  'pt-PT':{html:'pt-PT',sub:'Os teus guiões, prontos para gravar',installT:'Instalar como aplicação',installS:'Abre sozinha, em ecrã inteiro e sem internet',back:'Voltar',settings:'Definições',slower:'Mais lento',faster:'Mais rápido',playpause:'Reproduzir ou pausar',speed:'velocidade',next:'Seguinte',
-  tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',credit:'Desenvolvida por',more:'Mais produtos',nexaTag:'Vídeos com IA',tab_jump:'Vídeos',jumpHint:'Toca num vídeo para ir diretamente para ele.',here:'Estás aqui',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
+  tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',credit:'Desenvolvida por',sounds:'Sons',more:'Mais produtos',nexaTag:'Vídeos com IA',tab_jump:'Vídeos',jumpHint:'Toca num vídeo para ir diretamente para ele.',here:'Estás aqui',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
   scrollSpeed:'Velocidade de deslocamento',width:'Largura do texto',mode:'Modo',m_scroll:'Deslocamento contínuo',m_line:'Linha a linha',countdown:'Contagem decrescente ao iniciar',none:'Sem',guide:'Linha-guia e esbater o resto',yes:'Sim',no:'Não',mirror:'Espelho (para vidro de teleponto)',fullscreen:'Ecrã inteiro',done:'Concluído',
   style:'Estilo da aplicação',language:'Idioma',note_orvex:'Futurista, com brilhos e acabamento metálico.',note_business:'Sóbrio, plano e profissional.',
   wlOn:'O ecrã mantém-se ligado enquanto lês.',wlOff:'Este navegador não permite manter o ecrã ligado: nas definições do telemóvel, põe o "Tempo de ecrã" no máximo antes de gravar.',ver:'versão',
@@ -698,7 +715,7 @@ const I18N = {
   empty:'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.',offSaved:'Sin conexión: copia guardada',failLoad:'No se ha podido cargar. Revisa tu conexión.',
   note_orvex:'Futurista, con brillos y acabado metálico.',countdown:'Cuenta atrás al iniciar',fullscreen:'Pantalla completa',scrollSpeed:'Velocidad de desplazamiento'},
  'fr':{html:'fr',sub:'Vos scripts, prêts à être enregistrés',installT:'Installer comme application',installS:'S\'ouvre seule, en plein écran et hors connexion',back:'Retour',settings:'Réglages',slower:'Plus lent',faster:'Plus rapide',playpause:'Lecture ou pause',speed:'vitesse',next:'Suivant',
-  tab_text:'Texte',tab_color:'Couleur',tab_read:'Lecture',tab_gen:'Général',credit:'Développée par',more:'Plus de produits',nexaTag:'Vidéos avec IA',tab_jump:'Vidéos',jumpHint:'Touchez une vidéo pour y aller directement.',here:'Vous êtes ici',size:'Taille du texte',weight:'Épaisseur',lh:'Interligne',font:'Police',palette:'Palette',finish:'Finition du texte',metal:'Métallique',flat:'Uni',
+  tab_text:'Texte',tab_color:'Couleur',tab_read:'Lecture',tab_gen:'Général',credit:'Développée par',sounds:'Sons',more:'Plus de produits',nexaTag:'Vidéos avec IA',tab_jump:'Vidéos',jumpHint:'Touchez une vidéo pour y aller directement.',here:'Vous êtes ici',size:'Taille du texte',weight:'Épaisseur',lh:'Interligne',font:'Police',palette:'Palette',finish:'Finition du texte',metal:'Métallique',flat:'Uni',
   scrollSpeed:'Vitesse de défilement',width:'Largeur du texte',mode:'Mode',m_scroll:'Défilement continu',m_line:'Ligne par ligne',countdown:'Compte à rebours au démarrage',none:'Aucun',guide:'Ligne guide et atténuer le reste',yes:'Oui',no:'Non',mirror:'Miroir (pour vitre de prompteur)',fullscreen:'Plein écran',done:'Terminé',
   style:'Style de l\'application',language:'Langue',note_orvex:'Futuriste, avec des reflets et une finition métallique.',note_business:'Sobre, épuré et professionnel.',
   wlOn:'L\'écran reste allumé pendant la lecture.',wlOff:'Ce navigateur ne peut pas garder l\'écran allumé : dans les réglages du téléphone, mettez « Mise en veille » au maximum avant d\'enregistrer.',ver:'version',
@@ -722,13 +739,14 @@ function translateStatic(){
   q('.brand .sub','sub'); q('#installBtn b','installT'); q('#installBtn span','installS');
   q('#back','back'); q('#spd','speed'); q('#next','next'); q('#fs','fullscreen'); q('#closeSheet','done');
   setT($('prev'), '‹ ' + t('back'));
-  [['#gear','settings'],['#back','back'],['#slower','slower'],['#faster','faster'],['#play','playpause']].forEach(([sel,k]) => { const el = document.querySelector(sel); if (el) el.setAttribute('aria-label', t(k)); });
+  [['#gear','settings'],['#gearHome','settings'],['#back','back'],['#slower','slower'],['#faster','faster'],['#play','playpause']].forEach(([sel,k]) => { const el = document.querySelector(sel); if (el) el.setAttribute('aria-label', t(k)); });
   setT($('next'), t('next') + ' ›');
   [['text','tab_text'],['color','tab_color'],['read','tab_read'],['jump','tab_jump'],['gen','tab_gen']].forEach(([v,k]) => q('#segTab [data-v="'+v+'"]', k));
   ['size','weight','lh','font'].forEach((k,i) => setT(document.querySelector('#pane-text label:nth-of-type('+(i+1)+')'), t(k)));
   ['palette','finish'].forEach((k,i) => setT(document.querySelector('#pane-color label:nth-of-type('+(i+1)+')'), t(k)));
   ['scrollSpeed','width','mode','countdown','guide','mirror'].forEach((k,i) => setT(document.querySelector('#pane-read label:nth-of-type('+(i+1)+')'), t(k)));
-  ['style','language'].forEach((k,i) => setT(document.querySelector('#pane-gen label:nth-of-type('+(i+1)+')'), t(k)));
+  setT(document.querySelector('#pane-gen label:nth-of-type(1)'), t('style')); setT(document.querySelector('#pane-gen .swrow label'), t('sounds'));
+  { const ls = document.querySelectorAll('#pane-gen > label'); if (ls[1]) setT(ls[1], t('language')); if (ls[0]) setT(ls[0], t('style')); }
   $('jumpHint').textContent = t('jumpHint');
   $('moreT').textContent = t('more'); renderShelf();
   document.querySelectorAll('[data-credit]').forEach(e => e.textContent = t('credit'));
@@ -743,7 +761,37 @@ function translateStatic(){
   $('styleNote').textContent = t(S.ui === 'business' ? 'note_business' : 'note_orvex');
 }
 let AC = null;
+/* ---------- sonidos de botones ---------- */
+function getAC(){ AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); return AC; }
+function blip(f1, f2, dur, vol, type, delay){
+  const a = getAC(), t0 = a.currentTime + (delay || 0) + .005, o = a.createOscillator(), g = a.createGain();
+  o.type = type || 'sine'; o.frequency.setValueAtTime(f1, t0); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+  g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(vol, t0 + .008); g.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+  o.connect(g); g.connect(a.destination); o.start(t0); o.stop(t0 + dur + .03);
+}
+function uiSound(kind){
+  if (!S.sound) return;
+  const q = S.ui === 'business' ? .55 : 1;
+  try{
+    if (kind === 'tick') blip(1500, 1100, .035, .09 * q, 'triangle');
+    else if (kind === 'play'){ blip(560, 0, .09, .13 * q); blip(840, 0, .14, .12 * q, 'sine', .08); blip(1680, 0, .2, .04 * q, 'sine', .08); }
+    else if (kind === 'ok'){ blip(660, 0, .08, .12 * q); blip(990, 0, .16, .12 * q, 'sine', .07); blip(1980, 0, .22, .035 * q, 'sine', .07); }
+    else if (kind === 'back'){ blip(720, 480, .12, .12 * q, 'triangle'); }
+    else blip(900, 640, .07, .11 * q, 'triangle');
+  }catch(e){}
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('button'); if (!b || b.disabled) return;
+  if (b.closest('#segTheme') && S.ui !== 'business') return;      /* las esmeraldas tienen su propio sonido */
+  if (b.id === 'back' || b.id === 'prev' || b.id === 'pronClose') return uiSound('back');
+  if (b.classList.contains('play')) return uiSound('play');
+  if (b.id === 'closeSheet' || b.id === 'next' || b.classList.contains('card') || b.classList.contains('prod')) return uiSound('ok');
+  if (b.closest('.seg,.chips,.langs,.vlist,.ios-sw,#segTheme')) return uiSound('tick');
+  uiSound('tap');
+}, true);
+
 function gemSound(idx){
+  if (!S.sound) return;
   try{
     AC = AC || new (window.AudioContext || window.webkitAudioContext)();
     if (AC.state === 'suspended') AC.resume();
@@ -845,7 +893,8 @@ function buildSwitches(){
   });
 }
 buildSwitches();
-function syncSwitches(){ ['guide','mirror'].forEach(k => { const e = $('sw_' + k); if (e){ e.classList.toggle('on', !!S[k]); e.setAttribute('aria-checked', !!S[k]); } }); }
+$('sw_sound').onclick = () => { S.sound = S.sound ? 0 : 1; saveS(); applySettings(); if (S.sound) uiSound('tick'); };
+function syncSwitches(){ ['guide','mirror','sound'].forEach(k => { const e = $('sw_' + k); if (e){ e.classList.toggle('on', !!S[k]); e.setAttribute('aria-checked', !!S[k]); } }); }
 function bindSeg(seg, key, num){
   $(seg).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; tap(6);
@@ -910,9 +959,12 @@ function jumpToVideo(vi){
   }
   $('closeSheet').click();
 }
-function openSheet(){ renderJump(); tap(8); setRun(false); cancelCountdown(); $('sheet').classList.add('active'); document.body.classList.add('sheetopen'); syncThumbs(); }
+function openSheet(){ renderJump();
+  { const inReader = !!current && $('reader').classList.contains('active'), jb = document.querySelector('#segTab [data-v="jump"]');
+    if (jb){ jb.style.display = inReader ? '' : 'none';
+      if (!inReader && $('pane-jump').classList.contains('active')){ document.querySelector('#segTab [data-v="text"]').click(); } } } tap(8); setRun(false); cancelCountdown(); $('sheet').classList.add('active'); document.body.classList.add('sheetopen'); syncThumbs(); }
 function closeSheet(){ tap(6); $('sheet').classList.remove('active', 'ghost'); document.body.classList.remove('sheetopen'); }
-$('gear').onclick = openSheet;
+$('gear').onclick = openSheet; $('gearHome').onclick = openSheet;
 $('closeSheet').onclick = closeSheet;
 (function(){ /* arrastrar la hoja hacia abajo para cerrar (o tocar la manija) */
   const g = $('grab'), p = $('panel'); let y0 = null, dy = 0;
