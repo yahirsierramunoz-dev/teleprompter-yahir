@@ -409,7 +409,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.4';
+const APP_VERSION = '2.5';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -425,7 +425,7 @@ const THEMES = {
  ['rosa','Rosa','#ff4fa8','#ffc2e0','#9c1664','#0d0309','#ffffff'],
  ['rojo','Rojo','#ff2f43','#ffb8bf','#8a0716','#0d0306','#ffffff'],
  ['amarillo','Amarillo','#ffd21f','#fff5b8','#b57a00','#0a0800','#1a1200'],
- ['cian','Cian','#22e5ff','#c9f9ff','#0586a8','#020b0d','#02141a'],
+ ['naranja','Naranja','#ff8a1f','#ffd9ad','#a64a00','#0c0602','#1a0c00'],
  ['blanco','Blanco','#eef2f8','#ffffff','#9aa6ba','#07080b','#0a0d14'],
  ['gris','Gris','#9aa4b6','#e6ebf3','#4a5365','#060708','#0a0d14']
 ].forEach(([k,n,ac,hi,a2,bg,on]) => {
@@ -501,6 +501,7 @@ function applySettings(){
   const anchor = anchorGet();
   if (S.theme === 'emerald') S.theme = 'verde';
   if (S.theme === 'light') S.theme = 'rosa';
+  if (S.theme === 'cian') S.theme = 'naranja';
   const r = document.documentElement.style, t = THEMES[S.theme] || THEMES.dark, f = FONTS[S.font] || FONTS.sys;
   r.setProperty('--bg', t.bg); r.setProperty('--fg', t.fg); r.setProperty('--muted', t.muted);
   r.setProperty('--hi', t.hi); r.setProperty('--metal', t.metal);
