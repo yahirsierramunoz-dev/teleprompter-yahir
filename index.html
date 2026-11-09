@@ -107,8 +107,20 @@ button:focus{outline:none}
 .ln{margin:0 0 .85em;transition:opacity .5s var(--ease),transform .5s var(--ease);transform-origin:center}
 .dim .ln{opacity:.2;transform:scale(.93)}
 .dim .ln.cur{opacity:1;transform:scale(1)}
-.vd{margin:1.7em 0 1.3em;font-size:.34em;font-weight:700;letter-spacing:.34em;text-transform:uppercase;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.vd{position:relative;width:100vw;margin:120px 0 100px calc(50% - 50vw);padding:44px 0 46px;font-size:16px;letter-spacing:0;
+  display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;font-family:var(--font);
+  background:linear-gradient(180deg,transparent,var(--soft) 22%,var(--soft) 78%,transparent)}
+.vd.endmark{margin-top:90px;padding:30px 0}
+.vd .rule{width:100%;height:5px;background:linear-gradient(90deg,transparent 0%,var(--accent) 30%,var(--hi) 50%,var(--accent) 70%,transparent 100%);
+  box-shadow:0 0 22px var(--accent),0 0 6px var(--hi);border-radius:3px}
+.vd .end{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;border:2px solid var(--accent);
+  font-size:15px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--fg);background:var(--glass);
+  box-shadow:0 0 20px -4px var(--accent)}
+.vd .end::before{content:"";width:12px;height:12px;border-radius:3px;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.vd .big{white-space:nowrap;font-size:min(calc(var(--size) * 1.7),16vw);font-weight:900;letter-spacing:.08em;line-height:1;text-transform:uppercase;
+  padding-left:.08em;background:linear-gradient(180deg,#fff 0%,var(--hi) 22%,var(--accent) 58%,var(--accent2) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 26px var(--accent))}
+.vd .new{font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);padding-left:.24em;max-width:94vw}
 #guide{position:absolute;left:0;right:0;pointer-events:none}
 #guide::before{content:"";position:absolute;left:0;top:14%;bottom:14%;width:4px;border-radius:0 4px 4px 0;
   background:var(--grad);box-shadow:0 0 18px var(--accent)}
@@ -128,8 +140,12 @@ button:focus{outline:none}
 #lineText.in{animation:lineIn .5s var(--ease) both}
 @keyframes lineIn{from{opacity:0;transform:translateY(22px) scale(.97);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
 #lineNext{position:absolute;bottom:3vh;left:0;right:0;padding:0 8vw;font-size:15px;color:var(--muted)}
-#lineDivider{font-size:22px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#lineDivider{white-space:nowrap;font-size:min(calc(var(--size) * 1.7),16vw);font-weight:900;letter-spacing:.08em;line-height:1;text-transform:uppercase;
+  background:linear-gradient(180deg,#fff 0%,var(--hi) 22%,var(--accent) 58%,var(--accent2) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 26px var(--accent))}
+#lineEnd{display:none;margin-bottom:26px;padding:10px 22px;border-radius:999px;border:2px solid var(--accent);font-size:15px;font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--fg);background:var(--glass);box-shadow:0 0 20px -4px var(--accent)}
+#lineEnd.on{display:block}
 #lineTap{font-size:14px;color:var(--muted);margin-top:16px}
 
 #count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:5;
@@ -274,6 +290,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-ra
       <div id="scroller"><div id="content"></div></div>
       <div id="guide"></div>
       <div id="lineView">
+        <div id="lineEnd"></div>
         <div id="lineDivider"></div>
         <div id="lineText"></div>
         <div id="lineTap"></div>
@@ -378,7 +395,7 @@ const LS = {
 const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '2.1';
+const APP_VERSION = '2.2';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -625,10 +642,25 @@ function renderReader(reset){
     content.innerHTML = '';
     flat.forEach(e => {
       const d = document.createElement('div');
-      if (e.t === 'd'){ d.className = 'vd'; d.textContent = '— ' + e.text + ' —'; }
-      else { d.className = 'ln'; d.textContent = e.text; }
+      if (e.t === 'd'){
+        d.className = 'vd';
+        const prev = e.vi > 0 ? current.videos[e.vi - 1] : null;
+        const parts = [];
+        if (prev) parts.push('<div class="end"></div>');
+        parts.push('<div class="rule"></div><div class="big"></div><div class="new"></div><div class="rule"></div>');
+        d.innerHTML = parts.join('');
+        if (prev) d.querySelector('.end').textContent = 'Fin · ' + (prev.title || ('Video ' + e.vi));
+        d.querySelector('.big').textContent = e.text;
+        d.querySelector('.new').textContent = prev ? 'Nuevo video · empieza aquí' : 'Empieza aquí';
+      } else { d.className = 'ln'; d.textContent = e.text; }
       content.appendChild(d);
     });
+    { /* marca de fin del último video */
+      const last = current.videos[current.videos.length - 1], d = document.createElement('div');
+      d.className = 'vd endmark'; d.innerHTML = '<div class="rule"></div><div class="end"></div><div class="rule"></div>';
+      d.querySelector('.end').textContent = 'Fin · ' + (last.title || ('Video ' + current.videos.length));
+      content.appendChild(d);
+    }
     layoutGuide();
     if (reset){ pos = 0; scroller.scrollTop = 0; }
     updateCur();
@@ -728,6 +760,8 @@ function renderLine(){
   $('lineView').classList.add('active');
   const isD = e.t === 'd';
   $('lineDivider').textContent = isD ? e.text : '';
+  const le = $('lineEnd'), pv = (isD && e.vi > 0) ? current.videos[e.vi - 1] : null;
+  le.classList.toggle('on', !!pv); le.textContent = pv ? 'Fin · ' + (pv.title || ('Video ' + e.vi)) : '';
   $('lineText').style.display = isD ? 'none' : 'block';
   $('lineText').textContent = isD ? '' : e.text;
   if (!isD){ const lt = $('lineText'); lt.classList.remove('in'); void lt.offsetWidth; lt.classList.add('in'); }
