@@ -111,7 +111,6 @@ button:focus{outline:none}
 .ln{margin:0 0 .85em;max-width:100%;overflow-wrap:break-word;word-break:break-word;transition:opacity .5s var(--ease),transform .5s var(--ease);transform-origin:center}
 .dim .ln{opacity:.2;transform:scale(.93)}
 .dim .ln.cur{opacity:1;transform:scale(1)}
-#scroller.nopreview .ln:not(.cur){opacity:0 !important;pointer-events:none}
 .vd{position:relative;width:100vw;margin:120px 0 100px calc(50% - 50vw);padding:44px 0 46px;font-size:16px;letter-spacing:0;
   display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;font-family:var(--font);
   background:linear-gradient(180deg,transparent,var(--soft) 22%,var(--soft) 78%,transparent);
@@ -147,6 +146,7 @@ button:focus{outline:none}
 #lineText.in{animation:lineIn .5s var(--ease) both}
 @keyframes lineIn{from{opacity:0;transform:translateY(22px) scale(.97);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
 #lineNext{position:absolute;bottom:3vh;left:0;right:0;padding:0 8vw;font-size:15px;color:var(--muted)}
+#lineNext.all{color:var(--fg);font-size:18px;font-weight:600}
 #lineDivider{max-width:92vw;white-space:normal;overflow-wrap:break-word;word-break:break-word;font-size:min(calc(var(--size) * 1.7),16vw);font-weight:900;letter-spacing:.08em;line-height:1.02;text-transform:uppercase;
   background:linear-gradient(180deg,#fff 0%,var(--hi) 22%,var(--accent) 58%,var(--accent2) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 26px var(--accent));transform:translateZ(0)}
@@ -611,8 +611,8 @@ body.running #viewport.metal .ln,body.running #viewport.metal #lineText{will-cha
           <button data-v="1">Sí</button>
           <button data-v="0">No</button>
         </div>
-        <label>Previsualizar diálogos</label>
-        <div class="seg" id="segPreview">
+        <label>Ver todos los diálogos por igual</label>
+        <div class="seg" id="segShowall">
           <button data-v="1">Sí</button>
           <button data-v="0">No</button>
         </div>
@@ -656,10 +656,10 @@ const LS = {
 };
 
 /* ---------- settings ---------- */
-const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, preview:1, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
+const DEFAULTS = {size:52, speed:8, width:92, mode:'scroll', theme:'dark', count:3, guide:1, showall:0, mirror:0, font:'sys', weight:700, lh:1.28, finish:'metal', sound:1, ui:'orvex', btheme:'grafito', lang:'es-MX'};
 let S = Object.assign({}, DEFAULTS, LS.get('tp3_settings', {}));
 function saveS(){ LS.set('tp3_settings', S); }
-const APP_VERSION = '4.7';
+const APP_VERSION = '4.8';
 const THEMES = {
   dark:{n:'Obsidiana', bg:'#05060b', fg:'#f2f5fb', muted:'#8b93a7', hi:'#d7faff', accent:'#6ee7ff', accent2:'#7a6bff', metal:'#9fb0cf', soft:'rgba(110,231,255,.10)', on:'#04121a',
         glass:'rgba(255,255,255,.055)', glass2:'rgba(255,255,255,.09)', line:'rgba(255,255,255,.10)', glow1:'rgba(94,110,255,.20)', glow2:'rgba(0,229,255,.11)'},
@@ -722,7 +722,7 @@ const LANGS = [
 const I18N = {
  'es-MX':{html:'es-MX',sub:'Tus guiones, listos para grabar',installT:'Instalar como app',installS:'Se abre sola, a pantalla completa y sin internet',back:'Atrás',settings:'Ajustes',slower:'Más lento',faster:'Más rápido',playpause:'Reproducir o pausar',speed:'velocidad',next:'Siguiente',
   tab_text:'Texto',tab_color:'Color',tab_read:'Lectura',tab_gen:'General',credit:'Desarrollada por',sounds:'Sonidos',more:'Más productos',nexaTag:'Videos con IA',tab_jump:'Videos',jumpHint:'Toca un video para ir directo a él.',here:'Estás aquí',size:'Tamaño de letra',weight:'Grosor',lh:'Interlineado',font:'Tipografía',palette:'Paleta',finish:'Acabado del texto',metal:'Metálico',flat:'Liso',
-  scrollSpeed:'Velocidad de desplazamiento',width:'Ancho del texto',mode:'Modo',m_scroll:'Scroll continuo',m_line:'Línea por línea',countdown:'Cuenta regresiva al iniciar',none:'Sin',guide:'Línea guía y atenuar lo demás',preview:'Previsualizar diálogos',yes:'Sí',no:'No',mirror:'Espejo (para cristal de teleprompter)',fullscreen:'Pantalla completa',done:'Listo',
+  scrollSpeed:'Velocidad de desplazamiento',width:'Ancho del texto',mode:'Modo',m_scroll:'Scroll continuo',m_line:'Línea por línea',countdown:'Cuenta regresiva al iniciar',none:'Sin',guide:'Línea guía y atenuar lo demás',showall:'Ver todos los diálogos por igual',yes:'Sí',no:'No',mirror:'Espejo (para cristal de teleprompter)',fullscreen:'Pantalla completa',done:'Listo',
   style:'Estilo de la app',language:'Idioma',note_orvex:'Futurista, con brillos y acabado metálico.',note_business:'Sobrio, plano y profesional.',
   wlOn:'La pantalla se mantiene encendida mientras lees.',wlOff:'Este navegador no deja mantener la pantalla encendida: en los ajustes del celular pon "Tiempo de pantalla" en el máximo antes de grabar.',ver:'versión',
   empty:'Todavía no hay guiones cargados. Pídele a Claude que cargue el siguiente.',lines:'líneas',video1:'video',videoN:'videos',offSaved:'Sin conexión: copia guardada',upToDate:'Guiones al día ✓',embedded:'Guiones incluidos en este archivo',offShowing:'Sin conexión: mostrando la última copia guardada',failLoad:'No se pudo cargar. Revisa tu internet.',updating:'Actualizando… (mostrando copia guardada)',loading:'Cargando guiones…',
@@ -731,7 +731,7 @@ const I18N = {
   th_grafito:'Grafito',th_marfil:'Marfil',th_marino:'Azul marino',th_pizarra:'Pizarra',th_bosque:'Verde bosque',th_burdeos:'Burdeos'},
  'en':{html:'en',sub:'Your scripts, ready to record',installT:'Install as app',installS:'Opens on its own, full screen and offline',back:'Back',settings:'Settings',slower:'Slower',faster:'Faster',playpause:'Play or pause',speed:'speed',next:'Next',
   tab_text:'Text',tab_color:'Color',tab_read:'Reading',tab_gen:'General',credit:'Developed by',sounds:'Sounds',more:'More products',nexaTag:'AI-powered video',tab_jump:'Videos',jumpHint:'Tap a video to jump straight to it.',here:'You are here',size:'Font size',weight:'Weight',lh:'Line spacing',font:'Typeface',palette:'Palette',finish:'Text finish',metal:'Metallic',flat:'Flat',
-  scrollSpeed:'Scroll speed',width:'Text width',mode:'Mode',m_scroll:'Continuous scroll',m_line:'Line by line',countdown:'Countdown before starting',none:'None',guide:'Guide line and dim the rest',preview:'Preview upcoming lines',yes:'Yes',no:'No',mirror:'Mirror (for teleprompter glass)',fullscreen:'Full screen',done:'Done',
+  scrollSpeed:'Scroll speed',width:'Text width',mode:'Mode',m_scroll:'Continuous scroll',m_line:'Line by line',countdown:'Countdown before starting',none:'None',guide:'Guide line and dim the rest',showall:'Show all lines equally',yes:'Yes',no:'No',mirror:'Mirror (for teleprompter glass)',fullscreen:'Full screen',done:'Done',
   style:'App style',language:'Language',note_orvex:'Futuristic, with glow and a metallic finish.',note_business:'Clean, flat and professional.',
   wlOn:'The screen stays on while you read.',wlOff:'This browser can\'t keep the screen on: in your phone settings set "Screen timeout" to the maximum before recording.',ver:'version',
   empty:'No scripts loaded yet. Ask Claude to load the next one.',lines:'lines',video1:'video',videoN:'videos',offSaved:'Offline: saved copy',upToDate:'Scripts up to date ✓',embedded:'Scripts included in this file',offShowing:'Offline: showing the last saved copy',failLoad:'Couldn\'t load. Check your internet.',updating:'Updating… (showing saved copy)',loading:'Loading scripts…',
@@ -740,7 +740,7 @@ const I18N = {
   th_grafito:'Graphite',th_marfil:'Ivory',th_marino:'Navy',th_pizarra:'Slate',th_bosque:'Forest',th_burdeos:'Burgundy'},
  'pt-PT':{html:'pt-PT',sub:'Os teus guiões, prontos para gravar',installT:'Instalar como aplicação',installS:'Abre sozinha, em ecrã inteiro e sem internet',back:'Voltar',settings:'Definições',slower:'Mais lento',faster:'Mais rápido',playpause:'Reproduzir ou pausar',speed:'velocidade',next:'Seguinte',
   tab_text:'Texto',tab_color:'Cor',tab_read:'Leitura',tab_gen:'Geral',credit:'Desenvolvida por',sounds:'Sons',more:'Mais produtos',nexaTag:'Vídeos com IA',tab_jump:'Vídeos',jumpHint:'Toca num vídeo para ir diretamente para ele.',here:'Estás aqui',size:'Tamanho da letra',weight:'Espessura',lh:'Espaçamento entre linhas',font:'Tipo de letra',palette:'Paleta',finish:'Acabamento do texto',metal:'Metálico',flat:'Liso',
-  scrollSpeed:'Velocidade de deslocamento',width:'Largura do texto',mode:'Modo',m_scroll:'Deslocamento contínuo',m_line:'Linha a linha',countdown:'Contagem decrescente ao iniciar',none:'Sem',guide:'Linha-guia e esbater o resto',preview:'Pré-visualizar diálogos',yes:'Sim',no:'Não',mirror:'Espelho (para vidro de teleponto)',fullscreen:'Ecrã inteiro',done:'Concluído',
+  scrollSpeed:'Velocidade de deslocamento',width:'Largura do texto',mode:'Modo',m_scroll:'Deslocamento contínuo',m_line:'Linha a linha',countdown:'Contagem decrescente ao iniciar',none:'Sem',guide:'Linha-guia e esbater o resto',showall:'Ver todos os diálogos por igual',yes:'Sim',no:'Não',mirror:'Espelho (para vidro de teleponto)',fullscreen:'Ecrã inteiro',done:'Concluído',
   style:'Estilo da aplicação',language:'Idioma',note_orvex:'Futurista, com brilhos e acabamento metálico.',note_business:'Sóbrio, plano e profissional.',
   wlOn:'O ecrã mantém-se ligado enquanto lês.',wlOff:'Este navegador não permite manter o ecrã ligado: nas definições do telemóvel, põe o "Tempo de ecrã" no máximo antes de gravar.',ver:'versão',
   empty:'Ainda não há guiões carregados. Pede ao Claude que carregue o seguinte.',lines:'linhas',video1:'vídeo',videoN:'vídeos',offSaved:'Sem ligação: cópia guardada',upToDate:'Guiões atualizados ✓',embedded:'Guiões incluídos neste ficheiro',offShowing:'Sem ligação: a mostrar a última cópia guardada',failLoad:'Não foi possível carregar. Verifica a tua internet.',updating:'A atualizar… (a mostrar cópia guardada)',loading:'A carregar guiões…',
@@ -755,7 +755,7 @@ const I18N = {
   note_orvex:'Futurista, con brillos y acabado metálico.',countdown:'Cuenta atrás al iniciar',fullscreen:'Pantalla completa',scrollSpeed:'Velocidad de desplazamiento'},
  'fr':{html:'fr',sub:'Vos scripts, prêts à être enregistrés',installT:'Installer comme application',installS:'S\'ouvre seule, en plein écran et hors connexion',back:'Retour',settings:'Réglages',slower:'Plus lent',faster:'Plus rapide',playpause:'Lecture ou pause',speed:'vitesse',next:'Suivant',
   tab_text:'Texte',tab_color:'Couleur',tab_read:'Lecture',tab_gen:'Général',credit:'Développée par',sounds:'Sons',more:'Plus de produits',nexaTag:'Vidéos avec IA',tab_jump:'Vidéos',jumpHint:'Touchez une vidéo pour y aller directement.',here:'Vous êtes ici',size:'Taille du texte',weight:'Épaisseur',lh:'Interligne',font:'Police',palette:'Palette',finish:'Finition du texte',metal:'Métallique',flat:'Uni',
-  scrollSpeed:'Vitesse de défilement',width:'Largeur du texte',mode:'Mode',m_scroll:'Défilement continu',m_line:'Ligne par ligne',countdown:'Compte à rebours au démarrage',none:'Aucun',guide:'Ligne guide et atténuer le reste',preview:'Prévisualiser les dialogues',yes:'Oui',no:'Non',mirror:'Miroir (pour vitre de prompteur)',fullscreen:'Plein écran',done:'Terminé',
+  scrollSpeed:'Vitesse de défilement',width:'Largeur du texte',mode:'Mode',m_scroll:'Défilement continu',m_line:'Ligne par ligne',countdown:'Compte à rebours au démarrage',none:'Aucun',guide:'Ligne guide et atténuer le reste',showall:'Afficher tous les dialogues à l\'identique',yes:'Oui',no:'Non',mirror:'Miroir (pour vitre de prompteur)',fullscreen:'Plein écran',done:'Terminé',
   style:'Style de l\'application',language:'Langue',note_orvex:'Futuriste, avec des reflets et une finition métallique.',note_business:'Sobre, épuré et professionnel.',
   wlOn:'L\'écran reste allumé pendant la lecture.',wlOff:'Ce navigateur ne peut pas garder l\'écran allumé : dans les réglages du téléphone, mettez « Mise en veille » au maximum avant d\'enregistrer.',ver:'version',
   empty:'Aucun script chargé pour le moment. Demandez à Claude de charger le suivant.',lines:'lignes',video1:'vidéo',videoN:'vidéos',offSaved:'Hors connexion : copie enregistrée',upToDate:'Scripts à jour ✓',embedded:'Scripts inclus dans ce fichier',offShowing:'Hors connexion : dernière copie enregistrée affichée',failLoad:'Chargement impossible. Vérifiez votre connexion.',updating:'Mise à jour… (copie enregistrée affichée)',loading:'Chargement des scripts…',
@@ -783,7 +783,7 @@ function translateStatic(){
   [['text','tab_text'],['color','tab_color'],['read','tab_read'],['jump','tab_jump'],['gen','tab_gen']].forEach(([v,k]) => q('#segTab [data-v="'+v+'"]', k));
   ['size','weight','lh','font'].forEach((k,i) => setT(document.querySelector('#pane-text label:nth-of-type('+(i+1)+')'), t(k)));
   ['palette','finish'].forEach((k,i) => setT(document.querySelector('#pane-color label:nth-of-type('+(i+1)+')'), t(k)));
-  ['scrollSpeed','width','mode','countdown','guide','preview','mirror'].forEach((k,i) => setT(document.querySelector('#pane-read label:nth-of-type('+(i+1)+')'), t(k)));
+  ['scrollSpeed','width','mode','countdown','guide','showall','mirror'].forEach((k,i) => setT(document.querySelector('#pane-read label:nth-of-type('+(i+1)+')'), t(k)));
   setT(document.querySelector('#pane-gen label:nth-of-type(1)'), t('style')); setT(document.querySelector('#pane-gen .swrow label'), t('sounds'));
   { const ls = document.querySelectorAll('#pane-gen > label'); if (ls[1]) setT(ls[1], t('language')); if (ls[0]) setT(ls[0], t('style')); }
   $('jumpHint').textContent = t('jumpHint');
@@ -792,7 +792,7 @@ function translateStatic(){
   q('#segFinish [data-v="metal"]','metal'); q('#segFinish [data-v="flat"]','flat');
   q('#segMode [data-v="scroll"]','m_scroll'); q('#segMode [data-v="line"]','m_line');
   q('#segCount [data-v="0"]','none');
-  ['segGuide','segPreview','segMirror'].forEach(id => { q('#'+id+' [data-v="1"]','yes'); q('#'+id+' [data-v="0"]','no'); });
+  ['segGuide','segShowall','segMirror'].forEach(id => { q('#'+id+' [data-v="1"]','yes'); q('#'+id+' [data-v="0"]','no'); });
   const sysChip = document.querySelector('#segFont [data-v="sys"] small'); if (sysChip) sysChip.textContent = t('sys');
   const L = LANGS.find(l => l.k === curLang());
   if ($('install').style.display === 'block') $('install').textContent = t('installHow');
@@ -903,8 +903,8 @@ function applySettings(){
   $('modeTag').textContent = biz ? 'Business' : 'Orvex';
   $('mirrorBox').classList.toggle('mirror', !!S.mirror);
   $('guide').classList.toggle('off', !S.guide || S.mode !== 'scroll');
-  $('scroller').classList.toggle('dim', !!S.guide);
-  $('scroller').classList.toggle('nopreview', !S.preview);
+  $('scroller').classList.toggle('dim', !!S.guide && !S.showall);
+  $('lineNext').classList.toggle('all', !!S.showall);
   $('viewport').classList.toggle('line', S.mode === 'line');
   $('viewport').classList.toggle('metal', S.finish === 'metal');
   $('spdVal').textContent = S.speed;
@@ -912,7 +912,7 @@ function applySettings(){
   $('vWeight').textContent = S.weight; $('vLh').textContent = Number(S.lh).toFixed(2); $('vFont').textContent = (S.font === 'sys' ? t('sys') : f.n); $('vTheme').textContent = tn(tk, tt.n); r.setProperty('--panel', tt.panel || '#12141c');
   $('size').value = S.size; $('speed').value = S.speed; $('width').value = S.width; $('weight').value = S.weight; $('lh').value = Math.round(S.lh * 100);
   ['size','speed','width','weight','lh'].forEach(id => { const el = $(id); el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); });
-  for (const [seg, key] of [['segMode','mode'],['segUi','ui'],['segLang','lang'],['segTheme', biz ? 'btheme' : 'theme'],['segCount','count'],['segGuide','guide'],['segPreview','preview'],['segMirror','mirror'],['segFont','font'],['segFinish','finish']]){
+  for (const [seg, key] of [['segMode','mode'],['segUi','ui'],['segLang','lang'],['segTheme', biz ? 'btheme' : 'theme'],['segCount','count'],['segGuide','guide'],['segShowall','showall'],['segMirror','mirror'],['segFont','font'],['segFinish','finish']]){
     $(seg).querySelectorAll('button').forEach(b => b.classList.toggle('sel', String(S[key]) === b.dataset.v));
   }
   $('ctrlScroll').style.display = S.mode === 'scroll' ? 'flex' : 'none';
@@ -923,7 +923,7 @@ function applySettings(){
   layoutGuide(); syncThumbs(); anchorSet(anchor);
 }
 function buildSwitches(){
-  [['segGuide','guide'],['segPreview','preview'],['segMirror','mirror']].forEach(([id,key]) => {
+  [['segGuide','guide'],['segShowall','showall'],['segMirror','mirror']].forEach(([id,key]) => {
     const seg = $(id), lab = seg.previousElementSibling; if (!lab || seg.parentNode.classList.contains('swrow')) return;
     const row = document.createElement('div'); row.className = 'swrow';
     seg.parentNode.insertBefore(row, lab); row.append(lab, seg);
@@ -934,7 +934,7 @@ function buildSwitches(){
 }
 buildSwitches();
 $('sw_sound').onclick = () => { S.sound = S.sound ? 0 : 1; saveS(); applySettings(); if (S.sound) uiSound('tick'); };
-function syncSwitches(){ ['guide','preview','mirror','sound'].forEach(k => { const e = $('sw_' + k); if (e){ e.classList.toggle('on', !!S[k]); e.setAttribute('aria-checked', !!S[k]); } }); }
+function syncSwitches(){ ['guide','showall','mirror','sound'].forEach(k => { const e = $('sw_' + k); if (e){ e.classList.toggle('on', !!S[k]); e.setAttribute('aria-checked', !!S[k]); } }); }
 function bindSeg(seg, key, num){
   $(seg).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; tap(6);
@@ -946,7 +946,7 @@ function bindSeg(seg, key, num){
   });
 }
 bindSeg('segMode','mode'); bindSeg('segTheme','theme'); bindSeg('segCount','count',true);
-bindSeg('segGuide','guide',true); bindSeg('segPreview','preview',true); bindSeg('segMirror','mirror',true);
+bindSeg('segGuide','guide',true); bindSeg('segShowall','showall',true); bindSeg('segMirror','mirror',true);
 bindSeg('segFont','font'); bindSeg('segUi','ui'); bindSeg('segLang','lang'); bindSeg('segFinish','finish');
 /* "clic" mecánico al mover los deslizadores con el dedo: uno por cada paso, como un dial real */
 const lastTickVal = {};
@@ -1311,7 +1311,7 @@ function renderLine(){
   if (!isD){ const lt = $('lineText'); lt.classList.remove('in'); void lt.offsetWidth; lt.classList.add('in'); }
   $('lineTap').textContent = isD ? t('tapStart') : '';
   const nx = flat[lineIdx + 1];
-  $('lineNext').textContent = (S.preview && !isD && nx && nx.t === 'l') ? t('follows') + ': ' + nx.text : '';
+  $('lineNext').textContent = (!isD && nx && nx.t === 'l') ? t('follows') + ': ' + nx.text : '';
   $('title').textContent = isD ? current.title : (current.title + ' · ' + (e.vi + 1) + ' · ' + (e.li + 1) + '/' + e.n);
 }
 function lineAdvance(){ if (S.mode !== 'line') return; if (lineIdx < flat.length - 1){ lineIdx++; renderLine(); } }
